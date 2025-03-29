@@ -1,0 +1,92 @@
+.projects {
+  padding: 2rem;
+  background-color: #ff808b18;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.projects h2 {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.project-list {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Ensure left-right alignment */
+  flex-wrap: wrap;
+  gap: 5rem; /* Reduce large gap for better balance */
+}
+
+.project-item {
+  background-color: #d6e4fa57;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(173, 216, 230, 0.2);
+  width: 45%; /* Ensure proper left-right division */
+  min-width: 350px;
+  max-width: 500px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.project-item:hover {
+  transform: scale(1.05);
+}
+
+.project-item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-item p {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 350;
+}
+
+.project-item a {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.project-item a:hover {
+  color: #ff8cb2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .project-list {
+      flex-direction: column; /* Stack items on small screens */
+      align-items: center;
+  }
+
+  .project-item {
+      width: 90%; /* Use full width for small screens */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

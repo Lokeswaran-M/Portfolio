@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    font-weight: 600;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background-color: #1f1f1f;
+    color: #fff;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .nav-links a:hover {
+    color: #b073ff;
+  }
+
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-family: "Homemade Apple", cursive;
+  }

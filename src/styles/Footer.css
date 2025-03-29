@@ -1,0 +1,18 @@
+
+.footer {
+    background-color: #1f1f1f;
+    color: white;
+    text-align: center;
+    padding: 2px 0;
+    font-size: 16px;
+  }
+  
+  .footer .name-hover {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer .name-hover:hover {
+    color: #ff8cb2;
+  }
