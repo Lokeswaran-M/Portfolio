@@ -1,114 +1,103 @@
-🔥 General Styles
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.hero {
+/* Container */
+.hero-split {
+  display: flex;
+  height: 80vh;
+  width: 100%;
+  font-family: "Helvetica Neue", sans-serif;
+  position: relative; /* Needed for absolutely positioned middle image */
+  overflow: hidden;
+}
+
+/* Left & Right Sides */
+.hero-side {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 80vh; /* Full viewport height */
+  padding: 40px;
   text-align: center;
-  position: relative;
-  padding: 0 20px;
 }
 
-/* 🔥 Hero Content Styling */
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* align-items: center; */
-}
-
-
-.heroh2 {
-  font-family: "Aldrich", sans-serif;
-  letter-spacing: 5px;
-  font-size: 57px;
-  text-align: center;
-  margin-bottom: 80px;
-  margin-top: 80px;
-  padding: 100px;
-}
-
-/* 🔥 Hero Word Description */
-.hero-word p {
-  font-size: 1.3rem;
+.designer-side {
+  background: #fff6f0;
   color: #000;
-  font-weight: 550;
-  max-width: 800px;
-  text-align: center;
 }
 
-/* 🔥 Typewriter Effect */
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 430px; }
-}
-
-@keyframes blinkTextCursor {
-  from { border-right-color: hsl(0, 0%, 0%); }
-  to { border-right-color: transparent; }
-}
-
-.hero-content h1 {
-  font-size: 2.0rem;
+.coder-side {
+  background: #f0f8ff;
   color: #000;
-  text-align: flex-start;
-  border-right: 2px solid hsl(0, 0%, 0%);
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typewriter 4s steps(44) 1s 1 normal both,
-             blinkTextCursor 600ms steps(2, start) 11 forwards;
 }
 
-/* 🔥 Animated Gradient Text */
-.heroh2 {
+/* Titles */
+.designer-title {
+  font-size: 3rem;
   font-weight: bold;
-  background: linear-gradient(
-    to right,
-    #000 0%,
-    #777 45%,
-    #fff 50%,
-    #777 55%,
-    #000 60%,
-    #000 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 5s linear infinite;
-
+  letter-spacing: 1px;
 }
 
-@keyframes shine {
-  0% { background-position: 100%; }
-  60% { background-position: -60% 0; }
-  100% { background-position: -100% 0; }
+.designer-title span {
+  color: red;
+  margin-left: 5px;
 }
 
-/* 🔥 Responsive Styles */
+.coder-title {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+/* Middle Image */
+.hero-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99; /* Ensures the middle image is always on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Allows clicks to pass through if needed */
+}
+
+.hero-image img {
+  height: 80vh;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Text Below Titles */
+.hero-text p {
+  font-size: 1rem;
+  margin: 20px 0;
+  max-width: 300px;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .heroh1 {
-    font-size: 28px;
+  .hero-split {
+    flex-direction: column;
+    height: auto;
   }
-  .heroh2 {
-    font-family: "Aldrich", sans-serif;
-    letter-spacing: 7px!important;
-    font-size: 55px!important;
-    /* justify-content: center; */
-    /* align-items: center; */
-    padding: 150px;
-    padding-bottom: 150px;
+
+  .hero-image {
+    position: relative;
+    transform: none;
+    top: auto;
+    left: auto;
+    margin: 20px 0;
+    z-index: 99;
   }
-  .hero-word p {
-    font-size: 1.1rem;
+
+  .hero-image img {
+    height: auto;
+    width: 80%;
   }
 }
-
-
-
