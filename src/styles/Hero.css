@@ -44,45 +44,6 @@
   text-align: center;
 }
 
-/* 🔥 Gradient Background (Centered) */
-.grainy-gradient-intro {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  padding: 20px;
-}
-
-.grainy-gradient-intro:before {
-  background: #c3ccea;
-  filter: url(#f);
-}
-.grainy-gradient-intro:before, .grainy-gradient-intro:after {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  --grad: radial-gradient(at 50%, red, rgba(255, 0, 0, 0.3) 55%, transparent 90%);
-  --mask: var(--grad), var(--grad);
-  -webkit-mask: var(--mask);
-  -webkit-mask-composite: source-in;
-  -webkit-mask: var(--mask);
-  mask: var(--mask);
-  -webkit-mask-composite: source-in, xor;
-  mask-composite: intersect;
-  mix-blend-mode: unset;
-  content: "";
-}
-
-.grainy-gradient-intro:after {
-   background: linear-gradient(
-90deg, #760dfe 20%, #f51b26, #fd9900);
-}
-
-
 /* 🔥 Typewriter Effect */
 @keyframes typewriter {
   from { width: 0; }
