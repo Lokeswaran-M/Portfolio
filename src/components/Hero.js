@@ -3,7 +3,7 @@ import profileImage from "../assets/My Pic.png";
 
 const Hero = () => {
   return (
-    <div className="relative flex min-h-[82vh] w-full overflow-hidden bg-white">
+    <div className="relative flex min-h-[85vh] w-full overflow-hidden bg-white">
       {/* Left Side - Designer */}
       <div className="flex flex-1 flex-col items-center justify-center bg-[#fff6f0] p-8 text-gray-800 md:p-12">
         <div className="w-full max-w-md space-y-6 text-center">
