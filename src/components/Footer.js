@@ -1,12 +1,17 @@
 import React from "react";
-import "../styles/Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="bg-gray-900 text-white text-center py-1 text-base">
       <p>
         © {new Date().getFullYear()}{" "}
-        <a href="#" className="name-hover">Lokeswaran M</a>. All rights reserved.
+        <a
+          href="#"
+          className="text-white no-underline transition-colors duration-300 hover:text-pink-400"
+        >
+          Lokeswaran M
+        </a>
+        . All rights reserved.
       </p>
     </footer>
   );

@@ -1,6 +1,5 @@
-.projects {
+/* .projects {
   padding: 2rem;
-  /* background-color: #ff808b18; */
   text-align: center;
   padding-top: 40px;
   padding-bottom: 80px;
@@ -14,9 +13,9 @@
 .project-list {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Ensure left-right alignment */
+  align-items: flex-start;
   flex-wrap: wrap;
-  gap: 5rem; /* Reduce large gap for better balance */
+  gap: 5rem; 
 }
 
 .project-item {
@@ -24,7 +23,7 @@
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(173, 216, 230, 0.2);
-  width: 45%; /* Ensure proper left-right division */
+  width: 45%; 
   min-width: 350px;
   max-width: 500px;
   text-align: left;
@@ -56,37 +55,14 @@
   color: #ff8cb2;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .project-list {
-      flex-direction: column; /* Stack items on small screens */
+      flex-direction: column; 
       align-items: center;
   }
 
   .project-item {
-      width: 90%; /* Use full width for small screens */
+      width: 90%;
   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+} */

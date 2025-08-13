@@ -6,7 +6,7 @@ const About = () => {
       id="about"
       className="bg-pink-100/45 py-10 px-8 text-center"
     >
-      <h2 className="text-2xl mb-12 hover:text-pink-400 transition-colors duration-300">
+      <h2 className="text-2xl font-semibold mb-12 hover:text-pink-400 transition-colors duration-300">
         About Me
       </h2>
       <p className="text-base text-black leading-relaxed font-light max-w-4xl mx-auto">
