@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
 const HomePage = () => {
   const [activeSide, setActiveSide] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -19,7 +20,7 @@ const HomePage = () => {
   const backendSkills = ["Node.js", "Express.js", "MySQL", "MongoDB", "REST APIs", "Swagger"];
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <motion.div 
@@ -62,25 +63,25 @@ const HomePage = () => {
         ></motion.div>
       </div>
 
-      <div className="container mx-auto px-4 h-screen flex flex-col justify-center relative z-10">
+      <div className="container mx-auto px-4 py-8 min-h-screen flex flex-col justify-center relative z-10">
         {/* Name Header */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6 md:mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
             Lokeswaran
           </h1>
           <div className="w-32 h-1 bg-gradient-to-r from-red-500 to-blue-500 mx-auto"></div>
-          <p className="text-xl text-gray-600 mt-4">Full Stack Developer</p>
+          <p className="text-lg md:text-xl text-gray-600 mt-4">Full Stack Developer</p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-16">
           {/* Left Side - Frontend Developer */}
           <motion.div
-            className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg"
+            className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
             onHoverStart={() => setActiveSide('frontend')}
             onHoverEnd={() => setActiveSide(null)}
             onClick={() => isMobile && setActiveSide(activeSide === 'frontend' ? null : 'frontend')}
@@ -93,9 +94,9 @@ const HomePage = () => {
             transition={{ duration: 0.5 }}
             whileHover={{ y: -5 }}
           >
-            <div className="w-full max-w-md space-y-6">
+            <div className="w-full max-w-md space-y-4 md:space-y-6">
               <motion.h2 
-                className="text-3xl md:text-4xl font-bold text-gray-800"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -104,7 +105,7 @@ const HomePage = () => {
               </motion.h2>
               
               <motion.p 
-                className="text-lg text-gray-600 leading-relaxed"
+                className="text-base md:text-lg text-gray-600 leading-relaxed"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -113,7 +114,7 @@ const HomePage = () => {
               </motion.p>
               
               <motion.div 
-                className="mt-6 flex flex-wrap justify-center lg:justify-end gap-2"
+                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-end gap-2"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -121,7 +122,7 @@ const HomePage = () => {
                 {frontendSkills.map((skill, index) => (
                   <motion.span 
                     key={index}
-                    className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium"
+                    className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs md:text-sm font-medium"
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
@@ -131,7 +132,7 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                className="mt-6 md:mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ y: 20, opacity: 0 }}
@@ -161,7 +162,7 @@ const HomePage = () => {
 
           {/* Right Side - Backend Developer */}
           <motion.div
-            className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg"
+            className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
             onHoverStart={() => setActiveSide('backend')}
             onHoverEnd={() => setActiveSide(null)}
             onClick={() => isMobile && setActiveSide(activeSide === 'backend' ? null : 'backend')}
@@ -174,9 +175,9 @@ const HomePage = () => {
             transition={{ duration: 0.5 }}
             whileHover={{ y: -5 }}
           >
-            <div className="w-full max-w-md space-y-6">
+            <div className="w-full max-w-md space-y-4 md:space-y-6">
               <motion.h2 
-                className="text-3xl md:text-4xl font-bold text-gray-800"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
@@ -185,7 +186,7 @@ const HomePage = () => {
               </motion.h2>
               
               <motion.p 
-                className="text-lg text-gray-600 leading-relaxed"
+                className="text-base md:text-lg text-gray-600 leading-relaxed"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -194,7 +195,7 @@ const HomePage = () => {
               </motion.p>
               
               <motion.div 
-                className="mt-6 flex flex-wrap justify-center lg:justify-start gap-2"
+                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-start gap-2"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -202,7 +203,7 @@ const HomePage = () => {
                 {backendSkills.map((skill, index) => (
                   <motion.span 
                     key={index}
-                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs md:text-sm font-medium"
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
@@ -212,7 +213,7 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                className="mt-6 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-4 py-2 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ y: 20, opacity: 0 }}
@@ -227,17 +228,17 @@ const HomePage = () => {
 
         {/* Scroll indicator */}
         <motion.div 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-700 z-10"
+          className="mt-8 md:mt-0 absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-700 z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
         >
-          <span className="text-sm mb-2">Scroll down</span>
+          <span className="text-xs md:text-sm mb-2">Scroll down</span>
           <motion.div 
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
           </motion.div>
@@ -247,8 +248,261 @@ const HomePage = () => {
   );
 };
 
-
 export default HomePage;
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { motion } from 'framer-motion';
+// const HomePage = () => {
+//   const [activeSide, setActiveSide] = useState(null);
+//   const [isMobile, setIsMobile] = useState(false);
+
+//   useEffect(() => {
+//     const checkMobile = () => {
+//       setIsMobile(window.innerWidth < 768);
+//     };
+    
+//     checkMobile();
+//     window.addEventListener('resize', checkMobile);
+    
+//     return () => window.removeEventListener('resize', checkMobile);
+//   }, []);
+
+//   const frontendSkills = ["React", "React Native", "JavaScript", "TypeScript", "HTML/CSS", "TailwindCSS"];
+//   const backendSkills = ["Node.js", "Express.js", "MySQL", "MongoDB", "REST APIs", "Swagger"];
+
+//   return (
+//     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+//       {/* Animated background elements */}
+//       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+//         <motion.div 
+//           className="absolute -top-24 -left-24 w-96 h-96 bg-pink-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, 10, 0],
+//             y: [0, -15, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 20,
+//             ease: "easeInOut"
+//           }}
+//         ></motion.div>
+//         <motion.div 
+//           className="absolute top-1/2 -right-32 w-80 h-80 bg-blue-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, -15, 0],
+//             y: [0, 10, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 25,
+//             ease: "easeInOut",
+//             delay: 1
+//           }}
+//         ></motion.div>
+//         <motion.div 
+//           className="absolute bottom-0 left-1/4 w-64 h-64 bg-purple-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, 15, 0],
+//             y: [0, -10, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 18,
+//             ease: "easeInOut",
+//             delay: 2
+//           }}
+//         ></motion.div>
+//       </div>
+
+//       <div className="container mx-auto px-4 h-screen flex flex-col justify-center relative z-10">
+//         {/* Name Header */}
+//         <motion.div 
+//           className="text-center mb-12"
+//           initial={{ opacity: 0, y: -20 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.7, delay: 0.2 }}
+//         >
+//           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">
+//             Lokeswaran
+//           </h1>
+//           <div className="w-32 h-1 bg-gradient-to-r from-red-500 to-blue-500 mx-auto"></div>
+//           <p className="text-xl text-gray-600 mt-4">Full Stack Developer</p>
+//         </motion.div>
+
+//         <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
+//           {/* Left Side - Frontend Developer */}
+//           <motion.div
+//             className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg"
+//             onHoverStart={() => setActiveSide('frontend')}
+//             onHoverEnd={() => setActiveSide(null)}
+//             onClick={() => isMobile && setActiveSide(activeSide === 'frontend' ? null : 'frontend')}
+//             initial={{ opacity: 0, x: -50 }}
+//             animate={{ 
+//               opacity: activeSide && activeSide !== 'frontend' ? 0.7 : 1,
+//               x: 0,
+//               scale: activeSide === 'frontend' ? 1.02 : 1
+//             }}
+//             transition={{ duration: 0.5 }}
+//             whileHover={{ y: -5 }}
+//           >
+//             <div className="w-full max-w-md space-y-6">
+//               <motion.h2 
+//                 className="text-3xl md:text-4xl font-bold text-gray-800"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.2 }}
+//               >
+//                 Frontend<span className="text-red-500"> Developer</span>
+//               </motion.h2>
+              
+//               <motion.p 
+//                 className="text-lg text-gray-600 leading-relaxed"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.3 }}
+//               >
+//                 I create responsive and interactive user interfaces using modern technologies like React, React Native, and JavaScript frameworks.
+//               </motion.p>
+              
+//               <motion.div 
+//                 className="mt-6 flex flex-wrap justify-center lg:justify-end gap-2"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.4 }}
+//               >
+//                 {frontendSkills.map((skill, index) => (
+//                   <motion.span 
+//                     key={index}
+//                     className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium"
+//                     whileHover={{ scale: 1.1 }}
+//                     transition={{ type: "spring", stiffness: 300 }}
+//                   >
+//                     {skill}
+//                   </motion.span>
+//                 ))}
+//               </motion.div>
+              
+//               <motion.button 
+//                 className="mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.5 }}
+//               >
+//                 View Frontend Projects
+//               </motion.button>
+//             </div>
+//           </motion.div>
+
+//           {/* Center Divider/Icon */}
+//           <motion.div 
+//             className="hidden lg:flex flex-col items-center justify-center"
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             transition={{ delay: 0.7 }}
+//           >
+//             <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
+//             <div className="bg-white p-3 rounded-full shadow-lg border border-gray-100">
+//               <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+//               </svg>
+//             </div>
+//             <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
+//           </motion.div>
+
+//           {/* Right Side - Backend Developer */}
+//           <motion.div
+//             className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg"
+//             onHoverStart={() => setActiveSide('backend')}
+//             onHoverEnd={() => setActiveSide(null)}
+//             onClick={() => isMobile && setActiveSide(activeSide === 'backend' ? null : 'backend')}
+//             initial={{ opacity: 0, x: 50 }}
+//             animate={{ 
+//               opacity: activeSide && activeSide !== 'backend' ? 0.7 : 1,
+//               x: 0,
+//               scale: activeSide === 'backend' ? 1.02 : 1
+//             }}
+//             transition={{ duration: 0.5 }}
+//             whileHover={{ y: -5 }}
+//           >
+//             <div className="w-full max-w-md space-y-6">
+//               <motion.h2 
+//                 className="text-3xl md:text-4xl font-bold text-gray-800"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.2 }}
+//               >
+//                 Backend<span className="text-blue-500"> Developer</span>
+//               </motion.h2>
+              
+//               <motion.p 
+//                 className="text-lg text-gray-600 leading-relaxed"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.3 }}
+//               >
+//                 I build secure, scalable server-side applications and APIs using Node.js, Express, and modern database technologies.
+//               </motion.p>
+              
+//               <motion.div 
+//                 className="mt-6 flex flex-wrap justify-center lg:justify-start gap-2"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.4 }}
+//               >
+//                 {backendSkills.map((skill, index) => (
+//                   <motion.span 
+//                     key={index}
+//                     className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+//                     whileHover={{ scale: 1.1 }}
+//                     transition={{ type: "spring", stiffness: 300 }}
+//                   >
+//                     {skill}
+//                   </motion.span>
+//                 ))}
+//               </motion.div>
+              
+//               <motion.button 
+//                 className="mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.5 }}
+//               >
+//                 Explore Backend Projects
+//               </motion.button>
+//             </div>
+//           </motion.div>
+//         </div>
+
+//         {/* Scroll indicator */}
+//         <motion.div 
+//           className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-700 z-10"
+//           initial={{ opacity: 0 }}
+//           animate={{ opacity: 1 }}
+//           transition={{ delay: 1.5 }}
+//         >
+//           <span className="text-sm mb-2">Scroll down</span>
+//           <motion.div 
+//             animate={{ y: [0, 10, 0] }}
+//             transition={{ repeat: Infinity, duration: 1.5 }}
+//           >
+//             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+//             </svg>
+//           </motion.div>
+//         </motion.div>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// export default HomePage;
 
 
 
