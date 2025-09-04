@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://lokeswaran-m.github.io/Portfolio",
   "dependencies": {
+    "framer-motion": "^12.23.12",
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
