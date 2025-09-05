@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const Contact = () => {
   const [copied, setCopied] = useState({ email: false, phone: false });
@@ -8,6 +9,12 @@ const Contact = () => {
     setCopied({ ...copied, [type]: true });
     setTimeout(() => setCopied({ ...copied, [type]: false }), 2000);
   };
+
+
+    const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const socialPlatforms = [
     {
       name: 'github',
@@ -162,6 +169,19 @@ const Contact = () => {
       ))}
     </div>
       </div>
+                <div className="flex items-center justify-end space-x-4">
+            <motion.button
+              onClick={scrollToTop}
+              className="text-sm font-semibold text-gray-400 hover:text-pink-400 transition-colors duration-300 flex items-center"
+              whileHover={{ y: -3 }}
+              aria-label="Scroll to top"
+            >
+              Back to top
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
+            </motion.button>
+          </div>
     </section>
   );
 };

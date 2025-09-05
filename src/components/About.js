@@ -101,29 +101,29 @@ const About = () => {
           animate={textControls}
           className="text-base md:text-lg text-gray-800 leading-relaxed text-left bg-white/70 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg border border-white"
         >
-          {words.map((word, index) => (
-            <motion.span
-              key={index}
-              variants={wordVariants}
-              className="inline-block mr-1"
-            >
-              {word === "React" || word === "Native," || word === "React," ? (
-                <strong className="font-semibold text-blue-600">{word}</strong>
-              ) : word === "Node.js," || word === "Express.js," ? (
-                <strong className="font-semibold text-green-600">{word}</strong>
-              ) : word === "JavaScript," || word === "TypeScript." ? (
-                <strong className="font-semibold text-yellow-600">{word}</strong>
-              ) : word === "MongoDB" || word === "MySQL," ? (
-                <strong className="font-semibold text-purple-600">{word}</strong>
-              ) : word === "HTML," || word === "CSS," ? (
-                <strong className="font-semibold text-orange-600">{word}</strong>
-              ) : word === "Bootstrap," || word === "TailwindCSS," ? (
-                <strong className="font-semibold text-teal-600">{word}</strong>
-              ) : (
-                word
-              )}
-            </motion.span>
-          ))}
+{words.map((word, index) => (
+  <motion.span
+    key={index}
+    variants={wordVariants}
+    className="inline-block mr-1"
+  >
+    {word === "React" || word === "Native," || word === "React," ? (
+      <strong className="font-semibold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">{word}</strong>
+    ) : word === "Node.js," || word === "Express.js," ? (
+      <strong className="font-semibold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">{word}</strong>
+    ) : word === "JavaScript," || word === "TypeScript." ? (
+      <strong className="font-semibold bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent">{word}</strong>
+    ) : word === "MongoDB" || word === "MySQL," ? (
+      <strong className="font-semibold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">{word}</strong>
+    ) : word === "HTML," || word === "CSS," ? (
+      <strong className="font-semibold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">{word}</strong>
+    ) : word === "Bootstrap," || word === "TailwindCSS," ? (
+      <strong className="font-semibold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">{word}</strong>
+    ) : (
+      word
+    )}
+  </motion.span>
+))}
         </motion.div>
 
         <motion.div 

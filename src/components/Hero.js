@@ -1,9 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
 
 const HomePage = () => {
   const [activeSide, setActiveSide] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [textIndex, setTextIndex] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  const texts = ["React Native Developer", "Full Stack Engineer", "JavaScript Specialist", "UI/UX Enthusiast"];
+  
+  // 3D tilt effect values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), {
+    damping: 15,
+    stiffness: 100
+  });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), {
+    damping: 15,
+    stiffness: 100
+  });
+
+  // Handle mouse move for 3D effect
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    
+    const xPos = mouseX - width / 2;
+    const yPos = mouseY - height / 2;
+    
+    x.set(xPos);
+    y.set(yPos);
+    setCursorPosition({ x: mouseX, y: mouseY });
+  };
+
+  // Handle mouse leave for 3D effect
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -13,8 +54,16 @@ const HomePage = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    // Text rotation effect
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % texts.length);
+    }, 3000);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearInterval(interval);
+    };
+  }, [texts.length]);
 
   const frontendSkills = ["React", "React Native", "JavaScript", "TypeScript", "HTML/CSS", "TailwindCSS"];
   const backendSkills = ["Node.js", "Express.js", "MySQL", "MongoDB", "REST APIs", "Swagger"];
@@ -25,112 +74,166 @@ const HomePage = () => {
     }
   };
 
+
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+    <div 
+      className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      ref={ref}
+    >
+
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <motion.div 
-          className="absolute -top-16 -left-16 w-48 h-48 md:w-96 md:h-96 bg-pink-500 rounded-full opacity-5"
+          className="absolute -top-16 -left-16 w-48 h-48 md:w-96 md:h-96 bg-pink-500 rounded-full opacity-10"
           animate={{ 
-            x: [0, 10, 0],
-            y: [0, -15, 0],
-          }}
-          transition={{ 
-            repeat: Infinity,
-            duration: 20,
-            ease: "easeInOut"
-          }}
-        ></motion.div>
-        <motion.div 
-          className="absolute top-1/2 -right-16 w-40 h-40 md:w-80 md:h-80 bg-blue-500 rounded-full opacity-5"
-          animate={{ 
-            x: [0, -15, 0],
-            y: [0, 10, 0],
+            x: [0, 30, 0],
+            y: [0, -40, 0],
           }}
           transition={{ 
             repeat: Infinity,
             duration: 25,
-            ease: "easeInOut",
-            delay: 1
+            ease: "easeInOut"
           }}
-        ></motion.div>
+        />
         <motion.div 
-          className="absolute bottom-10 left-1/4 w-36 h-36 md:w-64 md:h-64 bg-purple-500 rounded-full opacity-5"
+          className="absolute top-1/2 -right-16 w-40 h-40 md:w-80 md:h-80 bg-blue-500 rounded-full opacity-10"
           animate={{ 
-            x: [0, 15, 0],
-            y: [0, -10, 0],
+            x: [0, -40, 0],
+            y: [0, 30, 0],
           }}
           transition={{ 
             repeat: Infinity,
-            duration: 18,
+            duration: 30,
             ease: "easeInOut",
-            delay: 2
+            delay: 3
           }}
-        ></motion.div>
+        />
+        <motion.div 
+          className="absolute bottom-10 left-1/4 w-36 h-36 md:w-64 md:h-64 bg-purple-500 rounded-full opacity-10"
+          animate={{ 
+            x: [0, 35, 0],
+            y: [0, -25, 0],
+          }}
+          transition={{ 
+            repeat: Infinity,
+            duration: 20,
+            ease: "easeInOut",
+            delay: 6
+          }}
+        />
       </div>
 
       <div className="container mx-auto px-4 py-4 md:py-8 min-h-screen flex flex-col justify-center relative z-10">
-        {/* Name Header */}
+        {/* Name Header with advanced animations */}
         <motion.div 
-          className="text-center mb-4 md:mb-12 mt-4 md:mt-0"
-          initial={{ opacity: 0, y: -20 }}
+          className="text-center mb-8 md:mb-16 mt-4 md:mt-0"
+          initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-2 md:mb-4">
+          <motion.h1 
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-800 mb-4 md:mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+          >
             Lokeswaran
-          </h1>
-          <div className="w-24 md:w-32 h-1 bg-gradient-to-r from-red-500 to-blue-500 mx-auto"></div>
-          <p className="text-base md:text-xl text-gray-600 mt-2 md:mt-4">Full Stack Developer</p>
+          </motion.h1>
+          
+          <motion.div 
+            className="w-32 md:w-48 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mx-auto mb-4 md:mb-6"
+            initial={{ width: 0 }}
+            animate={{ width: "8rem" }}
+            transition={{ duration: 1, delay: 0.8 }}
+          />
+          
+          <motion.div 
+            className="h-10 md:h-12 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
+            <motion.p 
+              key={textIndex}
+              className="text-lg md:text-2xl text-gray-600 font-medium"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {texts[textIndex]}
+            </motion.p>
+          </motion.div>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-3 md:gap-6 lg:gap-16 mb-8 md:mb-0">
+        <motion.div 
+          className="flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-16 mb-8 md:mb-0"
+          style={{
+            rotateX: isMobile ? undefined : rotateX,
+            rotateY: isMobile ? undefined : rotateY,
+            transformStyle: 'preserve-3d'
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isInView ? 1 : 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
           {/* Left Side - Frontend Developer */}
           <motion.div
-            className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
+            className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-6 md:p-8 lg:p-10 rounded-3xl backdrop-blur-md bg-white/40 border border-white/30 shadow-2xl w-full max-w-md relative overflow-hidden"
             onHoverStart={() => !isMobile && setActiveSide('frontend')}
             onHoverEnd={() => !isMobile && setActiveSide(null)}
             onClick={() => handleSideClick('frontend')}
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -80, rotateY: -15 }}
             animate={{ 
-              opacity: activeSide && activeSide !== 'frontend' && !isMobile ? 0.7 : 1,
+              opacity: activeSide && activeSide !== 'frontend' && !isMobile ? 0.6 : 1,
               x: 0,
-              scale: activeSide === 'frontend' && !isMobile ? 1.02 : 1
+              rotateY: 0,
+              scale: activeSide === 'frontend' && !isMobile ? 1.03 : 1,
+              z: activeSide === 'frontend' && !isMobile ? 50 : 0
             }}
-            transition={{ duration: 0.5 }}
-            whileHover={!isMobile ? { y: -5 } : {}}
+            transition={{ duration: 0.6, type: "spring" }}
+            whileHover={!isMobile ? { y: -8 } : {}}
           >
-            <div className="w-full max-w-md space-y-2 md:space-y-6">
+            {/* Animated border gradient */}
+            <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r from-pink-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+            
+            <div className="w-full space-y-4 md:space-y-6">
               <motion.h2 
-                className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800"
+                className="text-2xl md:text-4xl font-bold text-gray-800"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.8 }}
               >
-                Frontend<span className="text-red-500"> Developer</span>
+                Frontend<span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500"> Developer</span>
               </motion.h2>
               
               <motion.p 
-                className="text-xs md:text-lg text-gray-600 leading-relaxed"
+                className="text-sm md:text-lg text-gray-600 leading-relaxed"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.9 }}
               >
                 I create responsive and interactive user interfaces using modern technologies like React, React Native, and JavaScript frameworks.
               </motion.p>
               
               <motion.div 
-                className="mt-2 md:mt-6 flex flex-wrap justify-center lg:justify-end gap-1 md:gap-2"
+                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-end gap-2 md:gap-3"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 1.0 }}
               >
                 {frontendSkills.map((skill, index) => (
                   <motion.span 
                     key={index}
-                    className="bg-red-100 text-red-800 px-2 py-1 text-xs rounded-full md:px-3 md:text-sm font-medium"
-                    whileHover={!isMobile ? { scale: 1.1 } : {}}
-                    transition={{ type: "spring", stiffness: 300 }}
+                    className="bg-gradient-to-r from-pink-100 to-red-100 text-pink-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-pink-200 shadow-sm"
+                    whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
+                    whileTap={{ scale: 0.95 }}
+                    // transition={{ type: "spring", stiffness: 400 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.1 + index * 0.1 }}
                   >
                     {skill}
                   </motion.span>
@@ -138,80 +241,94 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-3 md:mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-xs md:text-base"
-                whileHover={!isMobile ? { scale: 1.05 } : {}}
-                whileTap={{ scale: 0.95 }}
+                className="mt-6 md:mt-8 bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden"
+                whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
+                whileTap={{ scale: 0.98 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 1.4 }}
               >
-                View Frontend Projects
+                <span className="relative z-10">View Frontend Projects</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
             </div>
           </motion.div>
 
-          {/* Center Divider/Icon - Hidden on mobile */}
+          {/* Center Divider/Icon */}
           <motion.div 
-            className="hidden md:flex flex-col items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
+            className="flex flex-col items-center justify-center my-4 md:my-0"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.2 }}
           >
-            <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
-            <div className="bg-white p-3 rounded-full shadow-lg border border-gray-100">
+            <div className="h-0.5 w-16 bg-gradient-to-r from-pink-500 to-blue-500 lg:h-20 lg:w-0.5 lg:bg-gradient-to-b my-4" />
+            <motion.div 
+              className="bg-white p-3 rounded-full shadow-lg border border-gray-100"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
               <svg className="w-6 h-6 md:w-8 md:h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-            </div>
-            <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
+            </motion.div>
+            <div className="h-0.5 w-16 bg-gradient-to-r from-pink-500 to-blue-500 lg:h-20 lg:w-0.5 lg:bg-gradient-to-b my-4" />
           </motion.div>
 
           {/* Right Side - Backend Developer */}
           <motion.div
-            className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
+            className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-6 md:p-8 lg:p-10 rounded-3xl backdrop-blur-md bg-white/40 border border-white/30 shadow-2xl w-full max-w-md relative overflow-hidden"
             onHoverStart={() => !isMobile && setActiveSide('backend')}
             onHoverEnd={() => !isMobile && setActiveSide(null)}
             onClick={() => handleSideClick('backend')}
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 80, rotateY: 15 }}
             animate={{ 
-              opacity: activeSide && activeSide !== 'backend' && !isMobile ? 0.7 : 1,
+              opacity: activeSide && activeSide !== 'backend' && !isMobile ? 0.6 : 1,
               x: 0,
-              scale: activeSide === 'backend' && !isMobile ? 1.02 : 1
+              rotateY: 0,
+              scale: activeSide === 'backend' && !isMobile ? 1.03 : 1,
+              z: activeSide === 'backend' && !isMobile ? 50 : 0
             }}
-            transition={{ duration: 0.5 }}
-            whileHover={!isMobile ? { y: -5 } : {}}
+            transition={{ duration: 0.6, type: "spring" }}
+            whileHover={!isMobile ? { y: -8 } : {}}
           >
-            <div className="w-full max-w-md space-y-2 md:space-y-6">
+            {/* Animated border gradient */}
+            <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+            
+            <div className="w-full space-y-4 md:space-y-6">
               <motion.h2 
-                className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800"
+                className="text-2xl md:text-4xl font-bold text-gray-800"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.8 }}
               >
-                Backend<span className="text-blue-500"> Developer</span>
+                Backend<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500"> Developer</span>
               </motion.h2>
               
               <motion.p 
-                className="text-xs md:text-lg text-gray-600 leading-relaxed"
+                className="text-sm md:text-lg text-gray-600 leading-relaxed"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.9 }}
               >
                 I build secure, scalable server-side applications and APIs using Node.js, Express, and modern database technologies.
               </motion.p>
               
               <motion.div 
-                className="mt-2 md:mt-6 flex flex-wrap justify-center lg:justify-start gap-1 md:gap-2"
+                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-start gap-2 md:gap-3"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 1.0 }}
               >
                 {backendSkills.map((skill, index) => (
                   <motion.span 
                     key={index}
-                    className="bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded-full md:px-3 md:text-sm font-medium"
-                    whileHover={!isMobile ? { scale: 1.1 } : {}}
-                    transition={{ type: "spring", stiffness: 300 }}
+                    className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-blue-200 shadow-sm"
+                    whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
+                    whileTap={{ scale: 0.95 }}
+               
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.1 + index * 0.1 }}
                   >
                     {skill}
                   </motion.span>
@@ -219,42 +336,338 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-3 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-3 py-1 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-xs md:text-base"
-                whileHover={!isMobile ? { scale: 1.05 } : {}}
-                whileTap={{ scale: 0.95 }}
+                className="mt-6 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden"
+                whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
+                whileTap={{ scale: 0.98 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 1.4 }}
               >
-                Explore Backend Projects
+                <span className="relative z-10">Explore Backend Projects</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Scroll indicator */}
         <motion.div 
-          className="mt-4 md:mt-0 absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-700 z-10"
+          className="mt-8 md:mt-0 absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-600 z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 2 }}
         >
-          <span className="text-xs md:text-sm mb-1 md:mb-2">Scroll down</span>
-          <motion.div 
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+          <motion.span 
+            className="text-xs md:text-sm mb-2 md:mb-3 font-medium"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            // transition={{ duration: 2, repeat: Infinity }}
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-          </motion.div>
+            Scroll to explore
+          </motion.span>
+<motion.svg
+  className="w-8 h-8"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+  animate={{ y: [0, 8, 0], scale: [1, 1.2, 1] }}
+  transition={{ repeat: Infinity, duration: 1.5 }}
+>
+  <defs>
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stopColor="#ff00ff" />
+      <stop offset="100%" stopColor="#00ffff" />
+    </linearGradient>
+  </defs>
+  <motion.path
+    d="M12 4v16m0 0l-6-6m6 6l6-6"
+    stroke="url(#arrowGradient)"   // 👈 gradient color
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    initial={{ pathLength: 0 }}
+    animate={{ pathLength: 1 }}
+    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+  />
+</motion.svg>
+
+
         </motion.div>
+
       </div>
     </div>
   );
 };
 
 export default HomePage;
+
+
+// import React, { useState, useEffect } from 'react';
+// import { motion } from 'framer-motion';
+
+// const HomePage = () => {
+//   const [activeSide, setActiveSide] = useState(null);
+//   const [isMobile, setIsMobile] = useState(false);
+
+//   useEffect(() => {
+//     const checkMobile = () => {
+//       setIsMobile(window.innerWidth < 768);
+//     };
+    
+//     checkMobile();
+//     window.addEventListener('resize', checkMobile);
+    
+//     return () => window.removeEventListener('resize', checkMobile);
+//   }, []);
+
+//   const frontendSkills = ["React", "React Native", "JavaScript", "TypeScript", "HTML/CSS", "TailwindCSS"];
+//   const backendSkills = ["Node.js", "Express.js", "MySQL", "MongoDB", "REST APIs", "Swagger"];
+
+//   const handleSideClick = (side) => {
+//     if (isMobile) {
+//       setActiveSide(activeSide === side ? null : side);
+//     }
+//   };
+
+//   return (
+//     <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+//       {/* Animated background elements */}
+//       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+//         <motion.div 
+//           className="absolute -top-16 -left-16 w-48 h-48 md:w-96 md:h-96 bg-pink-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, 10, 0],
+//             y: [0, -15, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 20,
+//             ease: "easeInOut"
+//           }}
+//         ></motion.div>
+//         <motion.div 
+//           className="absolute top-1/2 -right-16 w-40 h-40 md:w-80 md:h-80 bg-blue-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, -15, 0],
+//             y: [0, 10, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 25,
+//             ease: "easeInOut",
+//             delay: 1
+//           }}
+//         ></motion.div>
+//         <motion.div 
+//           className="absolute bottom-10 left-1/4 w-36 h-36 md:w-64 md:h-64 bg-purple-500 rounded-full opacity-5"
+//           animate={{ 
+//             x: [0, 15, 0],
+//             y: [0, -10, 0],
+//           }}
+//           transition={{ 
+//             repeat: Infinity,
+//             duration: 18,
+//             ease: "easeInOut",
+//             delay: 2
+//           }}
+//         ></motion.div>
+//       </div>
+
+//       <div className="container mx-auto px-4 py-4 md:py-8 min-h-screen flex flex-col justify-center relative z-10">
+//         {/* Name Header */}
+//         <motion.div 
+//           className="text-center mb-4 md:mb-12 mt-4 md:mt-0"
+//           initial={{ opacity: 0, y: -20 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.7, delay: 0.2 }}
+//         >
+//           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-2 md:mb-4">
+//             Lokeswaran
+//           </h1>
+//           <div className="w-24 md:w-32 h-1 bg-gradient-to-r from-red-500 to-blue-500 mx-auto"></div>
+//           <p className="text-base md:text-xl text-gray-600 mt-2 md:mt-4">Full Stack Developer</p>
+//         </motion.div>
+
+//         <div className="flex flex-col lg:flex-row items-center justify-center gap-3 md:gap-6 lg:gap-16 mb-8 md:mb-0">
+//           {/* Left Side - Frontend Developer */}
+//           <motion.div
+//             className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
+//             onHoverStart={() => !isMobile && setActiveSide('frontend')}
+//             onHoverEnd={() => !isMobile && setActiveSide(null)}
+//             onClick={() => handleSideClick('frontend')}
+//             initial={{ opacity: 0, x: -50 }}
+//             animate={{ 
+//               opacity: activeSide && activeSide !== 'frontend' && !isMobile ? 0.7 : 1,
+//               x: 0,
+//               scale: activeSide === 'frontend' && !isMobile ? 1.02 : 1
+//             }}
+//             transition={{ duration: 0.5 }}
+//             whileHover={!isMobile ? { y: -5 } : {}}
+//           >
+//             <div className="w-full max-w-md space-y-2 md:space-y-6">
+//               <motion.h2 
+//                 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.2 }}
+//               >
+//                 Frontend<span className="text-red-500"> Developer</span>
+//               </motion.h2>
+              
+//               <motion.p 
+//                 className="text-xs md:text-lg text-gray-600 leading-relaxed"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.3 }}
+//               >
+//                 I create responsive and interactive user interfaces using modern technologies like React, React Native, and JavaScript frameworks.
+//               </motion.p>
+              
+//               <motion.div 
+//                 className="mt-2 md:mt-6 flex flex-wrap justify-center lg:justify-end gap-1 md:gap-2"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.4 }}
+//               >
+//                 {frontendSkills.map((skill, index) => (
+//                   <motion.span 
+//                     key={index}
+//                     className="bg-red-100 text-red-800 px-2 py-1 text-xs rounded-full md:px-3 md:text-sm font-medium"
+//                     whileHover={!isMobile ? { scale: 1.1 } : {}}
+//                     transition={{ type: "spring", stiffness: 300 }}
+//                   >
+//                     {skill}
+//                   </motion.span>
+//                 ))}
+//               </motion.div>
+              
+//               <motion.button 
+//                 className="mt-3 md:mt-8 bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-xs md:text-base"
+//                 whileHover={!isMobile ? { scale: 1.05 } : {}}
+//                 whileTap={{ scale: 0.95 }}
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.5 }}
+//               >
+//                 View Frontend Projects
+//               </motion.button>
+//             </div>
+//           </motion.div>
+
+//           {/* Center Divider/Icon - Hidden on mobile */}
+//           <motion.div 
+//             className="hidden md:flex flex-col items-center justify-center"
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             transition={{ delay: 0.7 }}
+//           >
+//             <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
+//             <div className="bg-white p-3 rounded-full shadow-lg border border-gray-100">
+//               <svg className="w-6 h-6 md:w-8 md:h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+//               </svg>
+//             </div>
+//             <div className="h-0.5 w-16 bg-gray-300 lg:h-16 lg:w-0.5 my-4"></div>
+//           </motion.div>
+
+//           {/* Right Side - Backend Developer */}
+//           <motion.div
+//             className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-4 md:p-6 lg:p-8 rounded-2xl backdrop-blur-sm bg-white/30 border border-white/20 shadow-lg w-full"
+//             onHoverStart={() => !isMobile && setActiveSide('backend')}
+//             onHoverEnd={() => !isMobile && setActiveSide(null)}
+//             onClick={() => handleSideClick('backend')}
+//             initial={{ opacity: 0, x: 50 }}
+//             animate={{ 
+//               opacity: activeSide && activeSide !== 'backend' && !isMobile ? 0.7 : 1,
+//               x: 0,
+//               scale: activeSide === 'backend' && !isMobile ? 1.02 : 1
+//             }}
+//             transition={{ duration: 0.5 }}
+//             whileHover={!isMobile ? { y: -5 } : {}}
+//           >
+//             <div className="w-full max-w-md space-y-2 md:space-y-6">
+//               <motion.h2 
+//                 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.2 }}
+//               >
+//                 Backend<span className="text-blue-500"> Developer</span>
+//               </motion.h2>
+              
+//               <motion.p 
+//                 className="text-xs md:text-lg text-gray-600 leading-relaxed"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.3 }}
+//               >
+//                 I build secure, scalable server-side applications and APIs using Node.js, Express, and modern database technologies.
+//               </motion.p>
+              
+//               <motion.div 
+//                 className="mt-2 md:mt-6 flex flex-wrap justify-center lg:justify-start gap-1 md:gap-2"
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.4 }}
+//               >
+//                 {backendSkills.map((skill, index) => (
+//                   <motion.span 
+//                     key={index}
+//                     className="bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded-full md:px-3 md:text-sm font-medium"
+//                     whileHover={!isMobile ? { scale: 1.1 } : {}}
+//                     transition={{ type: "spring", stiffness: 300 }}
+//                   >
+//                     {skill}
+//                   </motion.span>
+//                 ))}
+//               </motion.div>
+              
+//               <motion.button 
+//                 className="mt-3 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-3 py-1 md:px-6 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-xs md:text-base"
+//                 whileHover={!isMobile ? { scale: 1.05 } : {}}
+//                 whileTap={{ scale: 0.95 }}
+//                 initial={{ y: 20, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ delay: 0.5 }}
+//               >
+//                 Explore Backend Projects
+//               </motion.button>
+//             </div>
+//           </motion.div>
+//         </div>
+
+//         {/* Scroll indicator */}
+//         <motion.div 
+//           className="mt-4 md:mt-0 absolute bottom-4 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-700 z-10"
+//           initial={{ opacity: 0 }}
+//           animate={{ opacity: 1 }}
+//           transition={{ delay: 1.5 }}
+//         >
+//           <span className="text-xs md:text-sm mb-1 md:mb-2">Scroll down</span>
+//           <motion.div 
+//             animate={{ y: [0, 8, 0] }}
+//             transition={{ repeat: Infinity, duration: 1.5 }}
+//           >
+//             <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+//             </svg>
+//           </motion.div>
+//         </motion.div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default HomePage;
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useState, useEffect } from 'react';
 // import { motion } from 'framer-motion';

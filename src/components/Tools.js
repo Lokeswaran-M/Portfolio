@@ -187,7 +187,7 @@ const Tools = () => {
       </div>
 
       {/* Skills Summary */}
-      <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
+      {/* <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
         <h3 className="text-2xl font-semibold text-center mb-6">My Development Stack</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -217,7 +217,9 @@ const Tools = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+
+
     </section>
   );
 };
