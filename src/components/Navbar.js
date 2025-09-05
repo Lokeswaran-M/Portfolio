@@ -65,18 +65,13 @@ const Navbar = () => {
         className="text-xl font-medium text-white flex items-center"
         style={{ fontFamily: '"Homemade Apple", cursive' }}
       >
-        <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+        <span className="bg-white bg-clip-text text-transparent">
           Lokeswaran
         </span>
-        <motion.span 
-          className="ml-2 w-2 h-2 bg-green-400 rounded-full"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        />
       </motion.div>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex list-none gap-8">
+      <ul className=" md:flex list-none gap-8">
         {navItems.map((item, index) => (
           <li key={index}>
             <motion.a

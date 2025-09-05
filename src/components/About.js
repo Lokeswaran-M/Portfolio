@@ -14,6 +14,13 @@ const About = () => {
     }
   }, [isInView, mainControls, textControls]);
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -130,13 +137,14 @@ const About = () => {
           >
             Download Resume
           </motion.div>
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md cursor-pointer"
-          >
-            Contact Me
-          </motion.div>
+    <motion.div 
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={scrollToContact}
+      className="px-6 py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md cursor-pointer transition-colors duration-300 hover:bg-gray-50"
+    >
+      Contact Me
+    </motion.div>
         </motion.div>
       </motion.div>
 

@@ -5,6 +5,7 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from "./components/Footer";
+import Tools from './components/Tools';
 import './styles/App.css';
 
 function App() {
@@ -14,10 +15,10 @@ function App() {
       <Hero />
       <About />
       <Projects />
+      <Tools/>
       <Contact />
       <Footer />
     </div>
   );
 }
-
 export default App;
