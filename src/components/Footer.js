@@ -17,12 +17,12 @@ const Footer = () => {
   return (
     <footer className="relative bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-3 px-4 overflow-hidden">
       {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -left-4 w-16 h-16 bg-blue-600 rounded-full opacity-10 animate-pulse"></div>
         <div className="absolute top-1/2 -right-8 w-12 h-12 bg-purple-600 rounded-full opacity-10 animate-pulse" style={{ animationDelay: '1s' }}></div>
         <div className="absolute bottom-2 left-1/4 w-10 h-10 bg-pink-600 rounded-full opacity-10 animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
-      
+       */}
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Main footer content */}
         <motion.div 
