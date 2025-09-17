@@ -55,7 +55,7 @@ const Navbar = () => {
       className={`fixed w-full z-50 py-3 px-4 md:px-8 flex justify-between items-center transition-all duration-500 ${
         isScrolled 
           ? 'bg-gray-900/95 backdrop-blur-xl shadow-2xl' 
-          : 'bg-gray-900/70 backdrop-blur-lg'
+          : 'bg-gray-900/95 backdrop-blur-lg'
       }`}
     >
       {/* Logo */}
