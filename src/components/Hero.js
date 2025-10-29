@@ -74,7 +74,6 @@ const HomePage = () => {
     }
   };
 
-
   return (
     <div 
       className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50"
@@ -169,7 +168,7 @@ const HomePage = () => {
         </motion.div>
 
         <motion.div 
-          className="flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-16 mb-8 md:mb-0"
+          className="flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-16 mb-8 md:mb-16" // Increased bottom margin
           style={{
             rotateX: isMobile ? undefined : rotateX,
             rotateY: isMobile ? undefined : rotateY,
@@ -230,7 +229,6 @@ const HomePage = () => {
                     className="bg-gradient-to-r from-pink-100 to-red-100 text-pink-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-pink-200 shadow-sm"
                     whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
                     whileTap={{ scale: 0.95 }}
-                    // transition={{ type: "spring", stiffness: 400 }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 1.1 + index * 0.1 }}
@@ -325,7 +323,6 @@ const HomePage = () => {
                     className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-blue-200 shadow-sm"
                     whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
                     whileTap={{ scale: 0.95 }}
-               
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 1.1 + index * 0.1 }}
@@ -350,9 +347,10 @@ const HomePage = () => {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - Fixed positioning */}
         <motion.div 
-          className="mt-8 md:mt-0 absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-gray-600 z-10"
+          // className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2  flex-col items-center text-gray-600 z-20"
+          className="flex flex-col  items-center justify-center gap-4 md:gap-8 lg:gap-1 mb-8 md:mb-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2 }}
@@ -360,44 +358,43 @@ const HomePage = () => {
           <motion.span 
             className="text-xs md:text-sm mb-2 md:mb-3 font-medium"
             animate={{ opacity: [0.5, 1, 0.5] }}
-            // transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Infinity }}
           >
             Scroll to explore
           </motion.span>
-<motion.svg
-  className="w-8 h-8"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
-  animate={{ y: [0, 8, 0], scale: [1, 1.2, 1] }}
-  transition={{ repeat: Infinity, duration: 1.5 }}
->
-  <defs>
-    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#ff00ff" />
-      <stop offset="100%" stopColor="#00ffff" />
-    </linearGradient>
-  </defs>
-  <motion.path
-    d="M12 4v16m0 0l-6-6m6 6l6-6"
-    stroke="url(#arrowGradient)"   // 👈 gradient color
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    initial={{ pathLength: 0 }}
-    animate={{ pathLength: 1 }}
-    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-  />
-</motion.svg>
-
-
+          <motion.svg
+            className="w-8 h-8"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            animate={{ y: [0, 8, 0], scale: [1, 1.2, 1] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+          >
+            <defs>
+              <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff00ff" />
+                <stop offset="100%" stopColor="#00ffff" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M12 4v16m0 0l-6-6m6 6l6-6"
+              stroke="url(#arrowGradient)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.svg>
         </motion.div>
-
       </div>
     </div>
   );
 };
 
 export default HomePage;
+
+
 
 
 // import React, { useState, useEffect } from 'react';

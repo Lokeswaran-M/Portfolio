@@ -14,6 +14,8 @@ import docker from '../assets/docker-original.svg';
 import filezilla from '../assets/filezilla-plain.svg';
 import cpanel from '../assets/cpanel-original.svg';
 import firebase from '../assets/firebase-plain.svg';
+import Cloud from '../assets/Google-Cloud.png';
+import playconsole from '../assets/play-console.png';
 import google from '../assets/google-original.svg';
 import apple from '../assets/apple-original.svg';
 import git from '../assets/git-original.svg';
@@ -32,8 +34,8 @@ const Tools = () => {
         { name: "Visual Studio Code", icon: "vscode", color: "blue" },
         { name: "Xcode", icon: "xcode", color: "blue" },
         { name: "Android Studio", icon: "android", color: "green" },
-        { name: "Expo", icon: "expo", color: "purple" },
-        { name: "React Native CLI", icon: "react", color: "blue" },
+        { name: "Expo", icon: "expo", color: "gray" },
+        { name: "React Native CLI", icon: "react", color: "lightblue" },
         { name: "CLI", icon: "terminal", color: "gray" }
       ]
     },
@@ -43,25 +45,26 @@ const Tools = () => {
         { name: "Node.js", icon: "nodejs", color: "green" },
         { name: "Redux", icon: "redux", color: "purple" },
         { name: "Swagger", icon: "swagger", color: "green" },
-        { name: "Thunder Client", icon: "thunder", color: "blue" },
-        { name: "REST APIs", icon: "api", color: "green" }
+        { name: "Thunder Client", icon: "thunder", color: "purple" },
+        { name: "REST APIs", icon: "api", color: "lightblue" }
       ]
     },
     {
-      title: "🗄️ Database & Server Management",
+      title: "🗄️ Database & Server",
       tools: [
-        { name: "Navicat", icon: "navicat", color: "blue" },
+        { name: "Navicat", icon: "navicat", color: "gold" },
         { name: "XAMPP", icon: "xampp", color: "orange" },
-        { name: "Docker", icon: "docker", color: "blue" },
-        { name: "FileZilla", icon: "filezilla", color: "orange" },
+        { name: "Docker", icon: "docker", color: "lightblue" },
+        { name: "FileZilla", icon: "filezilla", color: "red" },
         { name: "cPanel", icon: "cpanel", color: "orange" }
       ]
     },
     {
-      title: "☁️ Cloud & Hosting Platforms",
+      title: "☁️ Cloud & Hosting",
       tools: [
         { name: "Firebase Console", icon: "firebase", color: "orange" },
-        { name: "Google Play Console", icon: "google", color: "green" },
+        { name: "Google Play Console", icon: "playconsole", color: "blue" },
+        { name: "Google Cloud", icon: "Cloud", color: "green" },
         { name: "App Store Connect", icon: "apple", color: "gray" }
       ]
     },
@@ -75,7 +78,7 @@ const Tools = () => {
     {
       title: "📩 Other Tools & Services",
       tools: [
-        { name: "EmailJS", icon: "emailjs", color: "blue" }
+        { name: "EmailJS", icon: "emailjs", color: "orange" }
       ]
     }
   ];
@@ -113,8 +116,10 @@ const Tools = () => {
         return <img src={cpanel} className="w-6 h-6" alt="cPanel" />;
       case "firebase": 
         return <img src={firebase} className="w-6 h-6" alt="Firebase" />;
-      case "google": 
-        return <img src={google} className="w-6 h-6" alt="Google" />;
+      case "playconsole": 
+        return <img src={playconsole} className="w-6 h-6" alt="Google" />;
+      case "Cloud": 
+        return <img src={Cloud} className="w-6 h-6" alt="Cloud" />;
       case "apple": 
         return <img src={apple} className="w-6 h-6" alt="Apple" />;
       case "git": 
@@ -140,7 +145,11 @@ const Tools = () => {
       case "purple": return "bg-purple-100 text-purple-800 border-purple-200";
       case "orange": return "bg-orange-100 text-orange-800 border-orange-200";
       case "gray": return "bg-gray-100 text-gray-800 border-gray-200";
-      case "yellow": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "yellow": return "bg-yellow-50 text-yellow-800 border-yellow-200";
+      case "lightblue": return "bg-sky-100 text-sky-800 border-sky-200";
+      case "gold": return "bg-amber-50 text-amber-800 border-amber-200";
+      case "red": return "bg-red-100 text-red-800 border-red-200";
+
       default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };

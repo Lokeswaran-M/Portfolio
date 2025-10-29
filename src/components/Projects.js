@@ -3,7 +3,8 @@ import ProjectImageSL from "../assets/SL.jpg";
 import ProjectImageSLB from "../assets/SLB.jpg";
 import ProjectImageTPV from "../assets/TPV.jpg";
 import ProjectImageMosque from "../assets/Mosque.jpg";
-
+import ProjectImageIronX from "../assets/SmartIronXpress.jpg";
+import ProjectImageIronB from "../assets/SmartIronBusiness.jpg";
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   
@@ -49,6 +50,24 @@ const Projects = () => {
       appStoreUrl: null, // No iOS version available
       imageUrl: ProjectImageMosque,
       technologies: ["React Native", "Firebase", "Google Maps API", "Prayer Times API"]
+    },
+        {
+      id: 5,
+      title: "Smart Iron Xpress",
+      description: "An app for customers to schedule ironing service pickups, track garment status, and make secure payments with ease.",
+      playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironxpress&pcampaignid=web_share",
+      appStoreUrl: null, // No iOS version available
+      imageUrl: ProjectImageIronX,
+      technologies: ["React Native", "Firebase", "Google Maps API"]
+    },
+            {
+      id: 6,
+      title: "Smart Iron Business",
+      description: "An app for ironing service providers to manage customer orders, pricing, schedules, and delivery operations efficiently.",
+      playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironbusiness&pcampaignid=web_share",
+      appStoreUrl: null, // No iOS version available
+      imageUrl: ProjectImageIronB,
+      technologies: ["React Native", "Firebase", "Google Maps API"]
     },
   ];
 
