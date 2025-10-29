@@ -4,7 +4,6 @@ import { motion, useMotionValue, useSpring, useTransform, useInView } from 'fram
 const HomePage = () => {
   const [activeSide, setActiveSide] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [textIndex, setTextIndex] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -37,7 +36,6 @@ const HomePage = () => {
     
     x.set(xPos);
     y.set(yPos);
-    setCursorPosition({ x: mouseX, y: mouseY });
   };
 
   // Handle mouse leave for 3D effect

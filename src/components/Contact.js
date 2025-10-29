@@ -144,7 +144,7 @@ const Contact = () => {
           </a>
           
           <a
-            href="#"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=logeshlogeshking@gmail.com&su=Job Inquiry&body=Hello, I need your CV!"
             className="px-8 py-3 bg-gray-900 text-white rounded-full font-medium flex items-center justify-center gap-2 hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -16,7 +16,6 @@ import cpanel from '../assets/cpanel-original.svg';
 import firebase from '../assets/firebase-plain.svg';
 import Cloud from '../assets/Google-Cloud.png';
 import playconsole from '../assets/play-console.png';
-import google from '../assets/google-original.svg';
 import apple from '../assets/apple-original.svg';
 import git from '../assets/git-original.svg';
 import github from '../assets/github-original.svg';
