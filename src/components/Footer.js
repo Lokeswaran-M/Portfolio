@@ -8,11 +8,11 @@ const Footer = () => {
     setCurrentYear(new Date().getFullYear());
   }, []);
 
-  const footerLinks = [
-    { name: 'Privacy Policy', href: '#privacy' },
-    { name: 'Terms of Service', href: '#terms' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  // const footerLinks = [
+  //   { name: 'Privacy Policy', href: '#privacy' },
+  //   { name: 'Terms of Service', href: '#terms' },
+  //   { name: 'Contact', href: '#contact' },
+  // ];
 
   return (
     <footer className="relative bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-3 px-4 overflow-hidden">
@@ -35,7 +35,7 @@ const Footer = () => {
           <p className="text-sm text-gray-400 mb-2 md:mb-0">
             © {currentYear} Lokeswaran M. All rights reserved.
           </p>
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             {footerLinks.map((link, index) => (
               <motion.a
                 key={index}
@@ -46,7 +46,7 @@ const Footer = () => {
                 {link.name}
               </motion.a>
             ))}
-          </div>
+          </div> */}
         </motion.div>
       </div>
     </footer>

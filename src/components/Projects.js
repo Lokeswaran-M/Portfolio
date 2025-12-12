@@ -56,7 +56,7 @@ const Projects = () => {
       title: "Smart Iron Xpress",
       description: "An app for customers to schedule ironing service pickups, track garment status, and make secure payments with ease.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironxpress&pcampaignid=web_share",
-      appStoreUrl: null, // No iOS version available
+      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-xpress/id6754585989", // No iOS version available
       imageUrl: ProjectImageIronX,
       technologies: ["React Native", "Firebase", "Google Maps API"]
     },
@@ -65,7 +65,7 @@ const Projects = () => {
       title: "Smart Iron Business",
       description: "An app for ironing service providers to manage customer orders, pricing, schedules, and delivery operations efficiently.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironbusiness&pcampaignid=web_share",
-      appStoreUrl: null, // No iOS version available
+      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-business/id6755295734", // No iOS version available
       imageUrl: ProjectImageIronB,
       technologies: ["React Native", "Firebase", "Google Maps API"]
     },
@@ -106,7 +106,7 @@ const Projects = () => {
         My <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-600">Mobile Applications</span>
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, index) => (
           <div 
             key={project.id}
