@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.28e547cf.css",
-    "main.js": "./static/js/main.7699a45c.js",
+    "main.css": "./static/css/main.a901cb8f.css",
+    "main.js": "./static/js/main.86052490.js",
     "static/media/SLB.jpg": "./static/media/SLB.dcdfa2a8501db2d477de.jpg",
     "static/media/SL.jpg": "./static/media/SL.bfe7f5d19243697c54bb.jpg",
     "static/media/Mosque.jpg": "./static/media/Mosque.83239146a67f288916bf.jpg",
@@ -30,11 +30,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.28e547cf.css.map": "./static/css/main.28e547cf.css.map",
-    "main.7699a45c.js.map": "./static/js/main.7699a45c.js.map"
+    "main.a901cb8f.css.map": "./static/css/main.a901cb8f.css.map",
+    "main.86052490.js.map": "./static/js/main.86052490.js.map"
   },
   "entrypoints": [
-    "static/css/main.28e547cf.css",
-    "static/js/main.7699a45c.js"
+    "static/css/main.a901cb8f.css",
+    "static/js/main.86052490.js"
   ]
 }
