@@ -94,12 +94,9 @@ const About = () => {
     <section
       id="about"
       ref={ref}
-      className="relative py-16 px-4 md:px-8 text-center bg-gradient-to-br from-blue-50 to-pink-50 overflow-hidden"
+      className="relative py-16 px-4 md:px-8 text-center  overflow-hidden"
     >
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-40 h-40 bg-pink-200 rounded-full filter blur-3xl opacity-30 animate-pulse-slow"></div>
-      <div className="absolute bottom-0 right-0 w-48 h-48 bg-blue-200 rounded-full filter blur-3xl opacity-30 animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-      
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -127,17 +124,17 @@ const About = () => {
               className="inline-block mr-1"
             >
               {word === "React" || word === "Native," || word === "React," ? (
-                <strong className="font-semibold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : word === "Node.js," || word === "Express.js," ? (
-                <strong className="font-semibold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : word === "JavaScript," || word === "TypeScript." ? (
-                <strong className="font-semibold bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : word === "MongoDB" || word === "MySQL," ? (
-                <strong className="font-semibold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : word === "HTML," || word === "CSS," ? (
-                <strong className="font-semibold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : word === "Bootstrap," || word === "TailwindCSS," ? (
-                <strong className="font-semibold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">{word}</strong>
+                <strong className="font-semibold text-gray-800">{word}</strong>
               ) : (
                 word
               )}
@@ -154,7 +151,7 @@ const About = () => {
             whileTap={{ scale: 0.95 }}
             onClick={downloadResume}
             disabled={isDownloading}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-pink-500 text-white rounded-full shadow-md cursor-pointer border-none outline-none font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 bg-black text-white rounded-full shadow-md cursor-pointer border-none outline-none font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isDownloading ? 'Downloading...' : 'Download Resume'}
           </motion.button>

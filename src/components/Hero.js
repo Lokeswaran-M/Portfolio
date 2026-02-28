@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
 
+// Import the Projects component
+import Projects from './Projects';
+
 const HomePage = () => {
   const [activeSide, setActiveSide] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -74,53 +77,12 @@ const HomePage = () => {
 
   return (
     <div 
-      className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50"
+      className="relative min-h-screen w-full overflow-x-hidden bg-white"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       ref={ref}
     >
 
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        <motion.div 
-          className="absolute -top-16 -left-16 w-48 h-48 md:w-96 md:h-96 bg-pink-500 rounded-full opacity-10"
-          animate={{ 
-            x: [0, 30, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ 
-            repeat: Infinity,
-            duration: 25,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute top-1/2 -right-16 w-40 h-40 md:w-80 md:h-80 bg-blue-500 rounded-full opacity-10"
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ 
-            repeat: Infinity,
-            duration: 30,
-            ease: "easeInOut",
-            delay: 3
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-10 left-1/4 w-36 h-36 md:w-64 md:h-64 bg-purple-500 rounded-full opacity-10"
-          animate={{ 
-            x: [0, 35, 0],
-            y: [0, -25, 0],
-          }}
-          transition={{ 
-            repeat: Infinity,
-            duration: 20,
-            ease: "easeInOut",
-            delay: 6
-          }}
-        />
-      </div>
 
       <div className="container mx-auto px-4 py-4 md:py-8 min-h-screen flex flex-col justify-center relative z-10">
         {/* Name Header with advanced animations */}
@@ -237,12 +199,19 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-6 md:mt-8 bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden"
+                className="mt-6 md:mt-8 bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden cursor-pointer"
                 whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
                 whileTap={{ scale: 0.98 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1.4 }}
+                onClick={() => {
+                  // Scroll to Projects section
+                  const projectsSection = document.getElementById('projects');
+                  if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 <span className="relative z-10">View Frontend Projects</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -331,12 +300,19 @@ const HomePage = () => {
               </motion.div>
               
               <motion.button 
-                className="mt-6 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden"
+                className="mt-6 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden cursor-pointer"
                 whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
                 whileTap={{ scale: 0.98 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1.4 }}
+                onClick={() => {
+                  // Scroll to Projects section
+                  const projectsSection = document.getElementById('projects');
+                  if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
                 <span className="relative z-10">Explore Backend Projects</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -226,59 +226,6 @@ const Projects = () => {
         ))}
       </div>
       
-      <div className={`mt-16 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}>
-        <h3 className="text-2xl font-semibold text-gray-800 mb-6">More About My Development Skills</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-gradient-to-br from-indigo-50/80 to-pink-50/80 backdrop-blur-sm p-6 rounded-xl">
-            <div className="flex items-center mb-4">
-              <div className="bg-indigo-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-semibold text-gray-800">Frontend Development</h4>
-            </div>
-            <p className="text-gray-600 mb-4">
-              I specialize in building responsive and dynamic user interfaces with a focus on performance and accessibility.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React Native</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">JavaScript</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">TypeScript</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">HTML5</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">CSS3</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Bootstrap</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Tailwind CSS</span>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-br from-indigo-50/80 to-pink-50/80 backdrop-blur-sm p-6 rounded-xl">
-            <div className="flex items-center mb-4">
-              <div className="bg-indigo-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-semibold text-gray-800">Backend Development</h4>
-            </div>
-            <p className="text-gray-600 mb-4">
-              I build secure, scalable server-side solutions with robust API design and efficient database management.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Node.js</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Express.js</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">MySQL</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">MongoDB</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Firebase</span>
-              <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">REST APIs</span>
-            </div>
-          </div>
-        </div>
-      </div>
 </section>
       {/* Add the animation keyframes to your global CSS or use a style tag */}
       <style js>{`

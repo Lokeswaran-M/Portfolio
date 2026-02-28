@@ -75,7 +75,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative py-16 px-4 md:px-8 bg-gradient-to-br from-purple-50 to-indigo-50 text-center overflow-hidden"
+      className="relative py-16 px-4 md:px-8 text-center overflow-hidden"
     >
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-purple-200 rounded-full -translate-x-16 -translate-y-16 opacity-50"></div>
