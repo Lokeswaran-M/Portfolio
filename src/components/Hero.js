@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
+import myPic from '../assets/react-original.svg'; // Import your image
+import android from '../assets/android-original.svg';
+import apple from '../assets/apple-big-logo.png';
 
-// Import the Projects component
-import Projects from './Projects';
-
-const HomePage = () => {
-  const [activeSide, setActiveSide] = useState(null);
+const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const ref = useRef(null);
@@ -26,27 +25,6 @@ const HomePage = () => {
     stiffness: 100
   });
 
-  // Handle mouse move for 3D effect
-  const handleMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-    
-    const xPos = mouseX - width / 2;
-    const yPos = mouseY - height / 2;
-    
-    x.set(xPos);
-    y.set(yPos);
-  };
-
-  // Handle mouse leave for 3D effect
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -66,69 +44,36 @@ const HomePage = () => {
     };
   }, [texts.length]);
 
-  const frontendSkills = ["React", "React Native", "JavaScript", "TypeScript", "HTML/CSS", "TailwindCSS"];
-  const backendSkills = ["Node.js", "Express.js", "MySQL", "MongoDB", "REST APIs", "Swagger"];
-
-  const handleSideClick = (side) => {
-    if (isMobile) {
-      setActiveSide(activeSide === side ? null : side);
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
     <div 
-      className="relative min-h-screen w-full overflow-x-hidden bg-white"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-50 to-white"
       ref={ref}
     >
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
 
+      {/* Scanline overlay */}
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-5" 
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
+        }}
+      />
 
-      <div className="container mx-auto px-4 py-4 md:py-8 min-h-screen flex flex-col justify-center relative z-10">
-        {/* Name Header with advanced animations */}
+      <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10">
+        {/* Main Content - Centered with larger canvas */}
         <motion.div 
-          className="text-center mb-8 md:mb-16 mt-4 md:mt-0"
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-800 mb-4 md:mb-6"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-          >
-            Lokeswaran
-          </motion.h1>
-          
-          <motion.div 
-            className="w-32 md:w-48 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mx-auto mb-4 md:mb-6"
-            initial={{ width: 0 }}
-            animate={{ width: "8rem" }}
-            transition={{ duration: 1, delay: 0.8 }}
-          />
-          
-          <motion.div 
-            className="h-10 md:h-12 overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-          >
-            <motion.p 
-              key={textIndex}
-              className="text-lg md:text-2xl text-gray-600 font-medium"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {texts[textIndex]}
-            </motion.p>
-          </motion.div>
-        </motion.div>
-
-        <motion.div 
-          className="flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-8 lg:gap-16 mb-8 md:mb-16" // Increased bottom margin
+          className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 xl:gap-24"
           style={{
             rotateX: isMobile ? undefined : rotateX,
             rotateY: isMobile ? undefined : rotateY,
@@ -136,211 +81,95 @@ const HomePage = () => {
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isInView ? 1 : 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
-          {/* Left Side - Frontend Developer */}
-          <motion.div
-            className="frontend flex-1 flex flex-col items-center lg:items-end justify-center text-center lg:text-right p-6 md:p-8 lg:p-10 rounded-3xl backdrop-blur-md bg-white/40 border border-white/30 shadow-2xl w-full max-w-md relative overflow-hidden"
-            onHoverStart={() => !isMobile && setActiveSide('frontend')}
-            onHoverEnd={() => !isMobile && setActiveSide(null)}
-            onClick={() => handleSideClick('frontend')}
-            initial={{ opacity: 0, x: -80, rotateY: -15 }}
-            animate={{ 
-              opacity: activeSide && activeSide !== 'frontend' && !isMobile ? 0.6 : 1,
-              x: 0,
-              rotateY: 0,
-              scale: activeSide === 'frontend' && !isMobile ? 1.03 : 1,
-              z: activeSide === 'frontend' && !isMobile ? 50 : 0
-            }}
-            transition={{ duration: 0.6, type: "spring" }}
-            whileHover={!isMobile ? { y: -8 } : {}}
-          >
-            {/* Animated border gradient */}
-            <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r from-pink-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-            
-            <div className="w-full space-y-4 md:space-y-6">
-              <motion.h2 
-                className="text-2xl md:text-4xl font-bold text-gray-800"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                Frontend<span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500"> Developer</span>
-              </motion.h2>
-              
-              <motion.p 
-                className="text-sm md:text-lg text-gray-600 leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.9 }}
-              >
-                I create responsive and interactive user interfaces using modern technologies like React, React Native, and JavaScript frameworks.
-              </motion.p>
-              
-              <motion.div 
-                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-end gap-2 md:gap-3"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.0 }}
-              >
-                {frontendSkills.map((skill, index) => (
-                  <motion.span 
-                    key={index}
-                    className="bg-gradient-to-r from-pink-100 to-red-100 text-pink-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-pink-200 shadow-sm"
-                    whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.1 + index * 0.1 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </motion.div>
-              
-              <motion.button 
-                className="mt-6 md:mt-8 bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden cursor-pointer"
-                whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
-                whileTap={{ scale: 0.98 }}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.4 }}
-                onClick={() => {
-                  // Scroll to Projects section
-                  const projectsSection = document.getElementById('projects');
-                  if (projectsSection) {
-                    projectsSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                <span className="relative z-10">View Frontend Projects</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Center Divider/Icon */}
+          {/* Name and Title - adjusted width for larger canvas */}
           <motion.div 
-            className="flex flex-col items-center justify-center my-4 md:my-0"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.2 }}
+            className="text-center lg:text-right flex-1 max-w-2xl"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
           >
-            <div className="h-0.5 w-16 bg-gradient-to-r from-pink-500 to-blue-500 lg:h-20 lg:w-0.5 lg:bg-gradient-to-b my-4" />
-            <motion.div 
-              className="bg-white p-3 rounded-full shadow-lg border border-gray-100"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            <motion.h1 
+              className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-gray-800 mb-4"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7 }}
             >
-              <svg className="w-6 h-6 md:w-8 md:h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+              Lokeswaran
+            </motion.h1>
+            
+            <motion.div 
+              className="w-24 md:w-32 lg:w-40 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mx-auto lg:mx-0 lg:ml-auto mb-4 md:mb-6"
+              initial={{ width: 0 }}
+              animate={{ width: "8rem" }}
+              transition={{ duration: 1, delay: 0.2 }}
+            />
+            
+            <motion.div 
+              className="h-12 md:h-16 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <motion.p 
+                key={textIndex}
+                className="text-xl md:text-2xl lg:text-3xl text-gray-600 font-medium"
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -30, opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {texts[textIndex]}
+              </motion.p>
             </motion.div>
-            <div className="h-0.5 w-16 bg-gradient-to-r from-pink-500 to-blue-500 lg:h-20 lg:w-0.5 lg:bg-gradient-to-b my-4" />
+
+            {/* CTA Button */}
+            <motion.button 
+              className="mt-8 lg:mt-10 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white px-8 py-3 lg:px-10 lg:py-4 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm lg:text-base group relative overflow-hidden cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={scrollToProjects}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <span className="relative z-10">View My Work</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </motion.button>
           </motion.div>
 
-          {/* Right Side - Backend Developer */}
-          <motion.div
-            className="backend flex-1 flex flex-col items-center lg:items-start justify-center text-center lg:text-left p-6 md:p-8 lg:p-10 rounded-3xl backdrop-blur-md bg-white/40 border border-white/30 shadow-2xl w-full max-w-md relative overflow-hidden"
-            onHoverStart={() => !isMobile && setActiveSide('backend')}
-            onHoverEnd={() => !isMobile && setActiveSide(null)}
-            onClick={() => handleSideClick('backend')}
-            initial={{ opacity: 0, x: 80, rotateY: 15 }}
-            animate={{ 
-              opacity: activeSide && activeSide !== 'backend' && !isMobile ? 0.6 : 1,
-              x: 0,
-              rotateY: 0,
-              scale: activeSide === 'backend' && !isMobile ? 1.03 : 1,
-              z: activeSide === 'backend' && !isMobile ? 50 : 0
-            }}
-            transition={{ duration: 0.6, type: "spring" }}
-            whileHover={!isMobile ? { y: -8 } : {}}
+          {/* Molecule Avatar Component - Now 80% of page width on large screens */}
+          <motion.div 
+            className="flex-1 flex justify-center items-center w-full"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
           >
-            {/* Animated border gradient */}
-            <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-            
-            <div className="w-full space-y-4 md:space-y-6">
-              <motion.h2 
-                className="text-2xl md:text-4xl font-bold text-gray-800"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                Backend<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500"> Developer</span>
-              </motion.h2>
-              
-              <motion.p 
-                className="text-sm md:text-lg text-gray-600 leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.9 }}
-              >
-                I build secure, scalable server-side applications and APIs using Node.js, Express, and modern database technologies.
-              </motion.p>
-              
-              <motion.div 
-                className="mt-4 md:mt-6 flex flex-wrap justify-center lg:justify-start gap-2 md:gap-3"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.0 }}
-              >
-                {backendSkills.map((skill, index) => (
-                  <motion.span 
-                    key={index}
-                    className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1.5 text-xs rounded-full md:text-sm font-medium border border-blue-200 shadow-sm"
-                    whileHover={!isMobile ? { scale: 1.1, y: -2 } : {}}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.1 + index * 0.1 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </motion.div>
-              
-              <motion.button 
-                className="mt-6 md:mt-8 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-2.5 md:px-8 md:py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base group relative overflow-hidden cursor-pointer"
-                whileHover={!isMobile ? { scale: 1.05, y: -2 } : {}}
-                whileTap={{ scale: 0.98 }}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.4 }}
-                onClick={() => {
-                  // Scroll to Projects section
-                  const projectsSection = document.getElementById('projects');
-                  if (projectsSection) {
-                    projectsSection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                <span className="relative z-10">Explore Backend Projects</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.button>
+            <div className="w-full max-w-4xl mx-auto">
+              <MoleculeAvatar />
             </div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator - Fixed positioning */}
+        {/* Scroll Indicator */}
         <motion.div 
-          // className="fixed bottom-6 md:bottom-10 left-1/2 -translate-x-1/2  flex-col items-center text-gray-600 z-20"
-          className="flex flex-col  items-center justify-center gap-4 md:gap-8 lg:gap-1 mb-8 md:mb-16"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
+          transition={{ delay: 1 }}
         >
           <motion.span 
-            className="text-xs md:text-sm mb-2 md:mb-3 font-medium"
+            className="text-xs md:text-sm mb-3 font-medium text-gray-500"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             Scroll to explore
           </motion.span>
           <motion.svg
-            className="w-8 h-8"
+            className="w-6 h-6"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            animate={{ y: [0, 8, 0], scale: [1, 1.2, 1] }}
+            animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
             <defs>
@@ -349,24 +178,517 @@ const HomePage = () => {
                 <stop offset="100%" stopColor="#00ffff" />
               </linearGradient>
             </defs>
-            <motion.path
+            <path
               d="M12 4v16m0 0l-6-6m6 6l6-6"
               stroke="url(#arrowGradient)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              fill="none"
             />
           </motion.svg>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 };
 
-export default HomePage;
+// Optimized MoleculeAvatar Component with React Native Official Colors and Image Cycling
+const MoleculeAvatar = () => {
+  const canvasRef = useRef(null);
+  // Increased base size for 80% page width
+  const BASE_SIZE = 1024;
+  const SIZE = BASE_SIZE;
+  const CX = SIZE/2, CY = SIZE/2, R = SIZE/2 - 8;
+
+  const mouse = useRef({ x: -9999, y: -9999, active: false, pressed: false });
+  const dotsRef = useRef([]);
+  const animRef = useRef(null);
+  const offCanvas = useRef(document.createElement('canvas'));
+  const cycleTimerRef = useRef(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isUserUploaded, setIsUserUploaded] = useState(false);
+
+  // Array of all imported images (24 images total)
+  const imageArray = useMemo(() => [
+    myPic,
+    android,
+    apple
+  ], []);
+
+  // React Native Official Color Palette - Memoized
+  const colorPalette = useMemo(() => ({
+    light: [
+      'rgba(97, 218, 251, 0.9)', // #61DAFB - Primary React Native Blue
+      'rgba(0, 216, 255, 0.9)',  // #00D8FF - Bright Blue
+      'rgba(97, 218, 251, 0.85)',
+      'rgba(120, 225, 255, 0.9)',
+      'rgba(97, 218, 251, 0.95)',
+    ],
+    medium: [
+      'rgba(45, 156, 219, 0.85)',
+      'rgba(32, 35, 42, 0.8)',    // #20232A - React Native Dark
+      'rgba(55, 178, 235, 0.85)',
+      'rgba(67, 186, 245, 0.85)',
+      'rgba(45, 156, 219, 0.9)',
+    ],
+    dark: [
+      'rgba(24, 28, 34, 0.8)',
+      'rgba(97, 218, 251, 0.6)',
+      'rgba(32, 35, 42, 0.9)',
+      'rgba(18, 22, 28, 0.8)',
+      'rgba(45, 156, 219, 0.7)',
+    ]
+  }), []);
+
+  // Optimized dot builder with React Native color palette
+  const buildDotsFromData = useCallback((imgData) => {
+    const dots = [];
+    const STEP = 10;
+    const radiusSq = R * R;
+    
+    for (let y = 0; y < SIZE; y += STEP) {
+      for (let x = 0; x < SIZE; x += STEP) {
+        const dx = x - CX;
+        const dy = y - CY;
+        if (dx*dx + dy*dy > radiusSq) continue;
+        
+        const idx = (y * SIZE + x) * 4;
+        const r = imgData.data[idx];
+        const g = imgData.data[idx+1];
+        const b = imgData.data[idx+2];
+        const a = imgData.data[idx+3];
+        
+        if (a < 10) continue;
+        
+        const bright = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+        if (bright < 0.04) continue;
+
+        const dotR = bright * 4.5 + 1.2;
+        const colorIndex = (Math.floor(x / STEP) + Math.floor(y / STEP) + Math.floor(bright * 10)) % 5;
+        
+        let col;
+        if (bright > 0.65) {
+          col = colorPalette.light[colorIndex];
+        } else if (bright > 0.35) {
+          col = colorPalette.medium[colorIndex];
+        } else {
+          col = colorPalette.dark[colorIndex];
+        }
+
+        dots.push({
+          ox: x, oy: y,
+          cx: x, cy: y,
+          vx: 0, vy: 0,
+          r: dotR,
+          col: col,
+          bright: bright,
+          phase: Math.random() * Math.PI * 2,
+        });
+      }
+    }
+    return dots;
+  }, [SIZE, CX, CY, R, colorPalette]);
+
+  // Optimized fallback builder
+  const buildFallbackDots = useCallback(() => {
+    const off = offCanvas.current;
+    const octx = off.getContext('2d');
+    octx.clearRect(0, 0, SIZE, SIZE);
+    
+    const gradient = octx.createRadialGradient(CX, CY, 0, CX, CY, R);
+    gradient.addColorStop(0, '#61DAFB');
+    gradient.addColorStop(0.4, '#00D8FF');
+    gradient.addColorStop(0.7, '#2D9CDB');
+    gradient.addColorStop(1, '#20232A');
+    
+    octx.beginPath();
+    octx.arc(CX, CY, R, 0, Math.PI * 2);
+    octx.fillStyle = gradient;
+    octx.fill();
+    
+    return buildDotsFromData(octx.getImageData(0, 0, SIZE, SIZE));
+  }, [SIZE, CX, CY, R, buildDotsFromData]);
+
+
+
+
+
+// Replace the loadImageFromArray function
+const loadImageFromArray = useCallback((index) => {
+  if (isUserUploaded) return;
+  
+  const off = offCanvas.current;
+  const octx = off.getContext('2d');
+  
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    octx.clearRect(0, 0, SIZE, SIZE);
+    octx.save();
+    octx.beginPath();
+    octx.arc(CX, CY, R, 0, Math.PI * 2);
+    octx.clip();
+    
+    const scale = Math.min(R * 2 / img.width, R * 2 / img.height) * 0.95;
+    const width = img.width * scale;
+    const height = img.height * scale;
+    const x = CX - width/2;
+    const y = CY - height/2;
+    
+    octx.drawImage(img, x, y, width, height);
+    octx.restore();
+    
+    const newDots = buildDotsFromData(octx.getImageData(0, 0, SIZE, SIZE));
+    
+    // CIRCULAR CAROUSEL ANIMATION
+    newDots.forEach((d, i) => {
+      // Position dots evenly around the circle
+      const angle = (i / newDots.length) * Math.PI * 2;
+      const radius = R * 0.9;
+      d.cx = CX + Math.cos(angle) * radius;
+      d.cy = CY + Math.sin(angle) * radius;
+      
+      // Add tangential velocity for rotation effect
+      d.vx = -Math.sin(angle) * 2;
+      d.vy = Math.cos(angle) * 2;
+    });
+    
+    dotsRef.current = newDots;
+  };
+  img.src = imageArray[index];
+}, [SIZE, CX, CY, R, buildDotsFromData, isUserUploaded, imageArray]);
+
+
+
+
+
+
+
+  // Function to cycle to next image - Modified to cycle through ALL images
+  const cycleToNextImage = useCallback(() => {
+    if (isUserUploaded) return;
+    
+    setCurrentImageIndex((prevIndex) => {
+      // Calculate next index, wrapping around to 0 when reaching the end
+      const nextIndex = (prevIndex + 1) % imageArray.length;
+      loadImageFromArray(nextIndex);
+      return nextIndex;
+    });
+  }, [imageArray.length, loadImageFromArray, isUserUploaded]);
+
+  useEffect(() => {
+    offCanvas.current.width = offCanvas.current.height = SIZE;
+    const ctx = canvasRef.current.getContext('2d');
+    if (!ctx) return;
+
+    // Initialize with fallback
+    dotsRef.current = buildFallbackDots();
+
+    // Scatter intro animation
+    dotsRef.current.forEach(d => {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * SIZE * 0.9;
+      d.cx = CX + Math.cos(angle) * distance;
+      d.cy = CY + Math.sin(angle) * distance;
+      d.vx = 0;
+      d.vy = 0;
+    });
+
+    // Load the first image
+    setTimeout(() => {
+      loadImageFromArray(0);
+    }, 100);
+
+    // Set up 10-second timer to cycle through ALL images
+    cycleTimerRef.current = setInterval(() => {
+      cycleToNextImage();
+    }, 10000); // Changes every 10 seconds
+
+    // Mouse event handlers
+    let rafId = null;
+    const getPos = (e) => {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const scaleX = SIZE / rect.width;
+      const scaleY = SIZE / rect.height;
+      
+      if (e.touches) {
+        return {
+          x: (e.touches[0].clientX - rect.left) * scaleX,
+          y: (e.touches[0].clientY - rect.top) * scaleY
+        };
+      }
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    };
+
+    const updateMouse = (e) => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const p = getPos(e);
+        mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
+        mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
+      });
+    };
+
+    const handleMove = (e) => { 
+      e.preventDefault?.();
+      mouse.current.active = true; 
+      updateMouse(e); 
+    };
+    
+    const handleLeave = () => { 
+      mouse.current.active = false; 
+      mouse.current.pressed = false; 
+      mouse.current.x = -9999; 
+      mouse.current.y = -9999; 
+    };
+    
+    const handleDown = (e) => { 
+      e.preventDefault?.();
+      mouse.current.pressed = true; 
+      updateMouse(e); 
+    };
+    
+    const handleUp = () => { mouse.current.pressed = false; };
+    
+    const handleTouchStart = (e) => { 
+      e.preventDefault(); 
+      mouse.current.active = true; 
+      mouse.current.pressed = true; 
+      updateMouse(e); 
+    };
+    
+    const handleTouchMove = (e) => { 
+      e.preventDefault(); 
+      mouse.current.active = true; 
+      updateMouse(e); 
+    };
+    
+    const handleTouchEnd = (e) => { 
+      e.preventDefault(); 
+      mouse.current.pressed = false; 
+      mouse.current.active = false; 
+      mouse.current.x = -9999; 
+      mouse.current.y = -9999; 
+    };
+
+    const canvas = canvasRef.current;
+    canvas.addEventListener('mousemove', handleMove);
+    canvas.addEventListener('mouseleave', handleLeave);
+    canvas.addEventListener('mousedown', handleDown);
+    canvas.addEventListener('mouseup', handleUp);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    // Animation loop
+    let lastTimestamp = 0;
+    
+    const draw = (timestamp) => {
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
+      
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      lastTimestamp = timestamp;
+      
+      const REPEL_R = mouse.current.pressed ? 140 : 100;
+      const REPEL_F = mouse.current.pressed ? 25 : 15;
+      const ATTRACT_F = 0.1;
+      const DAMPEN = 0.85;
+
+      const dots = dotsRef.current;
+      const mouseX = mouse.current.x;
+      const mouseY = mouse.current.y;
+      const mouseActive = mouse.current.active;
+      const mousePressed = mouse.current.pressed;
+
+      for (let i = 0; i < dots.length; i++) {
+        const d = dots[i];
+        
+        const dx = d.ox - d.cx;
+        const dy = d.oy - d.cy;
+        let ax = dx * ATTRACT_F;
+        let ay = dy * ATTRACT_F;
+
+        if (mouseActive) {
+          const mdx = d.cx - mouseX;
+          const mdy = d.cy - mouseY;
+          const distSq = mdx*mdx + mdy*mdy;
+          const dist = Math.sqrt(distSq) || 0.001;
+          
+          if (dist < REPEL_R) {
+            const strength = (1 - dist/REPEL_R) * REPEL_F;
+            const normX = mdx / dist;
+            const normY = mdy / dist;
+            ax += normX * strength;
+            ay += normY * strength;
+            
+            if (mousePressed) {
+              ax += (Math.random() - 0.5) * strength * 0.4;
+              ay += (Math.random() - 0.5) * strength * 0.4;
+            }
+          }
+        }
+
+        d.vx = (d.vx + ax) * DAMPEN;
+        d.vy = (d.vy + ay) * DAMPEN;
+        d.cx += d.vx;
+        d.cy += d.vy;
+
+        if (!mouseActive) {
+          d.cx += Math.sin(timestamp * 0.0015 + d.phase) * 0.4;
+          d.cy += Math.cos(timestamp * 0.0015 + d.phase) * 0.4;
+        }
+
+        ctx.beginPath();
+        ctx.arc(d.cx, d.cy, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = d.col;
+        
+        if (mouseActive && Math.hypot(d.cx - mouseX, d.cy - mouseY) < REPEL_R) {
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = 'rgba(97, 218, 251, 0.7)';
+        } else {
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = 'rgba(97, 218, 251, 0.4)';
+        }
+        
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    animRef.current = requestAnimationFrame(draw);
+
+    // Image upload handler
+    window.uploadAvatar = (file) => {
+      if (!file) return;
+      setIsUserUploaded(true);
+      
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const off = offCanvas.current;
+          const octx = off.getContext('2d');
+          octx.clearRect(0, 0, SIZE, SIZE);
+          octx.save();
+          octx.beginPath();
+          octx.arc(CX, CY, R, 0, Math.PI * 2);
+          octx.clip();
+          
+          const scale = Math.min(R * 2 / img.width, R * 2 / img.height) * 0.95;
+          const width = img.width * scale;
+          const height = img.height * scale;
+          const x = CX - width/2;
+          const y = CY - height/2;
+          
+          octx.drawImage(img, x, y, width, height);
+          octx.restore();
+          
+          const newDots = buildDotsFromData(octx.getImageData(0, 0, SIZE, SIZE));
+          
+          newDots.forEach(d => {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * SIZE * 0.9;
+            d.cx = CX + Math.cos(angle) * distance;
+            d.cy = CY + Math.sin(angle) * distance;
+            d.vx = 0;
+            d.vy = 0;
+          });
+          
+          dotsRef.current = newDots;
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    return () => {
+      if (animRef.current) {
+        cancelAnimationFrame(animRef.current);
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      if (cycleTimerRef.current) {
+        clearInterval(cycleTimerRef.current);
+      }
+      canvas.removeEventListener('mousemove', handleMove);
+      canvas.removeEventListener('mouseleave', handleLeave);
+      canvas.removeEventListener('mousedown', handleDown);
+      canvas.removeEventListener('mouseup', handleUp);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [buildFallbackDots, buildDotsFromData, loadImageFromArray, cycleToNextImage, SIZE, CX, CY, R]);
+
+  return (
+    <div className="relative flex flex-col items-center w-full">
+      <canvas 
+        ref={canvasRef} 
+        width={SIZE} 
+        height={SIZE} 
+className="rounded-xl border border-cyan-400/30 cursor-crosshair relative z-10 w-full h-auto"       
+ style={{
+          filter: 'drop-shadow(0 0 25px rgba(97, 218, 251, 0.4))',
+          transition: 'filter 0.3s ease',
+          background: 'transparent',
+          maxWidth: '80vw',
+          width: '70%',
+          height: 'auto',
+          aspectRatio: '1/1',
+          margin: '0 auto'
+        }}
+      />
+      
+      <div className="mt-6 flex gap-3">
+        <button 
+          onClick={() => document.getElementById('avatarUpload')?.click()} 
+          className="bg-transparent border border-[#61DAFB]/50 text-[#61DAFB] px-6 py-2 text-sm uppercase tracking-widest hover:border-[#61DAFB] hover:text-[#00D8FF] transition-all rounded-full backdrop-blur-sm"
+        >
+         ⬡ Click & Have Fun
+        </button>
+        <input 
+          type="file" 
+          id="avatarUpload" 
+          accept="image/*" 
+          className="hidden" 
+          onChange={(e) => e.target.files[0] && window.uploadAvatar?.(e.target.files[0])} 
+        />
+      </div>
+      
+    </div>
+  );
+};
+
+export default Hero;
 
 
 
