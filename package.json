@@ -4,7 +4,8 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.14.0",
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,17 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef  } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import ProjectImageSL from "../assets/SL.jpg";
 import ProjectImageSLB from "../assets/SLB.jpg";
 import ProjectImageTPV from "../assets/TPV.jpg";
 import ProjectImageMosque from "../assets/Mosque.jpg";
 import ProjectImageIronX from "../assets/SmartIronXpress.jpg";
 import ProjectImageIronB from "../assets/SmartIronBusiness.jpg";
+import ProjectSmartFar from "../assets/SmartFar.png";
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
-  
+const [selectedProject, setSelectedProject] = useState(null);
+const [currentIndex, setCurrentIndex] = useState(0);
+const [zoomLevel, setZoomLevel] = useState(1);
+const [touchStart, setTouchStart] = useState(0);
   useEffect(() => {
     // Trigger animations when component mounts
     setIsVisible(true);
   }, []);
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (!selectedProject) return;
+    
+    if (e.key === 'ArrowLeft') {
+      setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+    } else if (e.key === 'ArrowRight') {
+      setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
+    } else if (e.key === 'Escape') {
+      setSelectedProject(null);
+    }
+  };
+  
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, [selectedProject]);
+
+const handleTouchStart = (e) => {
+  setTouchStart(e.touches[0].clientX);
+};
+
+const handleTouchEnd = (e) => {
+  if (!touchStart) return;
+  const touchEnd = e.changedTouches[0].clientX;
+  const diff = touchStart - touchEnd;
+  
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) {
+      // Swipe left - next image
+      setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
+    } else {
+      // Swipe right - previous image
+      setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+    }
+  }
+  setTouchStart(0);
+};
 
   // Project data with both Android and iOS links
   const projects = [
@@ -22,7 +65,7 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.tpv_app&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/tpv-app/id6752292667", 
       imageUrl: ProjectImageTPV,
-      technologies: ["React Native", "JavaScript", "Node.js", "Payment Gateway Integration"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
     {
       id: 1,
@@ -31,7 +74,7 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundry.customer&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/smart-laundry-pickup-delivery/id6749255733",
       imageUrl: ProjectImageSL,
-      technologies: ["React Native", "Firebase", "Redux", "REST API"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
     {
       id: 2,
@@ -40,7 +83,7 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundrybusiness&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/smart-laundry-business/id6749540717",
       imageUrl: ProjectImageSLB,
-      technologies: ["React Native", "Node.js", "MongoDB", "Chart.js"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
     {
       id: 3,
@@ -49,7 +92,7 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.mosque_app&pcampaignid=web_share",
       appStoreUrl: null, // No iOS version available
       imageUrl: ProjectImageMosque,
-      technologies: ["React Native", "Firebase", "Google Maps API", "Prayer Times API"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
         {
       id: 5,
@@ -58,7 +101,7 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironxpress&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/smart-iron-xpress/id6754585989", // No iOS version available
       imageUrl: ProjectImageIronX,
-      technologies: ["React Native", "Firebase", "Google Maps API"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
             {
       id: 6,
@@ -67,7 +110,25 @@ const Projects = () => {
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironbusiness&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/smart-iron-business/id6755295734", // No iOS version available
       imageUrl: ProjectImageIronB,
-      technologies: ["React Native", "Firebase", "Google Maps API"]
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
+    },
+                {
+      id: 7,
+      title: "Smart Fresh Basket",
+      description: "An app for ironing service providers to manage customer orders, pricing, schedules, and delivery operations efficiently.",
+      playStoreUrl: null,
+      appStoreUrl: null, // No iOS version available
+      imageUrl: ProjectSmartFar,
+        screens: [
+    require('../assets/Splash.png'),
+    require('../assets/Login.png'),
+    require('../assets/Home.png'),
+    require('../assets/ViewProduct.png'),
+      require('../assets/Card.png'),
+    require('../assets/Stock.png'),
+    require('../assets/Logout.jpeg'),
+  ],
+      technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
   ];
 
@@ -123,6 +184,7 @@ const Projects = () => {
                   className="w-full h-50 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 space-x-2">
+                       {project.playStoreUrl && (
                   <a 
                     href={project.playStoreUrl}
                     target="_blank"
@@ -136,6 +198,7 @@ const Projects = () => {
                     </svg>
                     Android
                   </a>
+                        )}
                   {project.appStoreUrl && (
                     <a 
                       href={project.appStoreUrl}
@@ -155,8 +218,9 @@ const Projects = () => {
                   )}
                 </div>
               </div>
-              
+                      
               <div className="absolute top-4 right-4 flex space-x-2">
+                 {project.playStoreUrl && (
                 <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
                   <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
                     <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path>
@@ -165,6 +229,7 @@ const Projects = () => {
                   </svg>
                   Android
                 </span>
+                 )}
                 {project.appStoreUrl && (
                   <span className="bg-gradient-to-r from-gray-700 to-black text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
                     <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0,0,256,256">
@@ -196,6 +261,7 @@ const Projects = () => {
               </div>
               
               <div className="flex justify-center space-x-4">
+                        {project.playStoreUrl && (
                 <a 
                   href={project.playStoreUrl}
                   target="_blank"
@@ -207,6 +273,7 @@ const Projects = () => {
                     <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </a>
+                       )}
                 {project.appStoreUrl && (
                   <a 
                     href={project.appStoreUrl}
@@ -220,12 +287,214 @@ const Projects = () => {
                     </svg>
                   </a>
                 )}
+{project.id === 7 && (
+  <button
+    onClick={() => {
+      setSelectedProject(project);
+      setCurrentIndex(0);
+    }}
+    className="mt-3 text-green-600 hover:text-green-800 font-semibold"
+  >
+    View Screens →
+  </button>
+)}
               </div>
             </div>
           </div>
         ))}
       </div>
-      
+
+
+{selectedProject && (
+  <AnimatePresence>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
+      onClick={() => setSelectedProject(null)}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="relative bg-gradient-to-br from-gray-900 to-black rounded-2xl p-6 w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex justify-between items-start mb-4 pb-3 border-b border-gray-700">
+          <div className="flex-1 mr-4">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              {selectedProject.title}
+            </h2>
+            {selectedProject.description && (
+              <p className="text-gray-400 text-sm mt-1">{selectedProject.description}</p>
+            )}
+          </div>
+          <button
+            onClick={() => setSelectedProject(null)}
+            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 flex-shrink-0"
+            aria-label="Close modal"
+          >
+            <X className="w-5 h-5 text-white" />
+          </button>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
+          {/* Thumbnails - Left side on desktop */}
+          {selectedProject.screens.length > 1 && (
+            <div className="lg:w-20 flex-shrink-0 order-first">
+              <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-[500px] pb-2 lg:pb-0 lg:pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                {selectedProject.screens.map((screen, idx) => (
+                  <motion.button
+                    key={idx}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setCurrentIndex(idx)}
+                    className={`flex-shrink-0 w-16 h-16 lg:w-full lg:h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                      idx === currentIndex 
+                        ? 'border-blue-500 shadow-lg shadow-blue-500/25' 
+                        : 'border-transparent hover:border-gray-500 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img
+                      src={screen}
+                      alt={`Thumbnail ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Image Container */}
+          <div className="flex-1 relative min-h-0">
+            <div className="relative bg-black/50 rounded-xl overflow-hidden h-full">
+              {/* Zoom Controls */}
+              <div className="absolute top-4 right-4 z-10 flex gap-2">
+                <button
+                  onClick={() => setZoomLevel(prev => Math.min(prev + 0.2, 2))}
+                  className="p-2 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all"
+                  aria-label="Zoom in"
+                >
+                  <ZoomIn className="w-4 h-4 text-white" />
+                </button>
+                <button
+                  onClick={() => setZoomLevel(prev => Math.max(prev - 0.2, 0.5))}
+                  className="p-2 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all"
+                  aria-label="Zoom out"
+                >
+                  <ZoomOut className="w-4 h-4 text-white" />
+                </button>
+              </div>
+
+              {/* Image Counter */}
+              <div className="absolute top-4 left-4 z-10 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-lg text-xs text-white">
+                {currentIndex + 1} / {selectedProject.screens.length}
+              </div>
+
+              {/* Image Display Area */}
+              <div 
+                className="relative w-full flex items-center justify-center overflow-hidden"
+                style={{ 
+                  height: '500px',
+                  cursor: zoomLevel > 1 ? 'grab' : 'default' 
+                }}
+              >
+                <motion.img
+                  src={selectedProject.screens[currentIndex]}
+                  alt={`${selectedProject.title} - Screen ${currentIndex + 1}`}
+                  className="max-w-full max-h-full object-contain transition-transform duration-200"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                  drag={zoomLevel > 1}
+                  dragConstraints={{ 
+                    left: -200, 
+                    right: 200, 
+                    top: -200, 
+                    bottom: 200 
+                  }}
+                  dragElastic={0.1}
+                  whileTap={{ cursor: 'grabbing' }}
+                />
+              </div>
+
+              {/* Navigation Arrows */}
+              {selectedProject.screens.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setCurrentIndex(prev => 
+                      prev === 0 ? selectedProject.screens.length - 1 : prev - 1
+                    )}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all hover:scale-110 z-10"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                  </button>
+                  <button
+                    onClick={() => setCurrentIndex(prev => 
+                      prev === selectedProject.screens.length - 1 ? 0 : prev + 1
+                    )}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all hover:scale-110 z-10"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Bar & Dots */}
+        <div className="mt-4 pt-4 border-t border-gray-700 flex-shrink-0">
+          {/* Progress Bar */}
+          <div className="mb-3">
+            <div className="w-full bg-gray-700 rounded-full h-1 overflow-hidden">
+              <motion.div
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${((currentIndex + 1) / selectedProject.screens.length) * 100}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </div>
+
+          {/* Dots Navigation */}
+          {selectedProject.screens.length > 1 && (
+            <div className="flex justify-center gap-2 flex-wrap mb-2">
+              {selectedProject.screens.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className="group relative p-1"
+                  aria-label={`Go to image ${idx + 1}`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      idx === currentIndex
+                        ? 'w-6 bg-blue-500'
+                        : 'bg-gray-500 group-hover:bg-gray-400'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Additional Info */}
+          <div className="flex justify-between items-center text-xs text-gray-500">
+            <span>Press ← → to navigate</span>
+            <span>Press ESC to close</span>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  </AnimatePresence>
+)}
+
 </section>
       {/* Add the animation keyframes to your global CSS or use a style tag */}
       <style js>{`
@@ -590,650 +859,3 @@ export default Projects;
 
 
 
-
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import ProjectImageSL from "../assets/SL.jpg";
-// import ProjectImageSLB from "../assets/SLB.jpg";
-// import ProjectImageTPV from "../assets/TPV.jpg";
-// import ProjectImageMosque from "../assets/Mosque.jpg";
-// const Projects = () => {
-//   const [isVisible, setIsVisible] = useState(false);
-  
-//   useEffect(() => {
-//     // Trigger animations when component mounts
-//     setIsVisible(true);
-//   }, []);
-
-//   // Project data with both Android and iOS links
-//   const projects = [
-//         {
-//       id: 4,
-//       title: "TPV App",
-//       description: "Point of sale (POS) application for businesses to manage transactions, inventory, and customer data.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.tpv_app&pcampaignid=web_share",
-//       appStoreUrl: null, // No iOS version available
-//       imageUrl: ProjectImageTPV,
-//       technologies: ["React Native", "JavaScript", "Node.js", "Payment Gateway Integration"]
-//     },
-//     {
-//       id: 1,
-//       title: "Smart Laundry Customer",
-//       description: "A convenient laundry service app for customers to schedule pickups, track orders, and make payments.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundry.customer&pcampaignid=web_share",
-//       appStoreUrl: "https://apps.apple.com/in/app/smart-laundry-pickup-delivery/id6749255733",
-//       imageUrl: ProjectImageSL,
-//       technologies: ["React Native", "Firebase", "Redux", "REST API"]
-//     },
-//     {
-//       id: 2,
-//       title: "Smart Laundry Business",
-//       description: "Management app for laundry business owners to manage orders, employees, and business analytics.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundrybusiness&pcampaignid=web_share",
-//       appStoreUrl: "https://apps.apple.com/in/app/smart-laundry-business/id6749540717",
-//          imageUrl: ProjectImageSLB,
-//       technologies: ["React Native", "Node.js", "MongoDB", "Chart.js"]
-//     },
-//     {
-//       id: 3,
-//       title: "Mosque App",
-//       description: "An application for mosque management, prayer times, Islamic calendar, and community announcements.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.mosque_app&pcampaignid=web_share",
-//       appStoreUrl: null, // No iOS version available
-//       imageUrl: ProjectImageMosque,
-//       technologies: ["React Native", "Firebase", "Google Maps API", "Prayer Times API"]
-//     },
-
-//   ];
-
-//   return (
-//     <section id="projects" className="py-16 px-4 md:px-8 text-center max-w-6xl mx-auto">
-//       <h2 className={`text-3xl md:text-4xl font-bold mb-16 transition-all duration-700 ease-out ${
-//         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
-//       }`}>
-//         My <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-600">Mobile Applications</span>
-//       </h2>
-      
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//         {projects.map((project, index) => (
-//           <div 
-//             key={project.id}
-//             className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 ease-out ${
-//               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-//             }`}
-//             style={{ transitionDelay: `${index * 150}ms` }}
-//           >
-//             <div className="relative group">
-//               <div className="overflow-hidden">
-//                 <img 
-//                   src={project.imageUrl} 
-//                   alt={project.title}
-//                   className="w-full h-50 object-cover transition-transform duration-500 group-hover:scale-110"
-//                 />
-//                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 space-x-2">
-//                   <a 
-//                     href={project.playStoreUrl}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="text-white text-sm font-medium bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-full transition-colors flex items-center"
-//                   >
-//  <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
-// <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path><path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path><path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
-// </svg>
-//                     Android
-//                   </a>
-//                   {project.appStoreUrl && (
-//                     <a 
-//                       href={project.appStoreUrl}
-//                       target="_blank"
-//                       rel="noopener noreferrer"
-//                       className="text-white text-sm font-medium bg-gray-800 hover:bg-black py-2 px-4 rounded-full transition-colors flex items-center"
-//                     >
-//        <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256">
-// <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" 
-// ><g transform="scale(5.33333,5.33333)"><path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path></g></g>
-// </svg>
-//                   iOS
-//                     </a>
-//                   )}
-//                 </div>
-//               </div>
-              
-//               <div className="absolute top-4 right-4 flex space-x-2">
-//                 <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-// <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
-// <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path><path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path><path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
-// </svg>
-//                   Android
-//                 </span>
-//                 {project.appStoreUrl && (
-//                   <span className="bg-gradient-to-r from-gray-700 to-black text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-//                     {/* <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="currentColor">
-//                       <path d="M17.05 12.04C17.03 9.53 19.18 8.1 19.25 8.04C17.99 6.12 16.02 5.9 15.33 5.9C14.6 5.9 13.42 6.49 12.73 6.49C12 6.49 10.94 5.93 10.3 5.93C8.64 5.93 6.73 7.39 6.73 10.31C6.73 11.24 6.91 12.19 7.27 13.12C7.76 14.33 9.12 17.16 10.68 17.08C11.31 17.08 11.88 16.75 12.57 16.75C13.23 16.75 13.75 17.08 14.45 17.08C16.04 17.08 17.22 14.5 17.68 13.29C15.99 12.47 17.05 12.04 17.05 12.04ZM14.73 4.9C15.38 4.07 15.83 2.93 15.7 1.9C14.78 1.96 13.63 2.53 12.97 3.36C12.37 4.12 11.82 5.28 11.97 6.29C12.99 6.37 14.08 5.76 14.73 4.9Z"/>
-//                     </svg> */}
-// <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0,0,256,256">
-// <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" 
-// ><g transform="scale(5.33333,5.33333)"><path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path></g></g>
-// </svg>
-//                     iOS
-//                   </span>
-//                 )}
-//               </div>
-//             </div>
-            
-//             <div className="p-6">
-//               <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
-//               <p className="text-gray-600 mb-4">{project.description}</p>
-              
-//               <div className="flex flex-wrap gap-2 mb-6">
-//                 {project.technologies.map((tech, i) => (
-//                   <span 
-//                     key={i}
-//                     className="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full"
-//                   >
-//                     {tech}
-//                   </span>
-//                 ))}
-//               </div>
-              
-//               <div className="flex justify-center space-x-4">
-//                 <a 
-//                   href={project.playStoreUrl}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
-//                 >
-//                   <span>Play Store</span>
-//                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-//                     <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-//                   </svg>
-//                 </a>
-//                 {project.appStoreUrl && (
-//                   <a 
-//                     href={project.appStoreUrl}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="inline-flex items-center text-gray-800 hover:text-black font-medium transition-colors"
-//                   >
-//                     <span>App Store</span>
-//                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-//                       <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-//                     </svg>
-//                   </a>
-//                 )}
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-      
-//       <div className={`mt-16 transition-all duration-700 ease-out ${
-//         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-//       }`}>
-//         <h3 className="text-2xl font-semibold text-gray-800 mb-6">More About My Development Skills</h3>
-        
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           <div className="bg-gradient-to-br from-indigo-50 to-pink-50 p-6 rounded-xl">
-//             <div className="flex items-center mb-4">
-//               <div className="bg-indigo-100 p-3 rounded-full mr-4">
-//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-//                 </svg>
-//               </div>
-//               <h4 className="text-xl font-semibold text-gray-800">Frontend Development</h4>
-//             </div>
-//             <p className="text-gray-600 mb-4">
-//               I specialize in building responsive and dynamic user interfaces with a focus on performance and accessibility.
-//             </p>
-//             <div className="flex flex-wrap gap-2">
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React Native</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">JavaScript</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">TypeScript</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">HTML5</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">CSS3</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Bootstrap</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Tailwind CSS</span>
-//             </div>
-//           </div>
-          
-//           <div className="bg-gradient-to-br from-indigo-50 to-pink-50 p-6 rounded-xl">
-//             <div className="flex items-center mb-4">
-//               <div className="bg-indigo-100 p-3 rounded-full mr-4">
-//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-//                 </svg>
-//               </div>
-//               <h4 className="text-xl font-semibold text-gray-800">Backend Development</h4>
-//             </div>
-//             <p className="text-gray-600 mb-4">
-//               I build secure, scalable server-side solutions with robust API design and efficient database management.
-//             </p>
-//             <div className="flex flex-wrap gap-2">
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Node.js</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Express.js</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">MySQL</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">MongoDB</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Firebase</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">REST APIs</span>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Projects;
-
-
-
-
-// import React, { useEffect, useState } from 'react';
-
-// const Projects = () => {
-//   const [isVisible, setIsVisible] = useState(false);
-  
-//   useEffect(() => {
-//     // Trigger animations when component mounts
-//     setIsVisible(true);
-//   }, []);
-
-//   // Project data
-//   const projects = [
-//     {
-//       id: 1,
-//       title: "Smart Laundry Customer",
-//       description: "A convenient laundry service app for customers to schedule pickups, track orders, and make payments.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundry.customer&pcampaignid=web_share",
-//       imageUrl: "https://play-lh.googleusercontent.com/6UgEjgioPdTcyQ7rGx3pVbEgSCCJXq_5j-0Xa6IfLfVtQkU5VU7-4LcL1k1pzL9zL7Q=w480-h960-rw",
-//       technologies: ["React Native", "Firebase", "Redux", "Stripe API"]
-//     },
-//     {
-//       id: 2,
-//       title: "Smart Laundry Business",
-//       description: "Management app for laundry business owners to manage orders, employees, and business analytics.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundrybusiness&pcampaignid=web_share",
-//       imageUrl: "https://play-lh.googleusercontent.com/6UgEjgioPdTcyQ7rGx3pVbEgSCCJXq_5j-0Xa6IfLfVtQkU5VU7-4LcL1k1pzL9zL7Q=w480-h960-rw",
-//       technologies: ["React Native", "Node.js", "MongoDB", "Chart.js"]
-//     },
-//     {
-//       id: 3,
-//       title: "Mosque App",
-//       description: "An application for mosque management, prayer times, Islamic calendar, and community announcements.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.mosque_app&pcampaignid=web_share",
-//       imageUrl: "https://play-lh.googleusercontent.com/6UgEjgioPdTcyQ7rGx3pVbEgSCCJXq_5j-0Xa6IfLfVtQkU5VU7-4LcL1k1pzL9zL7Q=w480-h960-rw",
-//       technologies: ["Flutter", "Firebase", "Google Maps API", "Prayer Times API"]
-//     },
-//     {
-//       id: 4,
-//       title: "TPV App",
-//       description: "Point of sale (POS) application for businesses to manage transactions, inventory, and customer data.",
-//       playStoreUrl: "https://play.google.com/store/apps/details?id=com.tpv_app&pcampaignid=web_share",
-//       imageUrl: "https://play-lh.googleusercontent.com/6UgEjgioPdTcyQ7rGx3pVbEgSCCJXq_5j-0Xa6IfLfVtQkU5VU7-4LcL1k1pzL9zL7Q=w480-h960-rw",
-//       technologies: ["React Native", "SQLite", "Node.js", "Payment Gateway Integration"]
-//     }
-//   ];
-
-//   return (
-//     <section id="projects" className="py-16 px-4 md:px-8 text-center max-w-6xl mx-auto">
-//       <h2 className={`text-3xl md:text-4xl font-bold mb-16 transition-all duration-700 ease-out ${
-//         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
-//       }`}>
-//         My <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-600">Play Store Projects</span>
-//       </h2>
-      
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//         {projects.map((project, index) => (
-//           <div 
-//             key={project.id}
-//             className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-700 ease-out ${
-//               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-//             }`}
-//             style={{ transitionDelay: `${index * 150}ms` }}
-//           >
-//             <div className="relative group">
-//               <div className="overflow-hidden">
-//                 <img 
-//                   src={project.imageUrl} 
-//                   alt={project.title}
-//                   className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-//                 />
-//                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-//                   <a 
-//                     href={project.playStoreUrl}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="text-white text-sm font-medium bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-full transition-colors"
-//                   >
-//                     View on Play Store
-//                   </a>
-//                 </div>
-//               </div>
-              
-//               <div className="absolute top-4 right-4">
-//                 <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full">
-//                   Android
-//                 </span>
-//                 <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full">
-//                   IOS
-//                 </span>
-//               </div>
-//             </div>
-            
-//             <div className="p-6">
-//               <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
-//               <p className="text-gray-600 mb-4">{project.description}</p>
-              
-//               <div className="flex flex-wrap gap-2 mb-6">
-//                 {project.technologies.map((tech, i) => (
-//                   <span 
-//                     key={i}
-//                     className="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full"
-//                   >
-//                     {tech}
-//                   </span>
-//                 ))}
-//               </div>
-              
-//               <a 
-//                 href={project.playStoreUrl}
-//                 target="_blank"
-//                 rel="noopener noreferrer"
-//                 className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
-//               >
-//                 <span>Get the app</span>
-//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-//                   <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-//                 </svg>
-//               </a>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-      
-//       <div className={`mt-16 transition-all duration-700 ease-out ${
-//         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-//       }`}>
-//         <h3 className="text-2xl font-semibold text-gray-800 mb-6">More About My Development Skills</h3>
-        
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           <div className="bg-gradient-to-br from-indigo-50 to-pink-50 p-6 rounded-xl">
-//             <div className="flex items-center mb-4">
-//               <div className="bg-indigo-100 p-3 rounded-full mr-4">
-//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-//                 </svg>
-//               </div>
-//               <h4 className="text-xl font-semibold text-gray-800">Frontend Development</h4>
-//             </div>
-//             <p className="text-gray-600 mb-4">
-//               I specialize in building responsive and dynamic user interfaces with a focus on performance and accessibility.
-//             </p>
-//             <div className="flex flex-wrap gap-2">
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">React Native</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">TypeScript</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Tailwind CSS</span>
-//             </div>
-//           </div>
-          
-//           <div className="bg-gradient-to-br from-indigo-50 to-pink-50 p-6 rounded-xl">
-//             <div className="flex items-center mb-4">
-//               <div className="bg-indigo-100 p-3 rounded-full mr-4">
-//                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-//                 </svg>
-//               </div>
-//               <h4 className="text-xl font-semibold text-gray-800">Backend Development</h4>
-//             </div>
-//             <p className="text-gray-600 mb-4">
-//               I build secure, scalable server-side solutions with robust API design and efficient database management.
-//             </p>
-//             <div className="flex flex-wrap gap-2">
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Node.js</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Express.js</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">MySQL</span>
-//               <span className="bg-white text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">Firebase</span>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Projects;
-
-
-
-// import React, { useEffect } from 'react';
-
-// const Projects = () => {
-//   useEffect(() => {
-//     // Simple animation on page load
-//     const animateElements = () => {
-//       const sectionTitle = document.querySelector('.section-title');
-//       const projectCards = document.querySelectorAll('.project-card');
-      
-//       if (sectionTitle) {
-//         sectionTitle.style.transform = 'translateY(0)';
-//         sectionTitle.style.opacity = '1';
-//       }
-      
-//       if (projectCards) {
-//         projectCards.forEach((card, index) => {
-//           setTimeout(() => {
-//             card.style.transform = 'translateY(0)';
-//             card.style.opacity = '1';
-//           }, 300 + index * 200);
-//         });
-//       }
-//     };
-
-//     animateElements();
-//   }, []);
-
-//   return (
-//     <section id="projects" className="py-16 px-4 md:px-8 text-center max-w-6xl mx-auto">
-//       <h2 className="text-3xl md:text-4xl font-bold mb-16 section-title transition-all duration-700 ease-out opacity-0 transform -translate-y-8">
-//         My <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-600">Projects</span>
-//       </h2>
-      
-//       <div className="flex flex-wrap justify-center items-stretch gap-8 md:gap-12">
-//         {/* Frontend Development Card */}
-//         <div className="project-card transition-all duration-700 ease-out opacity-0 transform translate-y-12 gradient-border p-1 rounded-xl w-full md:w-[45%] min-w-[350px]">
-//           <div className="card-hover bg-white p-6 md:p-8 rounded-xl shadow-lg h-full flex flex-col">
-//             <div className="flex items-center mb-6">
-//               <div className="icon-wrapper">
-//     <svg xmlns="http://www.w3.org/2000/svg" class="text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 10c-.01-1.1-.91-2-2-2m-2.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-7-2c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2zm2.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm5.5-5.5c0-1.1-.9-2-2-2s-2 .9-2 2 .9 2 2 2 2-.9 2-2z" />
-//     </svg>
-//               </div>
-//               <h3 className="text-xl md:text-2xl font-semibold text-gray-800">Frontend Development</h3>
-//             </div>
-            
-//             <p className="text-gray-600 mb-6 flex-grow">
-//               I specialize in building responsive and dynamic user interfaces with a focus on performance and accessibility. My frontend work combines aesthetic design with technical excellence.
-//             </p>
-            
-//             <div className="mb-6 text-left">
-//               <span className="tech-tag">React</span>
-//               <span className="tech-tag">React Native</span>
-//               <span className="tech-tag">TypeScript</span>
-//               <span className="tech-tag">JavaScript</span>
-//               <span className="tech-tag">HTML5</span>
-//               <span className="tech-tag">CSS3</span>
-//               <span className="tech-tag">Bootstrap</span>
-//               <span className="tech-tag">TailwindCSS</span>
-//             </div>
-            
-//             <div className="text-left mt-auto">
-//               <a href="#" className="project-link">
-//                 <span>View Projects</span>
-//                 <i className="fas fa-arrow-right ml-2"></i>
-//               </a>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Backend Development Card */}
-//         <div className="project-card transition-all duration-700 ease-out opacity-0 transform translate-y-12 gradient-border p-1 rounded-xl w-full md:w-[45%] min-w-[350px]">
-//           <div className="card-hover bg-white p-6 md:p-8 rounded-xl shadow-lg h-full flex flex-col">
-//             <div className="flex items-center mb-6">
-//               <div className="icon-wrapper">
-//                         <svg xmlns="http://www.w3.org/2000/svg" class="text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-//                         </svg>              </div>
-//               <h3 className="text-xl md:text-2xl font-semibold text-gray-800">Backend Development</h3>
-//             </div>
-            
-//             <p className="text-gray-600 mb-6 flex-grow">
-//               I build secure, scalable server-side solutions with robust API design and efficient database management. My backend architecture ensures reliability and high performance.
-//             </p>
-            
-//             <div className="mb-6 text-left">
-//               <span className="tech-tag">Node.js</span>
-//               <span className="tech-tag">Express.js</span>
-//               <span className="tech-tag">MySQL</span>
-//               <span className="tech-tag">MongoDB</span>
-//               <span className="tech-tag">REST APIs</span>
-//               <span className="tech-tag">Swagger</span>
-//               <span className="tech-tag">JWT Auth</span>
-//               <span className="tech-tag">Redis</span>
-//             </div>
-            
-//             <div className="text-left mt-auto">
-//               <a href="#" className="project-link">
-//                 <span>Explore More</span>
-//                 <i className="fas fa-arrow-right ml-2"></i>
-//               </a>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-      
-//       <style jsx>{`
-//         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-//         #projects {
-//           font-family: 'Poppins', sans-serif;
-//         }
-        
-//         .card-hover {
-//           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-//         }
-        
-//         .card-hover:hover {
-//           transform: translateY(-10px) scale(1.02);
-//           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-//         }
-        
-//         .tech-tag {
-//           display: inline-block;
-//           background: rgba(99, 102, 241, 0.1);
-//           color: #4f46e5;
-//           padding: 4px 12px;
-//           border-radius: 20px;
-//           margin: 4px 4px 4px 0;
-//           font-size: 0.75rem;
-//           font-weight: 500;
-//         }
-        
-//         .gradient-border {
-//           position: relative;
-//           background: white;
-//           border-radius: 12px;
-//         }
-        
-//         .gradient-border::after {
-//           content: '';
-//           position: absolute;
-//           top: -2px;
-//           left: -2px;
-//           right: -2px;
-//           bottom: -2px;
-//           background: linear-gradient(45deg, #ec4899, #8b5cf6);
-//           border-radius: 14px;
-//           z-index: -1;
-//           opacity: 0;
-//           transition: opacity 0.3s ease;
-//         }
-        
-//         .gradient-border:hover::after {
-//           opacity: 1;
-//         }
-        
-//         .section-title {
-//           position: relative;
-//           display: inline-block;
-//         }
-        
-//         .section-title::after {
-//           content: '';
-//           position: absolute;
-//           width: 60px;
-//           height: 4px;
-//           background: linear-gradient(90deg, #ec4899, #8b5cf6);
-//           bottom: -12px;
-//           left: 50%;
-//           transform: translateX(-50%);
-//           border-radius: 2px;
-//         }
-        
-//         .project-link {
-//           position: relative;
-//           display: inline-flex;
-//           align-items: center;
-//           font-weight: 600;
-//           color: #4f46e5;
-//           overflow: hidden;
-//         }
-        
-//         .project-link::before {
-//           content: '';
-//           position: absolute;
-//           bottom: 0;
-//           left: 0;
-//           width: 100%;
-//           height: 2px;
-//           background: currentColor;
-//           transform: translateX(-100%);
-//           transition: transform 0.3s ease;
-//         }
-        
-//         .project-link:hover::before {
-//           transform: translateX(0);
-//         }
-        
-//         .icon-wrapper {
-//           display: inline-flex;
-//           justify-content: center;
-//           align-items: center;
-//           width: 40px;
-//           height: 40px;
-//           background: rgba(99, 102, 241, 0.1);
-//           border-radius: 50%;
-//           margin-right: 12px;
-//         }
-        
-//         @media (max-width: 768px) {
-//           .project-card {
-//             width: 100% !important;
-//             min-width: unset !important;
-//           }
-//         }
-//       `}</style>
-//     </section>
-//   );
-// };
-
-// export default Projects;
