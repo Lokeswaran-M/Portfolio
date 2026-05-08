@@ -677,7 +677,7 @@ if (imageName === 'Android') {
           onClick={() => document.getElementById('avatarUpload')?.click()} 
           className="bg-transparent border border-[#61DAFB]/50 text-[#61DAFB] px-6 py-2 text-sm uppercase tracking-widest hover:border-[#61DAFB] hover:text-[#00D8FF] transition-all rounded-full backdrop-blur-sm"
         >
-          ⬡ Upload Your Photo
+          ⬡ Upload a pic & have fun
         </button>
         <input 
           type="file" 

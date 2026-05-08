@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useCallback, useRef  } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
-import ProjectImageSL from "../assets/SL.jpg";
-import ProjectImageSLB from "../assets/SLB.jpg";
+import ProjectImageSL from "../assets/SmartLaundry.png";
+import ProjectImageSLB from "../assets/SmartLaundryBusiness.png";
 import ProjectImageTPV from "../assets/TPV.jpg";
-import ProjectImageMosque from "../assets/Mosque.jpg";
-import ProjectImageIronX from "../assets/SmartIronXpress.jpg";
-import ProjectImageIronB from "../assets/SmartIronBusiness.jpg";
+import ProjectImageMosque from "../assets/Mosque.png";
+import ProjectImageIronX from "../assets/SmartIronXpress.png";
+import ProjectImageIronB from "../assets/SmartIronBusiness.png";
 import ProjectSmartFar from "../assets/SmartFar.png";
+import ProjectImageQR from "../assets/QR.png";
+
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
 const [selectedProject, setSelectedProject] = useState(null);
@@ -69,7 +71,7 @@ const handleTouchEnd = (e) => {
     },
     {
       id: 1,
-      title: "Smart Laundry Customer",
+      title: "Smart Laundry",
       description: "A convenient laundry service app for customers to schedule pickups, track orders, and make payments.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartlaundry.customer&pcampaignid=web_share",
       appStoreUrl: "https://apps.apple.com/in/app/smart-laundry-pickup-delivery/id6749255733",
@@ -130,6 +132,16 @@ const handleTouchEnd = (e) => {
   ],
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
+
+{
+  id: 8,
+  title: "QR & Barcode Designer Pro",
+  description: "Easily create stunning QR codes and professional barcodes with advanced customization, real-time preview, and high-quality export—all in one powerful tool.",
+  viewSite: "https://lokeswaran-m.github.io/Qr-Generator/",
+  imageUrl: ProjectImageQR,
+  technologies: ["React", "HTML", "CSS", "JavaScript", "Tailwind CSS"]
+}
+
   ];
 
   return (
@@ -184,42 +196,32 @@ const handleTouchEnd = (e) => {
                   className="w-full h-50 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 space-x-2">
-                       {project.playStoreUrl && (
-                  <a 
-                    href={project.playStoreUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white text-sm font-medium bg-indigo-600 hover:bg-indigo-700 py-2 px-4 rounded-full transition-colors flex items-center"
-                  >
-                    <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
-                      <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path>
-                      <path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path>
-                      <path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
-                    </svg>
-                    Android
-                  </a>
-                        )}
-                  {project.appStoreUrl && (
-                    <a 
-                      href={project.appStoreUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white text-sm font-medium bg-gray-800 hover:bg-black py-2 px-4 rounded-full transition-colors flex items-center"
-                    >
-                      <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256">
-                        <g fill="#ffffff" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                          <g transform="scale(5.33333,5.33333)">
-                            <path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path>
-                          </g>
+                 {project.playStoreUrl && (
+                <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
+                  <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
+                    <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path>
+                    <path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path>
+                    <path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
+                  </svg>
+                  Android
+                </span>
+                 )}
+                {project.appStoreUrl && (
+                  <span className="bg-gradient-to-r from-gray-700 to-black text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
+                    <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0,0,256,256">
+                      <g fill="#ffffff" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
+                        <g transform="scale(5.33333,5.33333)">
+                          <path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path>
                         </g>
-                      </svg>
-                      iOS
-                    </a>
-                  )}
+                      </g>
+                    </svg>
+                    iOS
+                  </span>
+                )}
                 </div>
               </div>
                       
-              <div className="absolute top-4 right-4 flex space-x-2">
+              {/* <div className="absolute top-4 right-4 flex space-x-2">
                  {project.playStoreUrl && (
                 <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
                   <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
@@ -242,7 +244,7 @@ const handleTouchEnd = (e) => {
                     iOS
                   </span>
                 )}
-              </div>
+              </div> */}
             </div>
             
             <div className="p-6">
@@ -287,15 +289,31 @@ const handleTouchEnd = (e) => {
                     </svg>
                   </a>
                 )}
+{project.viewSite && (
+<a 
+  href={project.viewSite}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
+>
+  <span>View Site</span>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
+</a>
+)}
 {project.id === 7 && (
   <button
     onClick={() => {
       setSelectedProject(project);
       setCurrentIndex(0);
     }}
-    className="mt-3 text-green-600 hover:text-green-800 font-semibold"
+    className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
   >
-    View Screens →
+   <span> View Screens </span>
+   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
   </button>
 )}
               </div>
