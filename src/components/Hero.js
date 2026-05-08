@@ -213,7 +213,7 @@ const Hero = () => {
 // Fixed MoleculeAvatar Component
 const MoleculeAvatar = () => {
   const canvasRef = useRef(null);
-  const BASE_SIZE = 800; // Reduced for better performance
+  const BASE_SIZE = 900; // Reduced for better performance
   const SIZE = BASE_SIZE;
   const CX = SIZE/2, CY = SIZE/2, R = SIZE/2 - 8;
 
@@ -659,11 +659,11 @@ if (imageName === 'Android') {
         ref={canvasRef} 
         width={SIZE} 
         height={SIZE} 
-        className="rounded-xl border border-cyan-400/30 cursor-crosshair relative z-10 w-full h-auto"       
+        className="rounded-xl border-[3px] border-cyan-400 cursor-crosshair relative z-10 w-full h-auto"       
         style={{
           filter: 'drop-shadow(0 0 20px rgba(97, 218, 251, 0.3))',
           transition: 'filter 0.3s ease',
-          background: 'transparent',
+          background: 'black',
           maxWidth: '80vw',
           width: '70%',
           height: 'auto',
