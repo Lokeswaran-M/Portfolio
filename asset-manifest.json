@@ -1,7 +1,15 @@
 {
   "files": {
-    "main.css": "./static/css/main.6666b308.css",
-    "main.js": "./static/js/main.49d6c498.js",
+    "main.css": "./static/css/main.8de80e1b.css",
+    "main.js": "./static/js/main.ea8a37dc.js",
+    "static/media/SmartFar.png": "./static/media/SmartFar.d0d312fa682a8ac6bc68.png",
+    "static/media/Home.png": "./static/media/Home.231634262e7c09886bd6.png",
+    "static/media/ViewProduct.png": "./static/media/ViewProduct.c88084910ee8a692f121.png",
+    "static/media/Card.png": "./static/media/Card.66a1655406fedd674614.png",
+    "static/media/Splash.png": "./static/media/Splash.0b397efe83367222e50c.png",
+    "static/media/Stock.png": "./static/media/Stock.a28087f33e837d670117.png",
+    "static/media/Login.png": "./static/media/Login.ec1358c004ce0523b27f.png",
+    "static/media/Logout.jpeg": "./static/media/Logout.6ac39c71b0c1e44aab64.jpeg",
     "static/media/SLB.jpg": "./static/media/SLB.dcdfa2a8501db2d477de.jpg",
     "static/media/SL.jpg": "./static/media/SL.bfe7f5d19243697c54bb.jpg",
     "static/media/Mosque.jpg": "./static/media/Mosque.83239146a67f288916bf.jpg",
@@ -30,11 +38,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.6666b308.css.map": "./static/css/main.6666b308.css.map",
-    "main.49d6c498.js.map": "./static/js/main.49d6c498.js.map"
+    "main.8de80e1b.css.map": "./static/css/main.8de80e1b.css.map",
+    "main.ea8a37dc.js.map": "./static/js/main.ea8a37dc.js.map"
   },
   "entrypoints": [
-    "static/css/main.6666b308.css",
-    "static/js/main.49d6c498.js"
+    "static/css/main.8de80e1b.css",
+    "static/js/main.ea8a37dc.js"
   ]
 }
