@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef  } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Smartphone } from 'lucide-react';
 import ProjectImageSL from "../assets/SmartLaundry.png";
 import ProjectImageSLB from "../assets/SmartLaundryBusiness.png";
 import ProjectImageTPV from "../assets/TPV.jpg";
@@ -10,56 +10,151 @@ import ProjectImageIronB from "../assets/SmartIronBusiness.png";
 import ProjectSmartFar from "../assets/SmartFar.png";
 import ProjectImageQR from "../assets/QR.png";
 
+// Lazy load images for better performance
+const LazyImage = ({ src, alt, className }) => {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '50px' }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={imgRef} className={className}>
+      {loaded ? (
+        <img src={src} alt={alt} loading="lazy" />
+      ) : (
+        <div className="w-full h-full bg-gray-200 animate-pulse" />
+      )}
+    </div>
+  );
+};
+
+// Phone Mockup Component
+const PhoneMockup = ({ children, isVisible }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+    animate={{
+      opacity: isVisible ? 1 : 0,
+      y: isVisible ? 0 : 30,
+      scale: isVisible ? 1 : 0.95,
+    }}
+    transition={{ duration: 0.6 }}
+    className="relative mx-auto"
+    style={{
+      width: '300px',
+      height: '620px',
+    }}
+  >
+    {/* Outer Glow */}
+    <div className="absolute inset-0 rounded-[3.5rem] bg-cyan-400/20 blur-2xl scale-95" />
+
+    {/* Phone Body */}
+    <div className="relative w-full h-full rounded-[3.5rem] bg-black border-[8px] border-neutral-800 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
+
+      {/* Top Camera / Dynamic Island */}
+      {/* <div className="absolute top-3 left-1/2 -translate-x-1/2 z-30">
+        <div className="w-2 h-7 bg-black rounded-full border border-neutral-700 flex items-center justify-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-neutral-800" />
+          <div className="w-2 h-2 rounded-full bg-neutral-700" />
+        </div>
+      </div> */}
+
+      {/* Screen */}
+      <div className="absolute inset-[6px] rounded-[3rem] overflow-hidden bg-white">
+
+        {/* Actual App/Image Content */}
+        <div className="w-full h-full overflow-hidden">
+          {children}
+        </div>
+
+      </div>
+
+      {/* Side Buttons */}
+      <div className="absolute left-[-10px] top-24 w-[4px] h-16 bg-neutral-700 rounded-l-full" />
+      <div className="absolute left-[-10px] top-44 w-[4px] h-24 bg-neutral-700 rounded-l-full" />
+      <div className="absolute right-[-10px] top-36 w-[4px] h-24 bg-neutral-700 rounded-r-full" />
+
+      {/* Bottom Home Indicator */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-28 h-1.5 rounded-full bg-neutral-500 z-20" />
+    </div>
+  </motion.div>
+);
+
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
-const [selectedProject, setSelectedProject] = useState(null);
-const [currentIndex, setCurrentIndex] = useState(0);
-const [zoomLevel, setZoomLevel] = useState(1);
-const [touchStart, setTouchStart] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [touchStart, setTouchStart] = useState(0);
+  const [isPhoneView, setIsPhoneView] = useState(true);
+
   useEffect(() => {
-    // Trigger animations when component mounts
-    setIsVisible(true);
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
   }, []);
-useEffect(() => {
-  const handleKeyDown = (e) => {
+
+  // Keyboard navigation - optimized with useCallback
+  const handleKeyDown = useCallback((e) => {
     if (!selectedProject) return;
     
-    if (e.key === 'ArrowLeft') {
-      setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
-    } else if (e.key === 'ArrowRight') {
-      setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
-    } else if (e.key === 'Escape') {
-      setSelectedProject(null);
+    switch(e.key) {
+      case 'ArrowLeft':
+        setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+        break;
+      case 'ArrowRight':
+        setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
+        break;
+      case 'Escape':
+        setSelectedProject(null);
+        setZoomLevel(1);
+        break;
+      default:
+        break;
     }
-  };
-  
-  window.addEventListener('keydown', handleKeyDown);
-  return () => window.removeEventListener('keydown', handleKeyDown);
-}, [selectedProject]);
+  }, [selectedProject]);
 
-const handleTouchStart = (e) => {
-  setTouchStart(e.touches[0].clientX);
-};
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
-const handleTouchEnd = (e) => {
-  if (!touchStart) return;
-  const touchEnd = e.changedTouches[0].clientX;
-  const diff = touchStart - touchEnd;
-  
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      // Swipe left - next image
-      setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
-    } else {
-      // Swipe right - previous image
-      setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+  // Touch handlers for mobile swipe
+  const handleTouchStart = useCallback((e) => {
+    setTouchStart(e.touches[0].clientX);
+  }, []);
+
+  const handleTouchEnd = useCallback((e) => {
+    if (!touchStart || !selectedProject) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
+      } else {
+        setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+      }
     }
-  }
-  setTouchStart(0);
-};
+    setTouchStart(0);
+  }, [touchStart, selectedProject]);
 
-  // Project data with both Android and iOS links
-  const projects = [
+  // Memoize projects data
+  const projects = useMemo(() => [
     {
       id: 4,
       title: "TPV App",
@@ -92,462 +187,343 @@ const handleTouchEnd = (e) => {
       title: "Mosque App",
       description: "An application for mosque management, prayer times, Islamic calendar, and community announcements.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.mosque_app&pcampaignid=web_share",
-      appStoreUrl: null, // No iOS version available
+      appStoreUrl: null,
       imageUrl: ProjectImageMosque,
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
-        {
+    {
       id: 5,
       title: "Smart Iron Xpress",
       description: "An app for customers to schedule ironing service pickups, track garment status, and make secure payments with ease.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironxpress&pcampaignid=web_share",
-      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-xpress/id6754585989", // No iOS version available
+      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-xpress/id6754585989",
       imageUrl: ProjectImageIronX,
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
-            {
+    {
       id: 6,
       title: "Smart Iron Business",
       description: "An app for ironing service providers to manage customer orders, pricing, schedules, and delivery operations efficiently.",
       playStoreUrl: "https://play.google.com/store/apps/details?id=com.smartironbusiness&pcampaignid=web_share",
-      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-business/id6755295734", // No iOS version available
+      appStoreUrl: "https://apps.apple.com/in/app/smart-iron-business/id6755295734",
       imageUrl: ProjectImageIronB,
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
-                {
+    {
       id: 7,
       title: "Smart Fresh Basket",
-      description: "An app for ironing service providers to manage customer orders, pricing, schedules, and delivery operations efficiently.",
+      description: "Online grocery shopping app with fresh produce delivery, order tracking, and smart inventory management.",
       playStoreUrl: null,
-      appStoreUrl: null, // No iOS version available
+      appStoreUrl: null,
       imageUrl: ProjectSmartFar,
-        screens: [
-    require('../assets/Splash.png'),
-    require('../assets/Login.png'),
-    require('../assets/Home.png'),
-    require('../assets/ViewProduct.png'),
-      require('../assets/Card.png'),
-    require('../assets/Stock.png'),
-    require('../assets/Logout.jpeg'),
-  ],
+      screens: [
+        require('../assets/Splash.png'),
+        require('../assets/Login.png'),
+        require('../assets/Home.png'),
+        require('../assets/ViewProduct.png'),
+        require('../assets/Card.png'),
+        require('../assets/Stock.png'),
+        require('../assets/Logout.jpeg'),
+      ],
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
     },
+    {
+      id: 8,
+      title: "QR & Barcode Designer Pro",
+      description: "Easily create stunning QR codes and professional barcodes with advanced customization, real-time preview, and high-quality export—all in one powerful tool.",
+      viewSite: "https://lokeswaran-m.github.io/Qr-Generator/",
+      imageUrl: ProjectImageQR,
+      technologies: ["React", "HTML", "CSS", "JavaScript", "Tailwind CSS"]
+    }
+  ], []);
 
-{
-  id: 8,
-  title: "QR & Barcode Designer Pro",
-  description: "Easily create stunning QR codes and professional barcodes with advanced customization, real-time preview, and high-quality export—all in one powerful tool.",
-  viewSite: "https://lokeswaran-m.github.io/Qr-Generator/",
-  imageUrl: ProjectImageQR,
-  technologies: ["React", "HTML", "CSS", "JavaScript", "Tailwind CSS"]
-}
-
-  ];
+  // Handle close modal
+  const handleCloseModal = useCallback(() => {
+    setSelectedProject(null);
+    setZoomLevel(1);
+    setIsPhoneView(true);
+  }, []);
 
   return (
-    
-    <section id="projects" className="relative py-16 px-4 md:px-8 text-center  mx-auto">
-<div className="absolute inset-0 -z-10 overflow-hidden bg-white">
-  {/* Subtle gradient */}
-  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/50"></div>
-  
-  {/* Floating elements */}
-  <div className="absolute top-20 left-20 w-40 h-40 border border-indigo-200/50 rounded-lg rotate-12 animate-float-slow"></div>
-  <div className="absolute bottom-20 right-20 w-32 h-32 border border-pink-200/50 rounded-full animate-float-slow" style={{animationDelay: '2s'}}></div>
-  <div className="absolute top-1/2 right-1/4 w-24 h-24 border border-blue-200/50 rounded-lg rotate-45 animate-float-slow" style={{animationDelay: '4s'}}></div>
-  
-  {/* Subtle dot pattern */}
-  <div className="absolute inset-0 opacity-30" style={{
-    backgroundImage: 'radial-gradient(#6366f1 1px, transparent 1px)',
-    backgroundSize: '20px 20px'
-  }}></div>
-</div>
+    <section id="projects" className="relative py-16 px-4 md:px-8 text-center max-w-6xl mx-auto">
+      {/* Background decoration - simplified for performance */}
+      <div className="absolute inset-0 -z-10 overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-purple-50/30" />
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: 'radial-gradient(#6366f1 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }} />
+      </div>
 
-<style jsx>{`
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-20px) rotate(5deg); }
-  }
-  .animate-float-slow {
-    animation: float-slow 15s ease-in-out infinite;
-  }
-`}</style>
- <section id="projects" className="relative py-16 px-4 md:px-8 text-center max-w-6xl mx-auto">
-      <h2 className={`text-3xl md:text-4xl font-bold mb-16 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'
-      }`}>
+      {/* Title */}
+      <motion.h2 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl md:text-4xl font-bold mb-16"
+      >
         My <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-600">Mobile Applications</span>
-      </h2>
+      </motion.h2>
       
+      {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, index) => (
-          <div 
+          <motion.div 
             key={project.id}
-            className={`bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden transition-all duration-700 ease-out ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`}
-            style={{ transitionDelay: `${index * 150}ms` }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
           >
-            <div className="relative group">
-              <div className="overflow-hidden">
-                <img 
-                  src={project.imageUrl} 
-                  alt={project.title}
-                  className="w-full h-50 object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4 space-x-2">
-                 {project.playStoreUrl && (
-                <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-                  <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
-                    <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path>
-                    <path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path>
-                    <path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
-                  </svg>
-                  Android
-                </span>
-                 )}
-                {project.appStoreUrl && (
-                  <span className="bg-gradient-to-r from-gray-700 to-black text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-                    <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0,0,256,256">
-                      <g fill="#ffffff" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                        <g transform="scale(5.33333,5.33333)">
-                          <path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path>
-                        </g>
-                      </g>
-                    </svg>
-                    iOS
-                  </span>
-                )}
-                </div>
-              </div>
-                      
-              {/* <div className="absolute top-4 right-4 flex space-x-2">
-                 {project.playStoreUrl && (
-                <span className="bg-gradient-to-r from-pink-500 to-indigo-600 text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-                  <svg className="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 48 48">
-                    <path fill="#7cb342" d="M12 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM40 29c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V29zM22 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40zM30 40c0 1.1-.9 2-2 2s-2-.9-2-2v-9c0-1.1.9-2 2-2s2 .9 2 2V40z"></path>
-                    <path fill="#7cb342" d="M14 18v15c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V18H14zM24 8c-6 0-9.7 3.6-10 8h20C33.7 11.6 30 8 24 8zM20 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C21 13.1 20.6 13.6 20 13.6zM28 13.6c-.6 0-1-.4-1-1 0-.6.4-1 1-1s1 .4 1 1C29 13.1 28.6 13.6 28 13.6z"></path>
-                    <path fill="#7cb342" d="M28.3 10.5c-.2 0-.4-.1-.6-.2-.5-.3-.6-.9-.3-1.4l1.7-2.5c.3-.5.9-.6 1.4-.3.5.3.6.9.3 1.4l-1.7 2.5C29 10.3 28.7 10.5 28.3 10.5zM19.3 10.1c-.3 0-.7-.2-.8-.5l-1.3-2.1c-.3-.5-.2-1.1.3-1.4.5-.3 1.1-.2 1.4.3l1.3 2.1c.3.5.2 1.1-.3 1.4C19.7 10 19.5 10.1 19.3 10.1z"></path>
-                  </svg>
-                  Android
-                </span>
-                 )}
-                {project.appStoreUrl && (
-                  <span className="bg-gradient-to-r from-gray-700 to-black text-white text-xs font-semibold py-1 px-3 rounded-full flex items-center">
-                    <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0,0,256,256">
-                      <g fill="#ffffff" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none">
-                        <g transform="scale(5.33333,5.33333)">
-                          <path d="M31.91992,1.07227c-2.33,0.159 -5.05549,1.64527 -6.64648,3.57227c-1.441,1.754 -2.63592,4.35986 -2.16992,6.88086c2.541,0.081 5.17027,-1.43244 6.69727,-3.39844c1.428,-1.833 2.51214,-4.41769 2.11914,-7.05469zM33.16992,11.30078c-3.974,0 -5.65416,1.89258 -8.41016,1.89258c-2.841,0 -4.99955,-1.88672 -8.43555,-1.88672c-3.373,0 -6.96633,2.05278 -9.23633,5.55078c-3.21,4.934 -2.6637,14.20619 2.5293,22.11719c1.857,2.82 4.33717,5.99639 7.57617,6.02539c2.884,0.029 3.69742,-1.83452 7.60742,-1.85352c3.91,-0.032 4.65416,1.87166 7.53516,1.84766c3.239,-0.024 5.85789,-3.55 7.71289,-6.375c1.328,-2.023 1.82342,-3.04694 2.85742,-5.33594c-7.505,-2.839 -8.7112,-13.44953 -1.2832,-17.51953c-2.271,-2.826 -5.44812,-4.46289 -8.45312,-4.46289z"></path>
-                        </g>
-                      </g>
-                    </svg>
-                    iOS
-                  </span>
-                )}
-              </div> */}
+            {/* Project Image */}
+            <div className="relative group overflow-hidden">
+              <LazyImage 
+                src={project.imageUrl} 
+                alt={project.title}
+                className="w-full h-48"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             
+            {/* Project Content */}
             <div className="p-6">
               <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
-              <p className="text-gray-600 mb-4">{project.description}</p>
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{project.description}</p>
               
+              {/* Technologies */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {project.technologies.map((tech, i) => (
+                {project.technologies.slice(0, 4).map((tech, i) => (
                   <span 
                     key={i}
-                    className="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full"
+                    className="bg-indigo-50 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full"
                   >
                     {tech}
                   </span>
                 ))}
+                {project.technologies.length > 4 && (
+                  <span className="text-xs text-gray-500 self-center">
+                    +{project.technologies.length - 4} more
+                  </span>
+                )}
               </div>
               
-              <div className="flex justify-center space-x-4">
-                        {project.playStoreUrl && (
-                <a 
-                  href={project.playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
-                >
-                  <span>Play Store</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </a>
-                       )}
+              {/* Action Buttons */}
+              <div className="flex flex-wrap justify-center gap-3">
+                {project.playStoreUrl && (
+                  <a 
+                    href={project.playStoreUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200"
+                  >
+                    <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.807 1.626a1 1 0 0 1 0 1.732l-2.807 1.626L15.206 12l2.492-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/>
+                    </svg>
+                    Play Store
+                  </a>
+                )}
+                
                 {project.appStoreUrl && (
                   <a 
                     href={project.appStoreUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-gray-800 hover:text-black font-medium transition-colors"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-700 to-gray-900 rounded-lg hover:from-gray-800 hover:to-black transition-all duration-200"
                   >
-                    <span>App Store</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                     </svg>
+                    App Store
                   </a>
                 )}
-{project.viewSite && (
-<a 
-  href={project.viewSite}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
->
-  <span>View Site</span>
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-  </svg>
-</a>
-)}
-{project.id === 7 && (
-  <button
-    onClick={() => {
-      setSelectedProject(project);
-      setCurrentIndex(0);
-    }}
-    className="inline-flex items-center text-green-600 hover:text-green-800 font-medium transition-colors"
-  >
-   <span> View Screens </span>
-   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-  </svg>
-  </button>
-)}
+                
+                {project.viewSite && (
+                  <a 
+                    href={project.viewSite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-all duration-200"
+                  >
+                    View Site
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </a>
+                )}
+                
+                {project.screens && (
+                  <button
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setCurrentIndex(0);
+                      setZoomLevel(1);
+                      setIsPhoneView(true);
+                    }}
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
+                  >
+                    <Smartphone className="w-4 h-4 mr-2" />
+                    View Screens
+                  </button>
+                )}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-
-{selectedProject && (
-  <AnimatePresence>
+{/* Small Screen Viewer Modal */}
+<AnimatePresence>
+  {selectedProject && (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
-      onClick={() => setSelectedProject(null)}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={handleCloseModal}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative bg-gradient-to-br from-gray-900 to-black rounded-2xl p-6 w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="relative bg-white rounded-2xl w-full max-w-sm max-h-[85vh] flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Header */}
-        <div className="flex justify-between items-start mb-4 pb-3 border-b border-gray-700">
-          <div className="flex-1 mr-4">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              {selectedProject.title}
-            </h2>
-            {selectedProject.description && (
-              <p className="text-gray-400 text-sm mt-1">{selectedProject.description}</p>
-            )}
+        <div className="flex items-center justify-between p-3 border-b border-gray-100">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-sm font-semibold text-gray-900 truncate">{selectedProject.title}</h2>
+            <p className="text-xs text-gray-500">
+              {currentIndex + 1}/{selectedProject.screens.length}
+            </p>
           </div>
-          <button
-            onClick={() => setSelectedProject(null)}
-            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 hover:scale-110 flex-shrink-0"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
+          
+          <div className="flex items-center gap-1 ml-2">
+            {/* View Toggle */}
+            <button
+              onClick={() => setIsPhoneView(!isPhoneView)}
+              className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+              title={isPhoneView ? "Switch to full view" : "Switch to phone view"}
+            >
+              <Smartphone className="w-4 h-4 text-gray-600" />
+            </button>
+            
+            <button
+              onClick={handleCloseModal}
+              className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-4 h-4 text-gray-600" />
+            </button>
+          </div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
-          {/* Thumbnails - Left side on desktop */}
-          {selectedProject.screens.length > 1 && (
-            <div className="lg:w-20 flex-shrink-0 order-first">
-              <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-[500px] pb-2 lg:pb-0 lg:pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
-                {selectedProject.screens.map((screen, idx) => (
-                  <motion.button
-                    key={idx}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setCurrentIndex(idx)}
-                    className={`flex-shrink-0 w-16 h-16 lg:w-full lg:h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                      idx === currentIndex 
-                        ? 'border-blue-500 shadow-lg shadow-blue-500/25' 
-                        : 'border-transparent hover:border-gray-500 opacity-70 hover:opacity-100'
-                    }`}
-                  >
-                    <img
-                      src={screen}
-                      alt={`Thumbnail ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.button>
-                ))}
+        {/* Main Content Area */}
+        <div className="flex-1 flex items-center justify-center p-3 overflow-hidden bg-gray-50 relative">
+          {isPhoneView ? (
+            /* Small Phone Mockup */
+            <div className="relative" style={{ width: '220px', height: '450px' }}>
+              <div className="relative w-full h-full rounded-[2rem] bg-gray-100 border-[5px] border-gray-300 shadow-lg overflow-hidden">
+                <div className="absolute inset-[4px] rounded-[1.8rem] overflow-hidden bg-white">
+                  <motion.img
+                    key={currentIndex}
+                    src={selectedProject.screens[currentIndex]}
+                    alt={`Screen ${currentIndex + 1}`}
+                    className="w-full h-full object-cover"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </div>
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 rounded-full bg-gray-400 z-10" />
               </div>
             </div>
-          )}
-
-          {/* Image Container */}
-          <div className="flex-1 relative min-h-0">
-            <div className="relative bg-black/50 rounded-xl overflow-hidden h-full">
+          ) : (
+            /* Full View */
+            <div className="relative w-full h-full flex items-center justify-center">
+              <motion.img
+                key={currentIndex}
+                src={selectedProject.screens[currentIndex]}
+                alt={`Screen ${currentIndex + 1}`}
+                className="max-w-full max-h-[60vh] object-contain rounded-lg"
+                style={{ transform: `scale(${zoomLevel})` }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              />
+              
               {/* Zoom Controls */}
-              <div className="absolute top-4 right-4 z-10 flex gap-2">
-                <button
-                  onClick={() => setZoomLevel(prev => Math.min(prev + 0.2, 2))}
-                  className="p-2 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all"
-                  aria-label="Zoom in"
-                >
-                  <ZoomIn className="w-4 h-4 text-white" />
-                </button>
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
                 <button
                   onClick={() => setZoomLevel(prev => Math.max(prev - 0.2, 0.5))}
-                  className="p-2 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all"
-                  aria-label="Zoom out"
+                  className="p-1.5 bg-white/90 shadow rounded-full hover:bg-gray-100 transition-colors"
                 >
-                  <ZoomOut className="w-4 h-4 text-white" />
+                  <ZoomOut className="w-3.5 h-3.5 text-gray-700" />
                 </button>
-              </div>
-
-              {/* Image Counter */}
-              <div className="absolute top-4 left-4 z-10 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-lg text-xs text-white">
-                {currentIndex + 1} / {selectedProject.screens.length}
-              </div>
-
-              {/* Image Display Area */}
-              <div 
-                className="relative w-full flex items-center justify-center overflow-hidden"
-                style={{ 
-                  height: '500px',
-                  cursor: zoomLevel > 1 ? 'grab' : 'default' 
-                }}
-              >
-                <motion.img
-                  src={selectedProject.screens[currentIndex]}
-                  alt={`${selectedProject.title} - Screen ${currentIndex + 1}`}
-                  className="max-w-full max-h-full object-contain transition-transform duration-200"
-                  style={{ transform: `scale(${zoomLevel})` }}
-                  drag={zoomLevel > 1}
-                  dragConstraints={{ 
-                    left: -200, 
-                    right: 200, 
-                    top: -200, 
-                    bottom: 200 
-                  }}
-                  dragElastic={0.1}
-                  whileTap={{ cursor: 'grabbing' }}
-                />
-              </div>
-
-              {/* Navigation Arrows */}
-              {selectedProject.screens.length > 1 && (
-                <>
-                  <button
-                    onClick={() => setCurrentIndex(prev => 
-                      prev === 0 ? selectedProject.screens.length - 1 : prev - 1
-                    )}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all hover:scale-110 z-10"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="w-6 h-6 text-white" />
-                  </button>
-                  <button
-                    onClick={() => setCurrentIndex(prev => 
-                      prev === selectedProject.screens.length - 1 ? 0 : prev + 1
-                    )}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-sm rounded-full hover:bg-black/70 transition-all hover:scale-110 z-10"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="w-6 h-6 text-white" />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Bar & Dots */}
-        <div className="mt-4 pt-4 border-t border-gray-700 flex-shrink-0">
-          {/* Progress Bar */}
-          <div className="mb-3">
-            <div className="w-full bg-gray-700 rounded-full h-1 overflow-hidden">
-              <motion.div
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${((currentIndex + 1) / selectedProject.screens.length) * 100}%` }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          </div>
-
-          {/* Dots Navigation */}
-          {selectedProject.screens.length > 1 && (
-            <div className="flex justify-center gap-2 flex-wrap mb-2">
-              {selectedProject.screens.map((_, idx) => (
                 <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className="group relative p-1"
-                  aria-label={`Go to image ${idx + 1}`}
+                  onClick={() => setZoomLevel(prev => Math.min(prev + 0.2, 2))}
+                  className="p-1.5 bg-white/90 shadow rounded-full hover:bg-gray-100 transition-colors"
                 >
-                  <div
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      idx === currentIndex
-                        ? 'w-6 bg-blue-500'
-                        : 'bg-gray-500 group-hover:bg-gray-400'
-                    }`}
-                  />
+                  <ZoomIn className="w-3.5 h-3.5 text-gray-700" />
                 </button>
-              ))}
+              </div>
             </div>
           )}
 
-          {/* Additional Info */}
-          <div className="flex justify-between items-center text-xs text-gray-500">
-            <span>Press ← → to navigate</span>
-            <span>Press ESC to close</span>
+          {/* Navigation Arrows */}
+          {selectedProject.screens.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(prev => prev === 0 ? selectedProject.screens.length - 1 : prev - 1);
+                }}
+                className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 shadow rounded-full flex items-center justify-center hover:bg-gray-100 transition-all z-20"
+              >
+                <ChevronLeft className="w-4 h-4 text-gray-700" />
+              </button>
+              
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(prev => prev === selectedProject.screens.length - 1 ? 0 : prev + 1);
+                }}
+                className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 shadow rounded-full flex items-center justify-center hover:bg-gray-100 transition-all z-20"
+              >
+                <ChevronRight className="w-4 h-4 text-gray-700" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Bottom Thumbnails */}
+        <div className="p-3 border-t border-gray-100">
+          <div className="flex justify-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+            {selectedProject.screens.map((screen, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`flex-shrink-0 w-10 h-16 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                  idx === currentIndex 
+                    ? 'border-blue-500 shadow-md scale-105' 
+                    : 'border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-400'
+                }`}
+              >
+                <img
+                  src={screen}
+                  alt={`Thumb ${idx + 1}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </button>
+            ))}
           </div>
         </div>
       </motion.div>
     </motion.div>
-  </AnimatePresence>
-)}
-
-</section>
-      {/* Add the animation keyframes to your global CSS or use a style tag */}
-      <style js>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        .animation-delay-6000 {
-          animation-delay: 6s;
-        }
-      `}</style>
+  )}
+</AnimatePresence>
     </section>
   );
 };
 
 export default Projects;
-
-
-

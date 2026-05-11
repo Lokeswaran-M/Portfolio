@@ -30,9 +30,14 @@ const Hero = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
+    // Text rotation effect
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % texts.length);
+    }, 3000);
+    
     return () => {
       window.removeEventListener('resize', checkMobile);
-
+      clearInterval(interval);
     };
   }, [texts.length]);
 
@@ -205,7 +210,7 @@ const Hero = () => {
 // Fixed MoleculeAvatar Component
 const MoleculeAvatar = () => {
   const canvasRef = useRef(null);
-  const BASE_SIZE = 700; // Reduced for better performance
+  const BASE_SIZE = 900; // Reduced for better performance
   const SIZE = BASE_SIZE;
   const CX = SIZE/2, CY = SIZE/2, R = SIZE/2 - 8;
 
@@ -213,6 +218,8 @@ const MoleculeAvatar = () => {
   const dotsRef = useRef([]);
   const animRef = useRef(null);
   const offCanvas = useRef(document.createElement('canvas'));
+  const cycleTimerRef = useRef(null);
+  const [isUserUploaded, setIsUserUploaded] = useState(false);
 
   // Array of images with simplified structure
   const imageArray = useMemo(() => [
@@ -275,38 +282,9 @@ const MoleculeAvatar = () => {
     return dots;
   }, [SIZE, CX, CY, R, getDotColor]);
 
-
-
-function createFallbackDots() {
-  const off = offCanvas.current;
-  const octx = off.getContext('2d');
-
-  octx.clearRect(0, 0, SIZE, SIZE);
-
-  // React Native style gradient
-  const gradient = octx.createRadialGradient(CX, CY, 0, CX, CY, R);
-
-  gradient.addColorStop(0, '#61DAFB');
-  gradient.addColorStop(0.5, '#00D8FF');
-  gradient.addColorStop(1, '#20232A');
-
-  octx.beginPath();
-  octx.arc(CX, CY, R, 0, Math.PI * 2);
-  octx.fillStyle = gradient;
-  octx.fill();
-
-  const imgData = octx.getImageData(0, 0, SIZE, SIZE);
-
-  const newDots = buildDotsFromImage('React Native', imgData);
-
-  dotsRef.current = newDots;
-}
-
-
-
-
   // Load image from array
   const loadImageFromArray = useCallback((index) => {
+    if (isUserUploaded) return;
     
     const imageInfo = imageArray[index];
     const off = offCanvas.current;
@@ -352,12 +330,44 @@ function createFallbackDots() {
     img.onerror = () => {
       console.error(`Failed to load image: ${imageInfo.name}`);
       // Create fallback gradient dots
-createFallbackDots();
+      createFallbackDots(imageInfo.name);
     };
     
     img.src = imageInfo.src;
-}, [SIZE, CX, CY, R, buildDotsFromImage, imageArray, createFallbackDots]);
+  }, [SIZE, CX, CY, R, buildDotsFromImage, isUserUploaded, imageArray]);
 
+  // Create fallback dots with gradient
+  const createFallbackDots = useCallback((imageName) => {
+    const off = offCanvas.current;
+    const octx = off.getContext('2d');
+    octx.clearRect(0, 0, SIZE, SIZE);
+    
+    // Create radial gradient
+    const gradient = octx.createRadialGradient(CX, CY, 0, CX, CY, R);
+    
+if (imageName === 'Android') {
+  gradient.addColorStop(0, '#3DDC84');   // Android green
+  gradient.addColorStop(0.5, '#2BB673'); // smooth middle
+  gradient.addColorStop(1, '#1B8F5A');   // darker green
+} else if (imageName === 'Apple') {
+  gradient.addColorStop(0, '#8E8E93');   // Apple grey
+  gradient.addColorStop(0.5, '#3A3A3C'); // deep grey
+  gradient.addColorStop(1, '#000000');   // black
+}else {
+      gradient.addColorStop(0, '#61DAFB');
+      gradient.addColorStop(0.5, '#00D8FF');
+      gradient.addColorStop(1, '#20232A');
+    }
+    
+    octx.beginPath();
+    octx.arc(CX, CY, R, 0, Math.PI * 2);
+    octx.fillStyle = gradient;
+    octx.fill();
+    
+    const imgData = octx.getImageData(0, 0, SIZE, SIZE);
+    const newDots = buildDotsFromImage(imageName, imgData);
+    dotsRef.current = newDots;
+  }, [SIZE, CX, CY, R, buildDotsFromImage]);
 
 
   useEffect(() => {
@@ -534,6 +544,52 @@ createFallbackDots();
 
     animRef.current = requestAnimationFrame(draw);
 
+    // Image upload handler
+    window.uploadAvatar = (file) => {
+      if (!file) return;
+      setIsUserUploaded(true);
+      
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const off = offCanvas.current;
+          const octx = off.getContext('2d');
+          octx.clearRect(0, 0, SIZE, SIZE);
+          octx.save();
+          octx.beginPath();
+          octx.arc(CX, CY, R, 0, Math.PI * 2);
+          octx.clip();
+          
+          const scale = Math.min(R * 2 / img.width, R * 2 / img.height) * 0.9;
+          const width = img.width * scale;
+          const height = img.height * scale;
+          const x = CX - width/2;
+          const y = CY - height/2;
+          
+          octx.drawImage(img, x, y, width, height);
+          octx.restore();
+          
+          const imgData = octx.getImageData(0, 0, SIZE, SIZE);
+          const newDots = buildDotsFromImage('Custom', imgData);
+          
+          newDots.forEach(d => {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * SIZE * 0.8;
+            d.cx = CX + Math.cos(angle) * distance;
+            d.cy = CY + Math.sin(angle) * distance;
+            d.vx = 0;
+            d.vy = 0;
+          });
+          
+          dotsRef.current = newDots;
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
     return () => {
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
@@ -558,11 +614,11 @@ createFallbackDots();
         ref={canvasRef} 
         width={SIZE} 
         height={SIZE} 
-        className="rounded-xl border-[1px] border-cyan-400 cursor-crosshair relative z-10 w-full h-auto"       
+        className="rounded-xl border-[3px] border-cyan-400 cursor-crosshair relative z-10 w-full h-auto"       
         style={{
           filter: 'drop-shadow(0 0 20px rgba(97, 218, 251, 0.3))',
           transition: 'filter 0.3s ease',
-        background: 'transparent',
+          background: 'black',
           maxWidth: '80vw',
           width: '70%',
           height: 'auto',
@@ -570,7 +626,22 @@ createFallbackDots();
           margin: '0 auto'
         }}
       />
-
+      
+      <div className="mt-6 flex gap-3 flex-wrap justify-center">
+        <button 
+          onClick={() => document.getElementById('avatarUpload')?.click()} 
+          className="bg-transparent border border-[#61DAFB]/50 text-[#61DAFB] px-6 py-2 text-sm uppercase tracking-widest hover:border-[#61DAFB] hover:text-[#00D8FF] transition-all rounded-full backdrop-blur-sm"
+        >
+          ⬡ Upload a pic & have fun
+        </button>
+        <input 
+          type="file" 
+          id="avatarUpload" 
+          accept="image/*" 
+          className="hidden" 
+          onChange={(e) => e.target.files[0] && window.uploadAvatar?.(e.target.files[0])} 
+        />
+      </div>
     </div>
   );
 };
