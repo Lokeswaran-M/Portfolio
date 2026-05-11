@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.9e3d34f4.css",
-    "main.js": "./static/js/main.0e4b7268.js",
+    "main.css": "./static/css/main.980477e7.css",
+    "main.js": "./static/js/main.efe326bf.js",
     "static/media/Mosque.png": "./static/media/Mosque.f08a8588896ef1fe49c6.png",
     "static/media/SmartLaundry.png": "./static/media/SmartLaundry.8c7107dcf7a09e1554c3.png",
     "static/media/SmartFar.png": "./static/media/SmartFar.d0d312fa682a8ac6bc68.png",
@@ -39,11 +39,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.9e3d34f4.css.map": "./static/css/main.9e3d34f4.css.map",
-    "main.0e4b7268.js.map": "./static/js/main.0e4b7268.js.map"
+    "main.980477e7.css.map": "./static/css/main.980477e7.css.map",
+    "main.efe326bf.js.map": "./static/js/main.efe326bf.js.map"
   },
   "entrypoints": [
-    "static/css/main.9e3d34f4.css",
-    "static/js/main.0e4b7268.js"
+    "static/css/main.980477e7.css",
+    "static/js/main.efe326bf.js"
   ]
 }
