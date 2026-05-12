@@ -44,56 +44,6 @@ const LazyImage = ({ src, alt, className }) => {
   );
 };
 
-// Phone Mockup Component
-const PhoneMockup = ({ children, isVisible }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30, scale: 0.95 }}
-    animate={{
-      opacity: isVisible ? 1 : 0,
-      y: isVisible ? 0 : 30,
-      scale: isVisible ? 1 : 0.95,
-    }}
-    transition={{ duration: 0.6 }}
-    className="relative mx-auto"
-    style={{
-      width: '300px',
-      height: '620px',
-    }}
-  >
-    {/* Outer Glow */}
-    <div className="absolute inset-0 rounded-[3.5rem] bg-cyan-400/20 blur-2xl scale-95" />
-
-    {/* Phone Body */}
-    <div className="relative w-full h-full rounded-[3.5rem] bg-black border-[8px] border-neutral-800 shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
-
-      {/* Top Camera / Dynamic Island */}
-      {/* <div className="absolute top-3 left-1/2 -translate-x-1/2 z-30">
-        <div className="w-2 h-7 bg-black rounded-full border border-neutral-700 flex items-center justify-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-neutral-800" />
-          <div className="w-2 h-2 rounded-full bg-neutral-700" />
-        </div>
-      </div> */}
-
-      {/* Screen */}
-      <div className="absolute inset-[6px] rounded-[3rem] overflow-hidden bg-white">
-
-        {/* Actual App/Image Content */}
-        <div className="w-full h-full overflow-hidden">
-          {children}
-        </div>
-
-      </div>
-
-      {/* Side Buttons */}
-      <div className="absolute left-[-10px] top-24 w-[4px] h-16 bg-neutral-700 rounded-l-full" />
-      <div className="absolute left-[-10px] top-44 w-[4px] h-24 bg-neutral-700 rounded-l-full" />
-      <div className="absolute right-[-10px] top-36 w-[4px] h-24 bg-neutral-700 rounded-r-full" />
-
-      {/* Bottom Home Indicator */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-28 h-1.5 rounded-full bg-neutral-500 z-20" />
-    </div>
-  </motion.div>
-);
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -421,22 +371,33 @@ const Projects = () => {
         <div className="flex-1 flex items-center justify-center p-3 overflow-hidden bg-gray-50 relative">
           {isPhoneView ? (
             /* Small Phone Mockup */
-            <div className="relative" style={{ width: '220px', height: '450px' }}>
-              <div className="relative w-full h-full rounded-[2rem] bg-gray-100 border-[5px] border-gray-300 shadow-lg overflow-hidden">
-                <div className="absolute inset-[4px] rounded-[1.8rem] overflow-hidden bg-white">
-                  <motion.img
-                    key={currentIndex}
-                    src={selectedProject.screens[currentIndex]}
-                    alt={`Screen ${currentIndex + 1}`}
-                    className="w-full h-full object-cover"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </div>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 rounded-full bg-gray-400 z-10" />
-              </div>
-            </div>
+<div
+  className="relative"
+  style={{
+    width: '230px',
+    height: '516px',
+  }}
+>
+  <div className="relative w-full h-full rounded-[2.3rem] bg-neutral-900 border-[6px] border-neutral-800 shadow-2xl overflow-hidden">
+
+
+    {/* Screen */}
+    <div className="absolute inset-[5px] rounded-[2rem] overflow-hidden bg-black">
+      <motion.img
+        key={currentIndex}
+        src={selectedProject.screens[currentIndex]}
+        alt={`Screen ${currentIndex + 1}`}
+        className="w-full h-full object-cover"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      />
+    </div>
+
+    {/* Home Indicator */}
+    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-1 rounded-full bg-gray-500 z-10" />
+  </div>
+</div>
           ) : (
             /* Full View */
             <div className="relative w-full h-full flex items-center justify-center">
