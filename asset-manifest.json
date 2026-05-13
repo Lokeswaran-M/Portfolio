@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "./static/css/main.d81174d9.css",
-    "main.js": "./static/js/main.f5dc28b3.js",
+    "main.css": "./static/css/main.3c53c3bb.css",
+    "main.js": "./static/js/main.27e7e149.js",
     "static/media/Mosque.png": "./static/media/Mosque.f08a8588896ef1fe49c6.png",
     "static/media/SmartLaundry.png": "./static/media/SmartLaundry.8c7107dcf7a09e1554c3.png",
     "static/media/SmartFar.png": "./static/media/SmartFar.d0d312fa682a8ac6bc68.png",
     "static/media/SmartLaundryBusiness.png": "./static/media/SmartLaundryBusiness.dbf3df4e6df8080cc0a4.png",
     "static/media/SmartIronBusiness.png": "./static/media/SmartIronBusiness.15d6e1c9f33153b1c0f6.png",
+    "static/media/ClearCut.png": "./static/media/ClearCut.3f04dbb3eed53b2d73be.png",
     "static/media/SmartIronXpress.png": "./static/media/SmartIronXpress.9047523e3b809f7a610e.png",
-    "static/media/QR.png": "./static/media/QR.deb9bbc0411aed7b3941.png",
+    "static/media/QR.png": "./static/media/QR.15f8d3d6f1e341954db9.png",
     "static/media/Home.png": "./static/media/Home.231634262e7c09886bd6.png",
     "static/media/ViewProduct.png": "./static/media/ViewProduct.c88084910ee8a692f121.png",
     "static/media/Card.png": "./static/media/Card.66a1655406fedd674614.png",
@@ -39,11 +40,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.d81174d9.css.map": "./static/css/main.d81174d9.css.map",
-    "main.f5dc28b3.js.map": "./static/js/main.f5dc28b3.js.map"
+    "main.3c53c3bb.css.map": "./static/css/main.3c53c3bb.css.map",
+    "main.27e7e149.js.map": "./static/js/main.27e7e149.js.map"
   },
   "entrypoints": [
-    "static/css/main.d81174d9.css",
-    "static/js/main.f5dc28b3.js"
+    "static/css/main.3c53c3bb.css",
+    "static/js/main.27e7e149.js"
   ]
 }
