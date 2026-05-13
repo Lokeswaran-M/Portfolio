@@ -11,31 +11,65 @@ import ProjectSmartFar from "../assets/SmartFar.png";
 import ProjectImageQR from "../assets/QR.png";
 import ProjectClearCut from "../assets/ClearCut.png";
 
-// Lazy load images for better performance
-const LazyImage = ({ src, alt, className = '' }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  const containerRef = useRef(null);
+// const LazyImage = ({ src, alt, className }) => {
+//   const [loaded, setLoaded] = useState(false);
+//   const imgRef = useRef(null);
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setLoaded(true);
+//           observer.disconnect();
+//         }
+//       },
+//       { rootMargin: '50px' }
+//     );
+
+//     if (imgRef.current) {
+//       observer.observe(imgRef.current);
+//     }
+
+//     return () => observer.disconnect();
+//   }, []);
+
+//   return (
+//     <div ref={imgRef} className={className}>
+//       {loaded ? (
+//         <img src={src} alt={alt} loading="lazy" />
+//       ) : (
+//         <div className="w-full h-full bg-gray-200 animate-pulse" />
+//       )}
+//     </div>
+//   );
+// };
+
+
+const LazyImage = ({ src, alt, className }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const imgRef = useRef(null);
 
   useEffect(() => {
-    const currentRef = containerRef.current;
+    const currentRef = imgRef.current;
+
+    if (!currentRef) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setLoaded(true);
           observer.unobserve(entry.target);
         }
       },
       {
-        rootMargin: '200px', // preload before visible
+        rootMargin: '150px',
       }
     );
 
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    observer.observe(currentRef);
 
     return () => {
       if (currentRef) observer.unobserve(currentRef);
@@ -44,30 +78,35 @@ const LazyImage = ({ src, alt, className = '' }) => {
 
   return (
     <div
-      ref={containerRef}
-      className={`relative overflow-hidden ${className}`}
+      ref={imgRef}
+      className={`relative overflow-hidden w-full h-full ${className}`}
     >
-      {/* Lightweight Placeholder */}
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-gray-100" />
+      {!loaded && (
+        <div className="absolute inset-0 bg-gray-200" />
       )}
 
-      {/* Real Image */}
-      {isVisible && (
+      {loaded && (
         <img
           src={src}
           alt={alt}
           loading="lazy"
           decoding="async"
-          onLoad={() => setIsLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          draggable="false"
+          onLoad={() => setImageLoaded(true)}
+          className={`
+            w-full
+            h-full
+            object-cover
+            transition-opacity
+            duration-300
+            ${imageLoaded ? 'opacity-100' : 'opacity-0'}
+          `}
         />
       )}
     </div>
   );
 };
+
 
 
 const Projects = () => {
@@ -240,6 +279,7 @@ const Projects = () => {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
+      
       {/* Project Image */}
       <div className="relative group overflow-hidden">
         <LazyImage 
