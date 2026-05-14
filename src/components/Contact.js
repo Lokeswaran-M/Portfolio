@@ -123,7 +123,7 @@ const Contact = () => {
             </div>
             <h3 className="font-semibold text-lg mb-2">Phone</h3>
             <div className="flex items-center justify-center">
-              <p className="text-gray-600 truncate">+91 6381226046</p>
+              <p className="text-gray-600 truncate">+91 6381626046</p>
               <button 
                 onClick={() => copyToClipboard('+91 6381226046', 'phone')}
                 className="ml-2 text-pink-600 hover:text-pink-800 transition-colors"
