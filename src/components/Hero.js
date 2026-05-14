@@ -205,7 +205,7 @@ const Hero = () => {
 // Fixed MoleculeAvatar Component
 const MoleculeAvatar = () => {
   const canvasRef = useRef(null);
-  const BASE_SIZE = 900; // Reduced for better performance
+  const BASE_SIZE = 850; // Reduced for better performance
   const SIZE = BASE_SIZE;
   const CX = SIZE/2, CY = SIZE/2, R = SIZE/2 - 8;
 

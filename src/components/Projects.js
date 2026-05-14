@@ -247,7 +247,7 @@ const Projects = () => {
   const webApps = useMemo(() => [
     {
       id: 8,
-      title: "QR & Barcode Designer Pro",
+      title: "QR Designer Pro",
       description: "Easily create stunning QR codes and professional barcodes with advanced customization, real-time preview, and high-quality export—all in one powerful tool.",
       viewSite: "https://lokeswaran-m.github.io/Qr-Generator/",
       imageUrl: ProjectImageQR,
