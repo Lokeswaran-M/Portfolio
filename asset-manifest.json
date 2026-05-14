@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "./static/css/main.3c53c3bb.css",
-    "main.js": "./static/js/main.222629df.js",
-    "static/media/Mosque.png": "./static/media/Mosque.f08a8588896ef1fe49c6.png",
-    "static/media/SmartLaundry.png": "./static/media/SmartLaundry.8c7107dcf7a09e1554c3.png",
-    "static/media/SmartFar.png": "./static/media/SmartFar.d0d312fa682a8ac6bc68.png",
-    "static/media/SmartLaundryBusiness.png": "./static/media/SmartLaundryBusiness.dbf3df4e6df8080cc0a4.png",
-    "static/media/SmartIronBusiness.png": "./static/media/SmartIronBusiness.15d6e1c9f33153b1c0f6.png",
-    "static/media/ClearCut.png": "./static/media/ClearCut.3f04dbb3eed53b2d73be.png",
-    "static/media/SmartIronXpress.png": "./static/media/SmartIronXpress.9047523e3b809f7a610e.png",
-    "static/media/QR.png": "./static/media/QR.15f8d3d6f1e341954db9.png",
+    "main.css": "./static/css/main.7c5031f2.css",
+    "main.js": "./static/js/main.ee892f28.js",
+    "static/media/SmartFar.png": "./static/media/SmartFar.c0190a2a3faec87983ba.png",
     "static/media/Home.png": "./static/media/Home.231634262e7c09886bd6.png",
+    "static/media/ClearCut.png": "./static/media/ClearCut.92036bed37fa7d58d3bd.png",
+    "static/media/Mosque.png": "./static/media/Mosque.4451960405180c36bd0e.png",
+    "static/media/SmartIronBusiness.png": "./static/media/SmartIronBusiness.26197abf88e4ea3ad683.png",
+    "static/media/SmartIronXpress.png": "./static/media/SmartIronXpress.0f986bc331d07a65e275.png",
     "static/media/ViewProduct.png": "./static/media/ViewProduct.c88084910ee8a692f121.png",
+    "static/media/SmartLaundry.png": "./static/media/SmartLaundry.c23516e88ba78fce8cb6.png",
+    "static/media/QR.png": "./static/media/QR.c49ef4feec1c3f70aadb.png",
+    "static/media/SmartLaundryBusiness.png": "./static/media/SmartLaundryBusiness.9f696c37d48c8028efe4.png",
     "static/media/Card.png": "./static/media/Card.66a1655406fedd674614.png",
     "static/media/Splash.png": "./static/media/Splash.0b397efe83367222e50c.png",
     "static/media/Stock.png": "./static/media/Stock.a28087f33e837d670117.png",
     "static/media/Login.png": "./static/media/Login.ec1358c004ce0523b27f.png",
     "static/media/Logout.jpeg": "./static/media/Logout.6ac39c71b0c1e44aab64.jpeg",
     "static/media/xampp.png": "./static/media/xampp.179e6aaaaba688f47861.png",
-    "static/media/TPV.jpg": "./static/media/TPV.5e6647493e8846704cb4.jpg",
+    "static/media/TPV.jpg": "./static/media/TPV.22426480691e653a6e14.jpg",
     "static/media/API.png": "./static/media/API.28f80df6c23a5b342ead.png",
     "static/media/xcode-original.svg": "./static/media/xcode-original.b31073315b4f7b90614ba696ddc34957.svg",
     "static/media/Google-Cloud.png": "./static/media/Google-Cloud.82db605aef72391d7e03.png",
@@ -40,11 +40,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.3c53c3bb.css.map": "./static/css/main.3c53c3bb.css.map",
-    "main.222629df.js.map": "./static/js/main.222629df.js.map"
+    "main.7c5031f2.css.map": "./static/css/main.7c5031f2.css.map",
+    "main.ee892f28.js.map": "./static/js/main.ee892f28.js.map"
   },
   "entrypoints": [
-    "static/css/main.3c53c3bb.css",
-    "static/js/main.222629df.js"
+    "static/css/main.7c5031f2.css",
+    "static/js/main.ee892f28.js"
   ]
 }
