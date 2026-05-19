@@ -40,4 +40,15 @@ body {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
-  
+.connection-line {
+  animation: drawLine 1.5s ease-out forwards;
+}
+@keyframes twinkle {
+  0% { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: 0.5; transform: scale(1.2); }
+}
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

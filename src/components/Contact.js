@@ -44,6 +44,20 @@ const Contact = () => {
       )
     },
     {
+  name: 'whatsapp',
+  url: 'https://wa.me/916381626046?text=Hello%20Lokeswaran,%20I%20want%20to%20connect%20with%20you!',
+  icon: (
+    <svg
+      className="w-5 h-5"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.04 0C5.4 0 .02 5.38.02 12c0 2.12.56 4.2 1.62 6.03L0 24l6.18-1.6A11.94 11.94 0 0 0 12.04 24c6.64 0 12.02-5.38 12.02-12 0-3.2-1.25-6.2-3.54-8.52ZM12.04 21.8c-1.8 0-3.56-.48-5.1-1.38l-.36-.22-3.66.94.98-3.56-.24-.38A9.77 9.77 0 0 1 2.26 12c0-5.4 4.38-9.78 9.78-9.78 2.62 0 5.08 1.02 6.92 2.86A9.7 9.7 0 0 1 21.82 12c0 5.4-4.38 9.8-9.78 9.8Zm5.36-7.34c-.3-.16-1.78-.88-2.06-.98-.28-.1-.48-.16-.68.16-.2.3-.78.98-.96 1.18-.18.2-.36.22-.66.08-.3-.16-1.28-.48-2.44-1.54-.9-.8-1.5-1.8-1.68-2.1-.18-.3-.02-.46.14-.62.14-.14.3-.36.46-.54.16-.18.2-.3.3-.5.1-.2.04-.38-.02-.54-.08-.16-.68-1.64-.94-2.24-.24-.58-.5-.5-.68-.5h-.58c-.2 0-.54.08-.82.38-.28.3-1.08 1.06-1.08 2.58s1.1 3 1.26 3.2c.16.2 2.16 3.3 5.24 4.62.74.32 1.32.5 1.76.64.74.24 1.42.2 1.96.12.6-.08 1.78-.72 2.04-1.42.26-.7.26-1.3.18-1.42-.08-.12-.28-.2-.58-.36Z" />
+    </svg>
+  )
+},
+    {
       name: 'linkedin',
       url: 'https://www.linkedin.com/in/lokeswaran-m/',
       icon: (
@@ -52,24 +66,7 @@ const Contact = () => {
         </svg>
       )
     },
-    {
-      name: 'twitter',
-      url: 'https://x.com/Mr_L_o_k_i_',
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-        </svg>
-      )
-    },
-    {
-      name: 'instagram',
-      url: 'https://www.instagram.com/mr__l_o_k_i__/',
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
-        </svg>
-      )
-    }
+
   ];
 
   return (
@@ -178,20 +175,73 @@ const Contact = () => {
   </motion.button>
 </div>
         
-        <div className="mt-16 flex justify-center space-x-6">
-          {socialPlatforms.map((platform) => (
-            <a
-              key={platform.name}
-              href={platform.url}
-              className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-gray-700 hover:text-purple-600"
-              aria-label={platform.name}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {platform.icon}
-            </a>
-          ))}
+     {/* Social Media Section */}
+<div className="mt-20">
+<h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-3">
+  Connect With Me
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-7 h-7 text-red-500 animate-pulse"
+    aria-hidden="true"
+  >
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+  </svg>
+</h3>
+
+  <div className="flex flex-wrap justify-center gap-6">
+    {socialPlatforms.map((platform, index) => (
+      <motion.a
+        key={platform.name}
+        href={platform.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        whileHover={{
+          y: -8,
+          scale: 1.08,
+        }}
+        whileTap={{ scale: 0.95 }}
+        className={`
+          group relative overflow-hidden
+          w-24 h-24
+          rounded-3xl
+          backdrop-blur-lg
+          border border-white/20
+          shadow-xl
+          flex flex-col items-center justify-center
+          transition-all duration-500
+          
+          ${platform.name === 'github'
+            ? 'bg-gradient-to-br from-gray-900 to-black text-white hover:shadow-gray-500/40'
+            : platform.name === 'linkedin'
+            ? 'bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:shadow-blue-500/40'
+            : 'bg-gradient-to-br from-green-400 to-green-600 text-white hover:shadow-green-500/40'
+          }
+        `}
+      >
+        {/* Glow Effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-white/10"></div>
+
+        {/* Icon */}
+        <div className="relative z-10 text-white scale-125 mb-2">
+          {platform.icon}
         </div>
+
+        {/* Name */}
+        <span className="relative z-10 text-xs font-semibold capitalize tracking-wide">
+          {platform.name}
+        </span>
+
+        {/* Animated Border */}
+        <div className="absolute inset-0 rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-500"></div>
+      </motion.a>
+    ))}
+  </div>
+</div>
       </div>
       
       <div className="flex items-center justify-end space-x-4 mt-8">
