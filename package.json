@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "mdb-react-ui-kit": "^9.0.0",
