@@ -10,7 +10,7 @@ import ProjectImageIronB from "../assets/SmartIronBusiness.png";
 import ProjectSmartFar from "../assets/SmartFar.png";
 import ProjectImageQR from "../assets/QR.png";
 import ProjectClearCut from "../assets/ClearCut.png";
-
+import ProjectFitTrackerAi from "../assets/FitTrackAi.png";
 
 // const LazyImage = ({ src, alt, className }) => {
 //   const [loaded, setLoaded] = useState(false);
@@ -240,6 +240,26 @@ const Projects = () => {
         require('../assets/Logout.jpeg'),
       ],
       technologies: ["React Native","Node.js","Express.js","MySQL","Firebase","JavaScript", "Google Maps API"]
+    },
+        {
+      id: 10,
+   title: "Fit Tracker AI",
+     description: "Smarter fitness starts here. Track weight, hydration, BMI, and daily progress with personalized AI-powered insights.",      playStoreUrl: null,
+      appStoreUrl: null,
+      imageUrl: ProjectFitTrackerAi,
+      screens: [
+        require('../assets/Fit1.png'),
+        require('../assets/Fit2.png'),
+        require('../assets/Fit3.png'),
+        require('../assets/Fit4.png'),
+        require('../assets/Fit5.png'),
+        require('../assets/Fit6.png'),
+        require('../assets/Fit7.png'),
+        require('../assets/Fit8.png'),
+        require('../assets/Fit9.png'),
+        // require('../assets/Fit10.jpeg'),
+      ],
+      technologies: ["React Native","JavaScript", "Google Al Studio"]
     }
   ], []);
 
@@ -293,7 +313,7 @@ const Projects = () => {
       {/* Project Content */}
       <div className="p-6">
         <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{project.description}</p>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3">{project.description}</p>
         
         {/* Technologies */}
         <div className="flex flex-wrap gap-2 mb-6">
@@ -473,7 +493,7 @@ const Projects = () => {
                   <div
                     className="relative"
                     style={{
-                      width: '230px',
+                      width: '238px',
                       height: '516px',
                     }}
                   >
