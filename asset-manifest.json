@@ -1,7 +1,8 @@
 {
   "files": {
-    "main.css": "./static/css/main.2f980bb0.css",
-    "main.js": "./static/js/main.fdfbe615.js",
+    "main.css": "./static/css/main.bd173297.css",
+    "main.js": "./static/js/main.57f9967e.js",
+    "static/media/FitTrackAi.png": "./static/media/FitTrackAi.80e20a20de206ab9e67b.png",
     "static/media/SmartFar.png": "./static/media/SmartFar.c0190a2a3faec87983ba.png",
     "static/media/Home.png": "./static/media/Home.231634262e7c09886bd6.png",
     "static/media/ClearCut.png": "./static/media/ClearCut.92036bed37fa7d58d3bd.png",
@@ -15,9 +16,18 @@
     "static/media/Card.png": "./static/media/Card.66a1655406fedd674614.png",
     "static/media/Splash.png": "./static/media/Splash.0b397efe83367222e50c.png",
     "static/media/Stock.png": "./static/media/Stock.a28087f33e837d670117.png",
+    "static/media/Fit8.png": "./static/media/Fit8.6e621ecca7556c699ba9.png",
+    "static/media/Fit1.png": "./static/media/Fit1.9cb3476ffb7cae9f1d9d.png",
+    "static/media/Fit5.png": "./static/media/Fit5.14a6f1e7435fb2ab2193.png",
+    "static/media/Fit4.png": "./static/media/Fit4.c0fa368f4c82942f723d.png",
+    "static/media/Fit7.png": "./static/media/Fit7.eb3c6880f61fad352dac.png",
+    "static/media/Fit6.png": "./static/media/Fit6.5e304a5f7633e2750a8b.png",
     "static/media/Login.png": "./static/media/Login.ec1358c004ce0523b27f.png",
     "static/media/Logout.jpeg": "./static/media/Logout.6ac39c71b0c1e44aab64.jpeg",
+    "static/media/Fit3.png": "./static/media/Fit3.2b548f02688b899d45d8.png",
+    "static/media/Fit9.png": "./static/media/Fit9.cbc0b78b35fc76a0be8e.png",
     "static/media/xampp.png": "./static/media/xampp.179e6aaaaba688f47861.png",
+    "static/media/Fit2.png": "./static/media/Fit2.7177f2791cd48469898e.png",
     "static/media/TPV.jpg": "./static/media/TPV.22426480691e653a6e14.jpg",
     "static/media/API.png": "./static/media/API.28f80df6c23a5b342ead.png",
     "static/media/xcode-original.svg": "./static/media/xcode-original.b31073315b4f7b90614ba696ddc34957.svg",
@@ -40,11 +50,11 @@
     "static/media/apple-original.svg": "./static/media/apple-original.c47d8e2608547bf986608f7e671b7dd5.svg",
     "static/media/firebase-plain.svg": "./static/media/firebase-plain.373eff1f6899b873b98e492c621226be.svg",
     "static/media/expo-original.svg": "./static/media/expo-original.78e9ce8cc883da1daaa42bcda6adca4f.svg",
-    "main.2f980bb0.css.map": "./static/css/main.2f980bb0.css.map",
-    "main.fdfbe615.js.map": "./static/js/main.fdfbe615.js.map"
+    "main.bd173297.css.map": "./static/css/main.bd173297.css.map",
+    "main.57f9967e.js.map": "./static/js/main.57f9967e.js.map"
   },
   "entrypoints": [
-    "static/css/main.2f980bb0.css",
-    "static/js/main.fdfbe615.js"
+    "static/css/main.bd173297.css",
+    "static/js/main.57f9967e.js"
   ]
 }
