@@ -48,13 +48,6 @@ const Hero = () => {
       className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-50 to-white"
       ref={ref}
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
-
       {/* Scanline overlay */}
       <div className="fixed inset-0 pointer-events-none z-50 opacity-5" 
         style={{
@@ -164,12 +157,6 @@ const Hero = () => {
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
-            <defs>
-              <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff00ff" />
-                <stop offset="100%" stopColor="#00ffff" />
-              </linearGradient>
-            </defs>
             <path
               d="M12 4v16m0 0l-6-6m6 6l6-6"
               stroke="url(#arrowGradient)"

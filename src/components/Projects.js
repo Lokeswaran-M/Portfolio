@@ -11,7 +11,8 @@ import ProjectSmartFar from "../assets/SmartFar.png";
 import ProjectImageQR from "../assets/QR.png";
 import ProjectClearCut from "../assets/ClearCut.png";
 import ProjectFitTrackerAi from "../assets/FitTrackAi.png";
-
+import ProjectWAManager from "../assets/WA-Manager.png";
+// Lazy load images for better performance
 // const LazyImage = ({ src, alt, className }) => {
 //   const [loaded, setLoaded] = useState(false);
 //   const imgRef = useRef(null);
@@ -49,7 +50,6 @@ import ProjectFitTrackerAi from "../assets/FitTrackAi.png";
 const LazyImage = ({ src, alt, className }) => {
   const [loaded, setLoaded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -116,6 +116,7 @@ const Projects = () => {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [touchStart, setTouchStart] = useState(0);
   const [isPhoneView, setIsPhoneView] = useState(true);
+const [showAllTech, setShowAllTech] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -280,7 +281,25 @@ const Projects = () => {
       viewSite: "https://lokeswaran-m.github.io/ClearCut/",
       imageUrl: ProjectClearCut,
       technologies: ["React", "HTML", "CSS", "JavaScript", "Tailwind CSS"]
-    }
+    },
+{
+  id: 11,
+  title: "WA Manager",
+  description:
+    "A modern WhatsApp Web management platform built with React, Node.js, Express, Socket.IO, and Baileys. It enables real-time messaging, contact management, status viewing, bulk messaging, group management, QR-based authentication, reports, and a responsive dashboard with a clean, business-focused UI.",
+  viewSite: "https://github.com/Lokeswaran-M/WhatsappAPI",
+  imageUrl: ProjectWAManager,
+  technologies: [
+    "React",
+    "Tailwind CSS",
+    "JavaScript",
+    "Node.js",
+    "Express.js",
+    "Socket.IO",
+    "Baileys",
+    "WhatsApp Web API"
+  ]
+}
   ], []);
 
   // Handle close modal
@@ -315,22 +334,31 @@ const Projects = () => {
         <h3 className="text-xl font-semibold text-gray-800 mb-2">{project.title}</h3>
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">{project.description}</p>
         
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.technologies.slice(0, 4).map((tech, i) => (
-            <span 
-              key={i}
-              className="bg-indigo-50 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full"
-            >
-              {tech}
-            </span>
-          ))}
-          {project.technologies.length > 4 && (
-            <span className="text-xs text-gray-500 self-center">
-              +{project.technologies.length - 4} more
-            </span>
-          )}
-        </div>
+{/* Technologies */}
+<div className="flex flex-wrap gap-2 mb-6">
+  {(showAllTech
+    ? project.technologies
+    : project.technologies.slice(0, 4)
+  ).map((tech, i) => (
+    <span
+      key={i}
+      className="bg-indigo-50 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full"
+    >
+      {tech}
+    </span>
+  ))}
+
+  {project.technologies.length > 4 && (
+    <button
+      onClick={() => setShowAllTech(!showAllTech)}
+      className="text-xs text-indigo-600 hover:text-indigo-800 font-medium self-center"
+    >
+      {showAllTech
+        ? "Show Less"
+        : `+${project.technologies.length - 4} more`}
+    </button>
+  )}
+</div>
         
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-3">
