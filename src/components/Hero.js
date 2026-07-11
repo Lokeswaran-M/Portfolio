@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
 import myPic from '../assets/react-original.svg';
+
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  const texts = ["React Native Developer", "Full Stack Engineer", "JavaScript Specialist", "UI/UX Enthusiast"];
+  const texts = useMemo(() => ["React Native Developer", "Full Stack Engineer", "JavaScript Specialist", "UI/UX Enthusiast"], []);
   
   // 3D tilt effect values
   const x = useMotionValue(0);
@@ -32,29 +33,29 @@ const Hero = () => {
     
     return () => {
       window.removeEventListener('resize', checkMobile);
-
     };
+  }, []);
+
+  // Rotating text effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex(prev => (prev + 1) % texts.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, [texts.length]);
 
-  const scrollToProjects = () => {
+  const scrollToProjects = useCallback(() => {
     const projectsSection = document.getElementById('projects');
     if (projectsSection) {
       projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, []);
 
   return (
     <div 
       className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-50 to-white"
       ref={ref}
     >
-      {/* Scanline overlay */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-5" 
-        style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
-        }}
-      />
-
       <div className="container mx-auto px-4 h-full flex flex-col justify-center relative z-10">
         {/* Main Content */}
         <motion.div 
@@ -132,7 +133,7 @@ const Hero = () => {
             transition={{ duration: 0.7 }}
           >
             <div className="w-full max-w-4xl mx-auto">
-              <MoleculeAvatar />
+              <MoleculeAvatar isMobile={isMobile} />
             </div>
           </motion.div>
         </motion.div>
@@ -168,59 +169,40 @@ const Hero = () => {
           </motion.svg>
         </motion.div>
       </div>
-
-      <style jsx>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </div>
   );
 };
 
-// Fixed MoleculeAvatar Component
-const MoleculeAvatar = () => {
+// Optimized MoleculeAvatar Component
+const MoleculeAvatar = React.memo(({ isMobile }) => {
   const canvasRef = useRef(null);
-  const BASE_SIZE = 800; // Reduced for better performance
-  const SIZE = BASE_SIZE;
+  const SIZE = isMobile ? 300 : 500;
   const CX = SIZE/2, CY = SIZE/2, R = SIZE/2 - 8;
 
   const mouse = useRef({ x: -9999, y: -9999, active: false, pressed: false });
   const dotsRef = useRef([]);
   const animRef = useRef(null);
-  const offCanvas = useRef(document.createElement('canvas'));
+  const offCanvas = useRef(null);
 
-  // Array of images with simplified structure
-  const imageArray = useMemo(() => [
-    { src: myPic, name: 'React Native' },
-  ], []);
+  // Initialize offscreen canvas once
+  useEffect(() => {
+    offCanvas.current = document.createElement('canvas');
+    offCanvas.current.width = offCanvas.current.height = SIZE;
+  }, [SIZE]);
 
-  // Simple color palette based on image type
-  const getDotColor = useCallback((imageName, brightness, x, y) => {
-  if (brightness > 0.7) {
-        return `rgba(97, 218, 251, ${0.7 + brightness * 0.3})`;
-      } else if (brightness > 0.4) {
-        return `rgba(45, 156, 219, ${0.6 + brightness * 0.3})`;
-      } else {
-        return `rgba(32, 35, 42, ${0.5 + brightness * 0.3})`;
-      }
+  const getDotColor = useCallback((brightness) => {
+    if (brightness > 0.7) {
+      return `rgba(97, 218, 251, ${0.7 + brightness * 0.3})`;
+    } else if (brightness > 0.4) {
+      return `rgba(45, 156, 219, ${0.6 + brightness * 0.3})`;
+    } else {
+      return `rgba(32, 35, 42, ${0.5 + brightness * 0.3})`;
+    }
   }, []);
 
-  // Build dots from image data
-  const buildDotsFromImage = useCallback((imageName, imgData) => {
+  const buildDotsFromImage = useCallback((imgData) => {
     const dots = [];
-    const STEP = 8; // Smaller step for more detail
+    const STEP = isMobile ? 10 : 8;
     const radiusSq = R * R;
     
     for (let y = 0; y < SIZE; y += STEP) {
@@ -235,17 +217,13 @@ const MoleculeAvatar = () => {
         const b = imgData.data[idx+2];
         const a = imgData.data[idx+3];
         
-        // Skip transparent pixels
         if (a < 50) continue;
         
-        // Calculate brightness
         const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
-        
-        // Skip very dark pixels
         if (brightness < 0.1) continue;
         
         const dotSize = Math.max(1.5, brightness * 4);
-        const color = getDotColor(imageName, brightness, x, y);
+        const color = getDotColor(brightness);
         
         dots.push({
           ox: x, oy: y,
@@ -253,77 +231,58 @@ const MoleculeAvatar = () => {
           vx: 0, vy: 0,
           r: dotSize,
           col: color,
-          brightness: brightness,
           phase: Math.random() * Math.PI * 2,
         });
       }
     }
-    
     return dots;
-  }, [SIZE, CX, CY, R, getDotColor]);
+  }, [SIZE, CX, CY, R, getDotColor, isMobile]);
 
-
-
-function createFallbackDots() {
-  const off = offCanvas.current;
-  const octx = off.getContext('2d');
-
-  octx.clearRect(0, 0, SIZE, SIZE);
-
-  // React Native style gradient
-  const gradient = octx.createRadialGradient(CX, CY, 0, CX, CY, R);
-
-  gradient.addColorStop(0, '#61DAFB');
-  gradient.addColorStop(0.5, '#00D8FF');
-  gradient.addColorStop(1, '#20232A');
-
-  octx.beginPath();
-  octx.arc(CX, CY, R, 0, Math.PI * 2);
-  octx.fillStyle = gradient;
-  octx.fill();
-
-  const imgData = octx.getImageData(0, 0, SIZE, SIZE);
-
-  const newDots = buildDotsFromImage('React Native', imgData);
-
-  dotsRef.current = newDots;
-}
-
-
-
-
-  // Load image from array
-  const loadImageFromArray = useCallback((index) => {
-    
-    const imageInfo = imageArray[index];
+  const createFallbackDots = useCallback(() => {
     const off = offCanvas.current;
+    if (!off) return;
     const octx = off.getContext('2d');
+    if (!octx) return;
+
+    octx.clearRect(0, 0, SIZE, SIZE);
+    const gradient = octx.createRadialGradient(CX, CY, 0, CX, CY, R);
+    gradient.addColorStop(0, '#61DAFB');
+    gradient.addColorStop(0.5, '#00D8FF');
+    gradient.addColorStop(1, '#20232A');
+
+    octx.beginPath();
+    octx.arc(CX, CY, R, 0, Math.PI * 2);
+    octx.fillStyle = gradient;
+    octx.fill();
+
+    const imgData = octx.getImageData(0, 0, SIZE, SIZE);
+    dotsRef.current = buildDotsFromImage(imgData);
+  }, [SIZE, CX, CY, R, buildDotsFromImage]);
+
+  const loadImage = useCallback(() => {
+    const off = offCanvas.current;
+    if (!off) return;
+    const octx = off.getContext('2d');
+    if (!octx) return;
     
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      // Clear and draw image
       octx.clearRect(0, 0, SIZE, SIZE);
       octx.save();
       octx.beginPath();
       octx.arc(CX, CY, R, 0, Math.PI * 2);
       octx.clip();
       
-      // Calculate scaling to fit circle
       const scale = Math.min(R * 2 / img.width, R * 2 / img.height) * 0.9;
       const width = img.width * scale;
       const height = img.height * scale;
-      const x = CX - width/2;
-      const y = CY - height/2;
-      
-      octx.drawImage(img, x, y, width, height);
+      octx.drawImage(img, CX - width/2, CY - height/2, width, height);
       octx.restore();
       
-      // Get image data and build dots
       const imgData = octx.getImageData(0, 0, SIZE, SIZE);
-      const newDots = buildDotsFromImage(imageInfo.name, imgData);
+      const newDots = buildDotsFromImage(imgData);
       
-      // Apply initial scatter animation
       newDots.forEach(d => {
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.random() * SIZE * 0.8;
@@ -337,29 +296,23 @@ function createFallbackDots() {
     };
     
     img.onerror = () => {
-      console.error(`Failed to load image: ${imageInfo.name}`);
-      // Create fallback gradient dots
-createFallbackDots();
+      createFallbackDots();
     };
     
-    img.src = imageInfo.src;
-}, [SIZE, CX, CY, R, buildDotsFromImage, imageArray, createFallbackDots]);
-
-
+    img.src = myPic;
+  }, [SIZE, CX, CY, R, buildDotsFromImage, createFallbackDots]);
 
   useEffect(() => {
-    offCanvas.current.width = offCanvas.current.height = SIZE;
-    const ctx = canvasRef.current.getContext('2d');
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Initialize with React Native
-    loadImageFromArray(0);
+    loadImage();
 
-
-    // Mouse event handlers
-    let rafId = null;
+    // Mouse/touch event handlers
     const getPos = (e) => {
-      const rect = canvasRef.current.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       const scaleX = SIZE / rect.width;
       const scaleY = SIZE / rect.height;
       
@@ -375,19 +328,12 @@ createFallbackDots();
       };
     };
 
-    const updateMouse = (e) => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const p = getPos(e);
-        mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
-        mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
-      });
-    };
-
     const handleMove = (e) => { 
       e.preventDefault?.();
       mouse.current.active = true; 
-      updateMouse(e); 
+      const p = getPos(e);
+      mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
+      mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
     };
     
     const handleLeave = () => { 
@@ -400,7 +346,9 @@ createFallbackDots();
     const handleDown = (e) => { 
       e.preventDefault?.();
       mouse.current.pressed = true; 
-      updateMouse(e); 
+      const p = getPos(e);
+      mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
+      mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
     };
     
     const handleUp = () => { mouse.current.pressed = false; };
@@ -409,24 +357,26 @@ createFallbackDots();
       e.preventDefault(); 
       mouse.current.active = true; 
       mouse.current.pressed = true; 
-      updateMouse(e); 
+      const p = getPos(e);
+      mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
+      mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
     };
     
     const handleTouchMove = (e) => { 
       e.preventDefault(); 
       mouse.current.active = true; 
-      updateMouse(e); 
+      const p = getPos(e);
+      mouse.current.x = Math.max(0, Math.min(SIZE, p.x));
+      mouse.current.y = Math.max(0, Math.min(SIZE, p.y));
     };
     
-    const handleTouchEnd = (e) => { 
-      e.preventDefault(); 
+    const handleTouchEnd = () => { 
       mouse.current.pressed = false; 
       mouse.current.active = false; 
       mouse.current.x = -9999; 
       mouse.current.y = -9999; 
     };
 
-    const canvas = canvasRef.current;
     canvas.addEventListener('mousemove', handleMove);
     canvas.addEventListener('mouseleave', handleLeave);
     canvas.addEventListener('mousedown', handleDown);
@@ -435,24 +385,15 @@ createFallbackDots();
     canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
     canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
 
-    // Animation loop
-    let lastTimestamp = 0;
-    
-    const draw = (timestamp) => {
-      if (!lastTimestamp) {
-        lastTimestamp = timestamp;
-        animRef.current = requestAnimationFrame(draw);
-        return;
-      }
-      
-      ctx.clearRect(0, 0, SIZE, SIZE);
-      lastTimestamp = timestamp;
-      
-      const REPEL_R = mouse.current.pressed ? 120 : 80;
-      const REPEL_F = mouse.current.pressed ? 20 : 12;
-      const ATTRACT_F = 0.08;
-      const DAMPEN = 0.88;
+    // Animation loop - optimized
+    const REPEL_R = 80;
+    const REPEL_F = 12;
+    const ATTRACT_F = 0.08;
+    const DAMPEN = 0.88;
 
+    const draw = () => {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      
       const dots = dotsRef.current;
       const mouseX = mouse.current.x;
       const mouseY = mouse.current.y;
@@ -475,10 +416,8 @@ createFallbackDots();
           
           if (dist < REPEL_R) {
             const strength = (1 - dist/REPEL_R) * REPEL_F;
-            const normX = mdx / dist;
-            const normY = mdy / dist;
-            ax += normX * strength;
-            ay += normY * strength;
+            ax += (mdx / dist) * strength;
+            ay += (mdy / dist) * strength;
             
             if (mousePressed) {
               ax += (Math.random() - 0.5) * strength * 0.3;
@@ -492,30 +431,13 @@ createFallbackDots();
         d.cx += d.vx;
         d.cy += d.vy;
 
-        // Gentle floating animation
-        if (!mouseActive) {
-          d.cx += Math.sin(timestamp * 0.001 + d.phase) * 0.3;
-          d.cy += Math.cos(timestamp * 0.001 + d.phase) * 0.3;
-        }
-
         // Draw dot
         ctx.beginPath();
         ctx.arc(d.cx, d.cy, d.r, 0, Math.PI * 2);
         ctx.fillStyle = d.col;
-        
-        // Add glow effect
-        if (mouseActive && Math.hypot(d.cx - mouseX, d.cy - mouseY) < REPEL_R) {
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = d.col;
-        } else {
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = d.col;
-        }
-        
         ctx.fill();
       }
       
-      ctx.shadowBlur = 0;
       animRef.current = requestAnimationFrame(draw);
     };
 
@@ -525,10 +447,6 @@ createFallbackDots();
       if (animRef.current) {
         cancelAnimationFrame(animRef.current);
       }
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-    
       canvas.removeEventListener('mousemove', handleMove);
       canvas.removeEventListener('mouseleave', handleLeave);
       canvas.removeEventListener('mousedown', handleDown);
@@ -537,7 +455,7 @@ createFallbackDots();
       canvas.removeEventListener('touchmove', handleTouchMove);
       canvas.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [loadImageFromArray, buildDotsFromImage, SIZE, CX, CY, R]);
+  }, [loadImage, SIZE, CX, CY, R]);
 
   return (
     <div className="relative flex flex-col items-center w-full">
@@ -548,8 +466,7 @@ createFallbackDots();
         className="rounded-xl cursor-crosshair relative z-10 w-full h-auto"       
         style={{
           filter: 'drop-shadow(0 0 20px rgba(97, 218, 251, 0.3))',
-          transition: 'filter 0.3s ease',
-        background: 'transparent',
+          background: 'transparent',
           maxWidth: '80vw',
           width: '70%',
           height: 'auto',
@@ -557,9 +474,8 @@ createFallbackDots();
           margin: '0 auto'
         }}
       />
-
     </div>
   );
-};
+});
 
 export default Hero;

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const Icons = {
   mobile: (
@@ -61,19 +61,6 @@ const bioCards = [
   { icon: Icons.learning, text: "Dedicated to continuous learning, problem-solving, and staying updated with the latest technologies." },
   { icon: Icons.handshake, text: "Let's connect and build something amazing together!" },
 ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
-};
 
 const About = () => {
   const [isDownloading, setIsDownloading] = useState(false);
