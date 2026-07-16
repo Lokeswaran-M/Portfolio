@@ -1,4 +1,5 @@
 import React from 'react';
+import { FiTool, FiGlobe, FiDatabase, FiCloud, FiCreditCard, FiGitBranch, FiMail } from 'react-icons/fi';
 import vscode from '../assets/vscode-original.svg';
 import xcode from '../assets/xcode-original.svg';
 import android from '../assets/android-original.svg';
@@ -22,12 +23,15 @@ import github from '../assets/github-original.svg';
 import emailjs from '../assets/emailjs.png';
 import terminal from '../assets/bash-original.svg';
 import api from '../assets/API.png';
+import cloudflare from '../assets/Cloudflare-logo.png';
+import cloudpe from '../assets/cloudpe-logo.png';
+import razorpay from '../assets/Razorpay-logo.png';
 
 const Tools = () => {
   const toolCategories = [
     {
       title: "Development & IDEs",
-      emoji: "🛠️",
+      icon: FiTool,
       span: "lg:col-span-2 lg:row-span-2",
       tools: [
         { name: "VS Code", icon: "vscode", bg: "bg-blue-100" },
@@ -40,7 +44,7 @@ const Tools = () => {
     },
     {
       title: "Backend & API",
-      emoji: "🌐",
+      icon: FiGlobe,
       span: "lg:col-span-1",
       tools: [
         { name: "Node.js", icon: "nodejs", bg: "bg-green-100" },
@@ -52,7 +56,7 @@ const Tools = () => {
     },
     {
       title: "Database & Server",
-      emoji: "🗄️",
+      icon: FiDatabase,
       span: "lg:col-span-1",
       tools: [
         { name: "Navicat Premium", icon: "navicat", bg: "bg-amber-100" },
@@ -64,18 +68,28 @@ const Tools = () => {
     },
     {
       title: "Cloud & Hosting",
-      emoji: "☁️",
+      icon: FiCloud,
       span: "lg:col-span-1",
       tools: [
         { name: "Firebase Console", icon: "firebase", bg: "bg-amber-100" },
         { name: "Google Play Console", icon: "playconsole", bg: "bg-blue-100" },
         { name: "Google Cloud Platform", icon: "Cloud", bg: "bg-green-100" },
-        { name: "App Store Connect", icon: "apple", bg: "bg-gray-100" }
+        { name: "App Store Connect", icon: "apple", bg: "bg-gray-100" },
+        { name: "Cloudflare", icon: "cloudflare", bg: "bg-orange-100" },
+        { name: "cloudPe", icon: "cloudpe", bg: "bg-indigo-100" }
+      ]
+    },
+    {
+      title: "Payment Gateway",
+      icon: FiCreditCard,
+      span: "lg:col-span-1",
+      tools: [
+        { name: "Razorpay", icon: "razorpay", bg: "bg-blue-100" }
       ]
     },
     {
       title: "Version Control",
-      emoji: "🔧",
+      icon: FiGitBranch,
       span: "lg:col-span-1",
       tools: [
         { name: "Git", icon: "git", bg: "bg-orange-100" },
@@ -84,7 +98,7 @@ const Tools = () => {
     },
     {
       title: "Other Services",
-      emoji: "📩",
+      icon: FiMail,
       span: "lg:col-span-1",
       tools: [
         { name: "EmailJS", icon: "emailjs", bg: "bg-orange-100" }
@@ -97,7 +111,8 @@ const Tools = () => {
     const sources = {
       vscode, xcode, android, expo, react, nodejs, redux, swagger, thunder,
       navicat, xampp, docker, filezilla, cpanel, firebase, playconsole,
-      Cloud, apple, git, github, emailjs, terminal, api
+      Cloud, apple, git, github, emailjs, terminal, api, cloudflare,
+      cloudpe, razorpay
     };
     return sources[iconName] || null;
   };
@@ -119,6 +134,7 @@ const Tools = () => {
           {toolCategories.map((cat, idx) => {
             const isLarge = cat.span.includes("col-span-2");
             const colCount = isLarge ? 3 : 2;
+            const IconComponent = cat.icon;
 
             // Dynamic sizes based on card size
             const iconContainerSize = isLarge ? "w-16 h-16" : "w-12 h-12";
@@ -132,7 +148,7 @@ const Tools = () => {
                 className={`${cat.span} bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 flex flex-col`}
               >
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="text-3xl">{cat.emoji}</span>
+                  <IconComponent className="text-3xl text-slate-600" />
                   <h3 className="text-xl font-semibold text-slate-700">{cat.title}</h3>
                 </div>
 
