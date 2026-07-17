@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiTool, FiGlobe, FiDatabase, FiCloud, FiCreditCard, FiGitBranch, FiMail } from 'react-icons/fi';
+import { FiTool, FiGlobe, FiDatabase, FiCloud, FiCreditCard, FiGitBranch, FiMail, FiGitCommit } from 'react-icons/fi';
 import vscode from '../assets/vscode-original.svg';
 import xcode from '../assets/xcode-original.svg';
 import android from '../assets/android-original.svg';
@@ -10,6 +10,8 @@ import redux from '../assets/redux-original.svg';
 import swagger from '../assets/swagger-original.svg';
 import thunder from '../assets/Thunder-Client.png';
 import navicat from '../assets/navicat.svg';
+import MySQL from '../assets/MySQL.svg';
+import mongodb from '../assets/MongoDB.svg';
 import xampp from '../assets/xampp.png';
 import docker from '../assets/docker-original.svg';
 import filezilla from '../assets/filezilla-plain.svg';
@@ -26,7 +28,8 @@ import api from '../assets/API.png';
 import cloudflare from '../assets/Cloudflare-logo.png';
 import cloudpe from '../assets/cloudpe-logo.png';
 import razorpay from '../assets/Razorpay-logo.png';
-
+import Socket from '../assets/Socket.io.svg';
+import Express from '../assets/Express.svg';
 const Tools = () => {
   const toolCategories = [
     {
@@ -36,9 +39,10 @@ const Tools = () => {
       tools: [
         { name: "VS Code", icon: "vscode", bg: "bg-blue-100" },
         { name: "Xcode", icon: "xcode", bg: "bg-sky-100" },
-        { name: "Android Studio", icon: "android", bg: "bg-green-100" },
+        { name: "Android Studio", icon: "android", bg: "bg-gray-100" },
         { name: "Expo", icon: "expo", bg: "bg-gray-100" },
         { name: "React Native CLI", icon: "react", bg: "bg-cyan-100" },
+        { name: "Redux", icon: "redux", bg: "bg-purple-100" },
         { name: "Terminal / CLI", icon: "terminal", bg: "bg-gray-100" }
       ]
     },
@@ -47,11 +51,12 @@ const Tools = () => {
       icon: FiGlobe,
       span: "lg:col-span-1",
       tools: [
-        { name: "Node.js", icon: "nodejs", bg: "bg-green-100" },
-        { name: "Redux", icon: "redux", bg: "bg-purple-100" },
+        { name: "Node.js", icon: "nodejs", bg: "bg-gray-100" },
+        { name: "Express.js", icon: "Express", bg: "bg-gray-100" },
+        { name: "REST APIs", icon: "api", bg: "bg-sky-100" },
         { name: "Swagger", icon: "swagger", bg: "bg-green-100" },
         { name: "Thunder Client", icon: "thunder", bg: "bg-purple-100" },
-        { name: "REST APIs", icon: "api", bg: "bg-sky-100" }
+        { name: "Socket.IO", icon: "Socket", bg: "bg-gray-100" }
       ]
     },
     {
@@ -59,9 +64,10 @@ const Tools = () => {
       icon: FiDatabase,
       span: "lg:col-span-1",
       tools: [
+        { name: "MySQL", icon: "MySQL", bg: "bg-blue-100" },
+        { name: "MongoDB", icon: "mongodb", bg: "bg-gray-100" },
         { name: "Navicat Premium", icon: "navicat", bg: "bg-amber-100" },
         { name: "XAMPP", icon: "xampp", bg: "bg-orange-100" },
-        { name: "Docker", icon: "docker", bg: "bg-sky-100" },
         { name: "FileZilla", icon: "filezilla", bg: "bg-red-100" },
         { name: "cPanel", icon: "cpanel", bg: "bg-orange-100" }
       ]
@@ -72,10 +78,10 @@ const Tools = () => {
       span: "lg:col-span-1",
       tools: [
         { name: "Firebase Console", icon: "firebase", bg: "bg-amber-100" },
-        { name: "Google Play Console", icon: "playconsole", bg: "bg-blue-100" },
-        { name: "Google Cloud Platform", icon: "Cloud", bg: "bg-green-100" },
-        { name: "App Store Connect", icon: "apple", bg: "bg-gray-100" },
+        { name: "Google Cloud Platform", icon: "Cloud", bg: "bg-gray-100" },
         { name: "Cloudflare", icon: "cloudflare", bg: "bg-orange-100" },
+        { name: "Google Play Console", icon: "playconsole", bg: "bg-blue-100" },
+        { name: "App Store Connect", icon: "apple", bg: "bg-gray-100" },
         { name: "cloudPe", icon: "cloudpe", bg: "bg-indigo-100" }
       ]
     },
@@ -97,11 +103,24 @@ const Tools = () => {
       ]
     },
     {
+      title: "CI/CD & DevOps",
+      icon: FiGitCommit,
+      span: "lg:col-span-1",
+      tools: [
+        { name: "GitHub Actions", icon: "github", bg: "bg-gray-100" },
+        { name: "Docker", icon: "docker", bg: "bg-sky-100" },
+        { name: "Firebase Hosting", icon: "firebase", bg: "bg-amber-100" },
+        { name: "Cloudflare Pages", icon: "cloudflare", bg: "bg-orange-100" },
+        { name: "GitHub Pages", icon: "github", bg: "bg-gray-100" }
+      ]
+    },
+    {
       title: "Other Services",
       icon: FiMail,
       span: "lg:col-span-1",
       tools: [
-        { name: "EmailJS", icon: "emailjs", bg: "bg-orange-100" }
+        { name: "EmailJS", icon: "emailjs", bg: "bg-orange-100" },
+        { name: "Firebase Cloud Messaging", icon: "firebase", bg: "bg-amber-100" }
       ]
     }
   ];
@@ -112,9 +131,9 @@ const Tools = () => {
       vscode, xcode, android, expo, react, nodejs, redux, swagger, thunder,
       navicat, xampp, docker, filezilla, cpanel, firebase, playconsole,
       Cloud, apple, git, github, emailjs, terminal, api, cloudflare,
-      cloudpe, razorpay
+      cloudpe, razorpay, Socket, mongodb, MySQL, Express,
     };
-    return sources[iconName] || null;
+    return sources[iconName] || null; 
   };
 
   return (
